@@ -1,0 +1,3446 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Salary</name>
+    </assembly>
+    <members>
+        <member name="F:Salary.Common.ChannelTypeEnum.Mine">
+            <summary>
+            我的客户
+            </summary>
+        </member>
+        <member name="F:Salary.Common.ChannelTypeEnum.Public">
+            <summary>
+            客户公海
+            </summary>
+        </member>
+        <member name="F:Salary.Common.ChannelTypeEnum.Recycle">
+            <summary>
+            客户回收站
+            </summary>
+        </member>
+        <member name="F:Salary.Common.EnrollStatusEnum.All">
+            <summary>
+            全部
+            </summary>
+        </member>
+        <member name="F:Salary.Common.EnrollStatusEnum.ChannelUnApproved">
+            <summary>
+            渠道未审核
+            </summary>
+        </member>
+        <member name="F:Salary.Common.EnrollStatusEnum.ChannelNoPass">
+            <summary>
+            渠道审核不通过
+            </summary>
+        </member>
+        <member name="F:Salary.Common.EnrollStatusEnum.ZLUnApproved">
+            <summary>
+            中力未审核
+            </summary>
+        </member>
+        <member name="F:Salary.Common.EnrollStatusEnum.ZLNoPass">
+            <summary>
+            中力审核不通过
+            </summary>
+        </member>
+        <member name="F:Salary.Common.EnrollStatusEnum.NotParticipate">
+            <summary>
+            未参课
+            </summary>
+        </member>
+        <member name="F:Salary.Common.EnrollStatusEnum.AlreadyParticipate">
+            <summary>
+            已参课
+            </summary>
+        </member>
+        <member name="F:Salary.Common.EnrollStatusEnum.ActivityUnApproved">
+            <summary>
+            活动未审核
+            </summary>
+        </member>
+        <member name="F:Salary.Common.EnrollStatusEnum.ActivityNoPass">
+            <summary>
+            活动审核不通过
+            </summary>
+        </member>
+        <member name="F:Salary.Common.EnrollStatusEnum.NoSignIn">
+            <summary>
+            活动未签到
+            </summary>
+        </member>
+        <member name="F:Salary.Common.EnrollStatusEnum.SignIn">
+            <summary>
+            活动已签到
+            </summary>
+        </member>
+        <member name="T:Salary.Common.LogHelper">
+            <summary>
+            日志帮助类，封装日志的常用操作方法
+            </summary>
+        </member>
+        <member name="M:Salary.Common.LogHelper.WriteInfoLog(System.String)">
+            <summary>
+            普通的文件记录日志
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="M:Salary.Common.LogHelper.WriteErrorLog(System.String)">
+            <summary>
+            错误日志
+            </summary>
+            <param name="error"></param>
+        </member>
+        <member name="M:Salary.Common.LogHelper.WriteErrorLog(System.String,System.Exception)">
+            <summary>
+            错误日志
+            </summary>
+            <param name="error"></param>
+            <param name="ex"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Salary.Common.MyExtend.GetDescription(System.Enum,System.Boolean)" -->
+        <member name="M:Salary.Common.MyExtend.IsNullable(System.Type)">
+            <summary>
+            Determine of specified type is nullable
+            </summary>
+        </member>
+        <member name="M:Salary.Common.MyExtend.GetCoreType(System.Type)">
+            <summary>
+            Return underlying type if type is Nullable otherwise return the type
+            </summary>
+        </member>
+        <member name="M:Salary.Common.OperationResult.#ctor(Salary.Common.OperationResultType)">
+            <summary>
+                初始化一个 业务操作结果信息类 的新实例
+            </summary>
+            <param name="resultType">业务操作结果类型</param>
+        </member>
+        <member name="M:Salary.Common.OperationResult.#ctor(Salary.Common.OperationResultType,System.String)">
+            <summary>
+                初始化一个 定义返回消息的业务操作结果信息类 的新实例
+            </summary>
+            <param name="resultType">业务操作结果类型</param>
+            <param name="message">业务返回消息</param>
+        </member>
+        <member name="M:Salary.Common.OperationResult.#ctor(Salary.Common.OperationResultType,System.String,System.Object)">
+            <summary>
+                初始化一个 定义返回消息与附加数据的业务操作结果信息类 的新实例
+            </summary>
+            <param name="resultType">业务操作结果类型</param>
+            <param name="message">业务返回消息</param>
+            <param name="appendData">业务返回数据</param>
+        </member>
+        <member name="M:Salary.Common.OperationResult.#ctor(Salary.Common.OperationResultType,System.String,System.String)">
+            <summary>
+                初始化一个 定义返回消息与日志消息的业务操作结果信息类 的新实例
+            </summary>
+            <param name="resultType">业务操作结果类型</param>
+            <param name="message">业务返回消息</param>
+            <param name="logMessage">业务日志记录消息</param>
+        </member>
+        <member name="M:Salary.Common.OperationResult.#ctor(Salary.Common.OperationResultType,System.String,System.String,System.Object)">
+            <summary>
+                初始化一个 定义返回消息、日志消息与附加数据的业务操作结果信息类 的新实例
+            </summary>
+            <param name="resultType">业务操作结果类型</param>
+            <param name="message">业务返回消息</param>
+            <param name="logMessage">业务日志记录消息</param>
+            <param name="appendData">业务返回数据</param>
+        </member>
+        <member name="P:Salary.Common.OperationResult.ResultType">
+            <summary>
+                获取或设置 操作结果类型
+            </summary>
+        </member>
+        <member name="P:Salary.Common.OperationResult.Message">
+            <summary>
+                获取或设置 操作返回信息
+            </summary>
+        </member>
+        <member name="P:Salary.Common.OperationResult.LogMessage">
+            <summary>
+                获取或设置 操作返回的日志消息，用于记录日志
+            </summary>
+        </member>
+        <member name="P:Salary.Common.OperationResult.AppendData">
+            <summary>
+                获取或设置 操作结果附加信息
+            </summary>
+        </member>
+        <member name="T:Salary.Common.OperationResultType">
+            <summary>
+                表示业务操作结果的枚举
+            </summary>
+        </member>
+        <member name="F:Salary.Common.OperationResultType.Success">
+            <summary>
+                操作成功
+            </summary>
+        </member>
+        <member name="F:Salary.Common.OperationResultType.NoChanged">
+            <summary>
+                操作取消或操作没引发任何变化
+            </summary>
+        </member>
+        <member name="F:Salary.Common.OperationResultType.ParamError">
+            <summary>
+                参数错误
+            </summary>
+        </member>
+        <member name="F:Salary.Common.OperationResultType.QueryNull">
+            <summary>
+                指定参数的数据不存在
+            </summary>
+        </member>
+        <member name="F:Salary.Common.OperationResultType.PurviewLack">
+            <summary>
+                权限不足
+            </summary>
+        </member>
+        <member name="F:Salary.Common.OperationResultType.IllegalOperation">
+            <summary>
+                非法操作
+            </summary>
+        </member>
+        <member name="F:Salary.Common.OperationResultType.Warning">
+            <summary>
+                警告
+            </summary>
+        </member>
+        <member name="F:Salary.Common.OperationResultType.Error">
+            <summary>
+                操作引发错误
+            </summary>
+        </member>
+        <member name="F:Salary.Common.OperationResultType.NotFund">
+            <summary>
+                未找到
+            </summary>
+        </member>
+        <member name="P:Salary.Common.OperationResult`1.ResultType">
+            <summary>
+                获取或设置 操作结果类型
+            </summary>
+        </member>
+        <member name="P:Salary.Common.OperationResult`1.Message">
+            <summary>
+                获取或设置 操作返回信息
+            </summary>
+        </member>
+        <member name="P:Salary.Common.OperationResult`1.LogMessage">
+            <summary>
+                获取或设置 操作返回的日志消息，用于记录日志
+            </summary>
+        </member>
+        <member name="P:Salary.Common.OperationResult`1.AppendData">
+            <summary>
+                获取或设置 操作结果附加信息
+            </summary>
+        </member>
+        <member name="T:Salary.Common.SMS">
+            <summary>
+            短信类
+            </summary>
+        </member>
+        <member name="M:Salary.Common.SMS.Send(System.String,System.String)">
+            <summary>
+            发送短信
+            </summary>
+            <param name="str_phone">手机号码</param>
+            <param name="str_message">短信内容</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Common.SMS.HttpGetData(System.String)">
+            <summary>
+            发送Get请求
+            </summary>
+            <param name="str_server_link">地址</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Common.SMS.WriteLog(System.String)">
+            <summary>
+            写Log
+            </summary>
+            <param name="str_content">内容</param>
+        </member>
+        <member name="T:Salary.Common.UserStatusEnum">
+            <summary>
+            用户状态
+            </summary>
+        </member>
+        <member name="F:Salary.Common.UserTypeEnum.ZLChannelManager">
+            <summary>
+            中力渠道管理员
+            </summary>
+        </member>
+        <member name="F:Salary.Common.UserTypeEnum.ChannelManager">
+            <summary>
+            渠道管理员
+            </summary>
+        </member>
+        <member name="F:Salary.Common.UserTypeEnum.Sales">
+            <summary>
+            渠道销售员
+            </summary>
+        </member>
+        <member name="F:Salary.Common.UserTypeEnum.Admin">
+            <summary>
+            超级管理员
+            </summary>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.GetActivityList(Salary.Models.Activity.ActivityQueryDto)">
+            <summary>
+            获取获得列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.GetActivityById(System.Int32)">
+            <summary>
+            获取活动详情
+            </summary>
+            <param name="id">活动id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.AddActivity(Salary.Models.Activity.ActivityCreateDto)">
+            <summary>
+            添加活动
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.UpdateActivity(Salary.Models.Activity.ActivityUpdateDto)">
+            <summary>
+            更新活动
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.CopyActivity(System.Int32)">
+            <summary>
+            复制活动
+            </summary>
+            <param name="id">活动id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.DeleteActivity(System.Int32)">
+            <summary>
+            删除一条活动
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.GetActivityStatus">
+            <summary>
+            获取活动状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.GetActivityUseMaterialDetail(System.Int32)">
+            <summary>
+            获取活动素材使用情况
+            </summary>
+            <param name="id">活动id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.GetActivityMaterialList(System.Int32)">
+            <summary>
+            获取活动素材列表
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.ShowActivityEnroll(System.Int32)">
+            <summary>
+            预览活动报名
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.GetEnrollQR(System.Int32)">
+            <summary>
+            获取报名二维码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.GetSignInQR(System.Int32)">
+            <summary>
+            获取签到二维码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.PassEnroll(System.Int32)">
+            <summary>
+            通过报名（审核不通过里面操作通过报名）
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.ReviewEnroll(System.Int32)">
+            <summary>
+            销售员审核报名（活动）
+            </summary>
+            <param name="id">报名id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.ToggleActivityMaterial">
+            <summary>
+            切换活动素材
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.DeleteActivityMaterial">
+            <summary>
+            删除活动素材
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.ShowActivityMaterial">
+            <summary>
+            预览活动素材
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.AddActivityMaterial">
+            <summary>
+            添加活动素材
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.GetActivityMaterialById">
+            <summary>
+            获取活动素材根据素材id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ActivityController.UpdateActivityMaterial">
+            <summary>
+            更新活动素材
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.BaseController.CheckWechatUser(System.String)">
+            <summary>
+            检测微信用户
+            </summary>
+            <param name="openId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ChannelController.ToggleUser(Salary.Models.User.UserStatus)">
+            <summary>
+            切换用户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ChannelController.GetChannelList(Salary.Models.User.QueryChannelDto)">
+            <summary>
+            获取渠道列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ChannelController.GetChannelTypeList">
+            <summary>
+            获取渠道类型列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyContactController.GetCompanyContactList(Salary.Models.CompanyContact.CompanyContactQueryDto)">
+            <summary>
+            获取联系人列表
+            </summary>
+            <param name="queryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyContactController.GetCompanyContactListNotPager(System.Int32)">
+            <summary>
+            获取联系人列表（不分页）
+            </summary>
+            <param name="id">客户表id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyContactController.GetCompanyContactById(System.Int32)">
+            <summary>
+            根据id查询联系人
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyContactController.AddCompanyContact(Salary.Models.CompanyContact.CompanyContactCreateDto)">
+            <summary>
+            添加客户联系人
+            </summary>
+            <param name="create"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyContactController.UpdateCompanyContact(Salary.Models.CompanyContact.CompanyContactUpdateDto)">
+            <summary>
+            更新联系人
+            </summary>
+            <param name="update"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyContactController.SetFirstContact(System.Int32)">
+            <summary>
+            设置联系人为第一联系人
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyContactController.DeleteCompanyContact(System.Int32)">
+            <summary>
+            根据id删除联系人
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyController.GetCompanyList(Salary.Models.Company.CompanyQueryDto)">
+            <summary>
+            获取客户列表
+            </summary>
+            <param name="queryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyController.GetCompanyById(System.Int32)">
+            <summary>
+            根据id获取客户
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyController.AddCompany(Salary.Models.Company.CompanyCreateDto)">
+            <summary>
+            添加客户
+            </summary>
+            <param name="create"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyController.UpdateCompany(Salary.Models.Company.CompanyUpdateDto)">
+            <summary>
+            更新公司
+            </summary>
+            <param name="update"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyController.ToggelInPublic(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            移动到公海
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyController.ToggleOutPublic(Salary.Models.Company.ToggleCompany)">
+            <summary>
+            移出公海，指派销售员
+            </summary>
+            <param name="toggle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyController.ToggleInRecycle(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            移动到回收站
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.CompanyController.ToggleOutRecycle(Salary.Models.Company.ToggleCompany)">
+            <summary>
+            客户移出回收站
+            </summary>
+            <param name="toggle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ContactRecordController.AddComapnyRecord(Salary.Models.ComapnyRecord.CompanyRecordCreateDto)">
+            <summary>
+            添加联系记录
+            </summary>
+            <param name="create"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ContactRecordController.UpdateComapnyRecord(Salary.Models.CompanyRecord.CompanyRecordUpdateDto)">
+            <summary>
+            更新联系记录
+            </summary>
+            <param name="update"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ContactRecordController.GetCompanyRecordList(Salary.Models.ComapnyRecord.CompanyRecordQueryDto)">
+            <summary>
+            获取联系记录列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ContactRecordController.DeleteCompanyRecord(System.Int32)">
+            <summary>
+            删除一条联系记录
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ContactRecordController.GetCompanyRecordById(System.Int32)">
+            <summary>
+            根据id获取联系记录
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.EnrollController.GetEnrollList(Salary.Models.Enroll.QueryEnrollDto)">
+            <summary>
+            获取报名列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.EnrollController.AddEnroll(Salary.Models.Enroll.CreateEnrollDto)">
+            <summary>
+            添加报名
+            </summary>
+            <param name="create"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.EnrollController.GetClassTime(System.Int32)">
+            <summary>
+            获取课程时间和课程类别封面
+            </summary>
+            <param name="MaterialType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.EnrollController.Reapproval(Salary.Models.Enroll.AuditModel)">
+            <summary>
+            退回重审
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.EnrollController.ApprovalEnroll(Salary.Models.Enroll.AuditEnrollDto)">
+            <summary>
+            销售员审核
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.EnrollController.UpdateEnroll(Salary.Models.Enroll.UpdateEnrollDto)">
+            <summary>
+            更新报名信息
+            </summary>
+            <param name="update"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.EnrollController.GetEnrollDetail(System.Int32)">
+            <summary>
+            获得单条报名
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.EnrollController.GetEnrollResultList(Salary.Models.Enroll.QueryWechatEnrollResult)">
+            <summary>
+            获取报名结果
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.EnrollController.GetEnrollParticipateList(Salary.Models.Enroll.QueryWechatEnrollResult)">
+            <summary>
+            微信端获取参课列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.EnrollController.GetEnrollAuditResult(Salary.Models.Enroll.QueryWechatEnrollResult)">
+            <summary>
+            微信获取审核结果
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.FileController.UploadFile">
+            <summary>
+            上传文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.FileController.UploadFile(System.Web.HttpPostedFile,System.String[])">
+            <summary>
+            上传文件
+            </summary>
+            <param name="file">文件</param>
+            <param name="extendNames">文件扩展名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.FunctionController.GetFunctionList(Salary.Models.Function.FuncQueryDto)">
+            <summary>
+            获取菜单
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.FunctionController.AddFunction(Salary.Models.Function.FuncCreateDto)">
+            <summary>
+            添加菜单
+            </summary>
+            <param name="create"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.FunctionController.GetFunctionById(System.Int32)">
+            <summary>
+            查询单个菜单
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.FunctionController.UpdateFunc(Salary.Models.Function.FuncUpdateDto)">
+            <summary>
+            更新菜单
+            </summary>
+            <param name="update"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.FunctionController.GetMenu">
+            <summary>
+            获取导航数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.FunctionController.GetPrivilegeList">
+            <summary>
+            获取权限列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.FunctionController.GetParentFunc">
+            <summary>
+            获取所有可用的父级菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.Login(Salary.Models.Home.LoginModel)">
+            <summary>
+            用户登陆
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.ErpLogin(System.String)">
+            <summary>
+            erp 自动登陆
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.CustomPwd(Salary.Models.Home.UpdatePwd)">
+            <summary>
+            修改密码
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.AutoLogin">
+            <summary>
+            自动登陆  返回0为不自动登陆，1自动登陆，跳转到首页
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.GetLoginInfo">
+            <summary>
+            获取登陆用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.UpdatePassword(System.Int32)">
+            <summary>
+            修改密码
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.Logout">
+            <summary>
+            注销
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.ForgetPassword(System.String)">
+            <summary>
+            忘记密码
+            </summary>
+            <param name="phoneNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.GetRoleList(System.String)">
+            <summary>
+            获得角色列表
+            </summary>
+            <param name="phoneNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.ToggleRole(Salary.Models.Home.RoleModel)">
+            <summary>
+            切换角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.GetAllRole">
+            <summary>
+            获取所有角色包括超级管理员（用来角色权限下拉）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.HomeController.UpdateRolePrivilege(Salary.Models.Home.RolePrivilege)">
+            <summary>
+            保存角色权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.GetMaterialListByZL(Salary.Models.Material.QueryMaterialDto)">
+            <summary>
+            获取中力渠道列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.GetMaterialList(Salary.Models.Material.QueryWechatMaterialDto)">
+            <summary>
+            获取素材列表(微信端)
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.AddMaterialByZL(Salary.Models.Material.CreateMaterialDto)">
+            <summary>
+            中力添加素材
+            </summary>
+            <param name="create"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.UpdateMaterialByZL(Salary.Models.Material.UpdateMaterialDto)">
+            <summary>
+            更新素材
+            </summary>
+            <param name="update"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.GetMaterialById(System.Int32)">
+            <summary>
+            获取单条素材
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.GetWechatMaterialById(Salary.Models.Material.QueryMaterialDetail)">
+            <summary>
+            微信查询素材详情根据id和openid
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.ToggleStatusByZL(System.Int32)">
+            <summary>
+            切换素材状态
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.GetQRcodeUrlByZL(System.Int32)">
+            <summary>
+            生成预览二维码
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.DeleteChannelMaterial(System.Int32)">
+            <summary>
+            删除渠道素材
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.AddMaterialRelay(Salary.Models.Material.MaterialShareModel)">
+            <summary>
+            素材分享
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.AddMaterialBrowse(Salary.Models.Material.MaterialBrowswModel)">
+            <summary>
+            添加素材浏览
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialController.GetBrowseData(Salary.Models.Material.BrowseDataDto)">
+            <summary>
+            获得浏览数据
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialTypeController.GetZLMaterialTypeList(Salary.Models.MaterialType.QueryMaterialType)">
+            <summary>
+            获取分类列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialTypeController.GetMaterialType(Salary.Models.MaterialType.QueryWechatMaterialTypeDto)">
+            <summary>
+            微信公众号获取素材类别
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialTypeController.GetMaterialTypeList">
+            <summary>
+            获取类别列表用于添加素材
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialTypeController.GetOneMaterialTypeById(System.Int32)">
+            <summary>
+            获取单条素材类别
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialTypeController.AddMaterialType(Salary.Models.MaterialType.CreateMaterialTypeDto)">
+            <summary>
+            添加素材类别
+            </summary>
+            <param name="create"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialTypeController.UpdateMaterialType(Salary.Models.MaterialType.UpdateMaterialTypeDto)">
+            <summary>
+            更新素材类别
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialTypeController.ToggleStatus(System.Int32)">
+            <summary>
+            切换状态
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.MaterialTypeController.GetQRcodeUrl(System.Int32)">
+            <summary>
+            预览报名页
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.ExportMaterialList(Salary.Models.Report.MaterialQueryDto)">
+            <summary>
+            导出素材分析报表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.ExportMateriaSaleslList(System.Int32)">
+            <summary>
+            导出素材被销售员使用报表
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.GetMaterialDataById(Salary.Models.Report.MaterialDataQueryDto)">
+            <summary>
+            获取素材分析详情(树状图数据)
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.GetMaterialSalesDataById(Salary.Models.Report.MaterialSalesDataQueryDto)">
+            <summary>
+            获取素材分析销售员列表（素材分析-销售员数据）
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.GetChannelExportList(Salary.Models.Report.ChannelExportQueryDto)">
+            <summary>
+            获取渠道分析报表（漏斗图数据--第一级）
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.GetChannelSalesExportList(Salary.Models.Report.ChannelSalesQueryDto)">
+            <summary>
+            获取渠道分析报表（销售员--第一级）
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.ExportSalesList(Salary.Models.Report.ChannelExportQueryDto)">
+            <summary>
+            导出渠道分析报表
+            </summary>
+            <param name="query">素材id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.GetChannelYYList(Salary.Models.Report.ChannelYYQueryDto)">
+            <summary>
+            获取渠道分销报表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.ExportChannelYYList(Salary.Models.Report.ChannelYYQueryNoPagingDto)">
+            <summary>
+            导出渠道分销报表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.GetSalesDataById(System.Int32)">
+            <summary>
+            渠道分析报表（第二级）根据销售员id查询（漏斗图）数据
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.GetSalesMaterialList(Salary.Models.Report.MaterialSalesDataQueryDto)">
+            <summary>
+            渠道分析报表（第二级）根据销售员id查询素材列表
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.ReportController.ExportSalesDataById(System.Int32)">
+            <summary>
+            根据销售员id导出数据
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Salary.Controllers.UserController">
+            <summary>
+            用户
+            </summary>
+        </member>
+        <member name="M:Salary.Controllers.UserController.GetUserList(System.Int32)">
+            <summary>
+            获取用户列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.AddUser(Salary.Models.User.Userinfo)">
+            <summary>
+            添加用户
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.AddUserList(System.Collections.Generic.List{Salary.Models.User.Userinfo})">
+            <summary>
+            添加用户（多个）
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.ResetPassword(System.Int32)">
+            <summary>
+            重置密码
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.ToggleUser(System.Int32)">
+            <summary>
+            切换开通
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.ToggleChannelUser(Salary.Models.User.ToggleChannelStatus)">
+            <summary>
+            渠道切换状态
+            </summary>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.GetOneUser(System.Int32)">
+            <summary>
+            获得单个数据
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.UpdateUser(Salary.Models.User.UpdateUserDto)">
+            <summary>
+            更新用户
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.UpdateChannelUser(Salary.Models.User.UpdateChannelUserDto)">
+            <summary>
+            更新渠道用户
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.GetChannelStatus(System.Int32)">
+            <summary>
+            获取渠道开通状态0未开通  1已开通
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.UpdateChannelStatus(Salary.Models.User.ChannelStatue)">
+            <summary>
+            更新渠道状态
+            </summary>
+            <param name="channel">渠道id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.GetUserListByPaging(Salary.Models.User.QueryUserDto)">
+            <summary>
+            分页查询用户
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.DeleteUser(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            删除用户
+            </summary>
+            <param name="deleteList"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.GetChannelUserStatus">
+            <summary>
+            获取渠道的用户状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.ApprovalUser(Salary.Models.User.UserStatus)">
+            <summary>
+            审核提交
+            </summary>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.GetSaleList(System.Int32)">
+            <summary>
+            获取渠道销售员列表
+            </summary>
+            <param name="id">渠道id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Controllers.UserController.GetUserinfo(System.String)">
+            <summary>
+            获取个人信息
+            </summary>
+            <param name="openId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_Activity">
+            <summary>
+            推广活动表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Activity.ActivityName">
+            <summary>
+            活动名称
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Activity.StartTime">
+            <summary>
+            开始时间
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Activity.EndTime">
+            <summary>
+            结束时间
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Activity.CoverImg">
+            <summary>
+            封面图片
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Activity.LeadTeacher">
+            <summary>
+            主讲老师
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Activity.Address">
+            <summary>
+            详细地址
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Activity.Principal">
+            <summary>
+            活动负责人
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_Company">
+            <summary>
+            公司表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Company.CompanyName">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Company.Industry">
+            <summary>
+            所属行业
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Company.SalesId">
+            <summary>
+            销售员id  销售员id对用户的id，如果为公海客户为0，如果为垃圾客户为-1
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Company.SourceType">
+            <summary>
+            客户来源（1 .中力友友录入2.中力友友手工录入 3活动推广）
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Company.CompanySize">
+            <summary>
+            公司规模
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Company.EstablishedTime">
+            <summary>
+            成立时间
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Company.AssignTime">
+            <summary>
+            指派时间（用来显示new）
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Company.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Company.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Company.Address">
+            <summary>
+            地址
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_CompanyContact">
+            <summary>
+            客户联系人表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_CompanyContact.ContactName">
+            <summary>
+            联系人姓名
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_CompanyContact.ContactPhone">
+            <summary>
+            联系人电话
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_CompanyContact.ContactJob">
+            <summary>
+            联系人职位
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_CompanyContact.WechatNum">
+            <summary>
+            微信号
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_CompanyContact.QQNum">
+            <summary>
+            qq号
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_CompanyContact.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_CompanyContact.IdCard">
+            <summary>
+            身份证
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_CompanyContact.CId">
+            <summary>
+            客户表id（公司Id）
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_CompanyContact.IsFirst">
+            <summary>
+            是否第一联系人
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_ContactRecord">
+            <summary>
+            客户联系记录表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_ContactRecord.ContactTime">
+            <summary>
+            联系时间
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_ContactRecord.ContactSummary">
+            <summary>
+            联系摘要
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_ContactRecord.ContactId">
+            <summary>
+            联系人id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_ContactRecord.SalesId">
+            <summary>
+            销售员id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_ContactRecord.CId">
+            <summary>
+            客户id（公司表id）
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_Enroll">
+            <summary>
+            报名表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.CompanyName">
+            <summary>
+            客户（公司）名称
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.ContactName">
+            <summary>
+            联系人名字
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.ContactPhone">
+            <summary>
+            联系手机
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.ContactJob">
+            <summary>
+            联系人职位
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.ClassTime">
+            <summary>
+            课程时间
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.SalesId">
+            <summary>
+            销售员id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.CCId">
+            <summary>
+            erp客户表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.TCId">
+            <summary>
+            erp客户表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.MId">
+            <summary>
+            素材id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.EnrollStatus">
+            <summary>
+            报名状态
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Enroll.IsActivity">
+            <summary>
+            0,不是推广活动 大于0为活动id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_EnrollAudit.AuditStatus">
+            <summary>
+            审核状态 1 渠道未审核 2渠道审核不通过 3.中力未审核 4.中力审核不通过 5未参课 6. 已参课
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_EnrollAudit.IsSuccess">
+            <summary>
+            是否审批通过 1.通过 0不通过
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_EnrollAudit.AuditTime">
+            <summary>
+            审核时间
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_EnrollAudit.AuditOpinion">
+            <summary>
+            审核意见
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_Function">
+            <summary>
+            导航表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Function.Name">
+            <summary>
+            导航名称
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Function.ParentId">
+            <summary>
+            导航父亲id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Function.DisOrder">
+            <summary>
+            导航排序
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Function.Enable">
+            <summary>
+            导航是否可用
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Function.Icon">
+            <summary>
+            导航图标
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Function.Url">
+            <summary>
+            导航链接
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_Material">
+            <summary>
+            素材表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.MaterialTitle">
+            <summary>
+            素材标题
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.MaterialContent">
+            <summary>
+            素材内容
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.MaterialSummary">
+            <summary>
+            素材摘要
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.CoverImg">
+            <summary>
+            素材封面
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.MaterialTips">
+            <summary>
+            素材小提示
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.MTId">
+            <summary>
+            素材类别
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.MaterialType">
+            <summary>
+            素材来源类型1.中力素材 2. 渠道素材 3活动推广素材
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.ActivityId">
+            <summary>
+            活动推广id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.IsActive">
+            <summary>
+            是否可用
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.ShareSource">
+            <summary>
+            分享来源
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.DisplayTime">
+            <summary>
+            显示的时间
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Material.VirtualTimes">
+            <summary>
+            虚拟点击量
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_MaterialBrower">
+            <summary>
+            素材浏览表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialBrower.SalesId">
+            <summary>
+            销售员id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialBrower.MId">
+            <summary>
+            素材id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialBrower.DeviceCode">
+            <summary>
+            浏览器码
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialBrower.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_MaterialChannel">
+            <summary>
+            素材渠道表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialChannel.MId">
+            <summary>
+            素材id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialChannel.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_MaterialShare">
+            <summary>
+            素材分享表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialShare.SalesId">
+            <summary>
+            销售员id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialShare.MId">
+            <summary>
+            素材id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialShare.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_MaterialType">
+            <summary>
+            素材类别表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialType.TypeName">
+            <summary>
+            类别名称
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialType.CoverImg">
+            <summary>
+            封面图片
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialType.IsActive">
+            <summary>
+            是否有用
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_MaterialType.ErpYsCode">
+            <summary>
+            erp关系
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_Role">
+            <summary>
+            角色表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Role.Name">
+            <summary>
+            角色名字
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Role.NavigateId">
+            <summary>
+            导航ids
+            </summary>
+        </member>
+        <member name="T:Salary.DataModel.Entity.YY_Userinfo">
+            <summary>
+            用户表
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Userinfo.TrueName">
+            <summary>
+            用户名称
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Userinfo.PhoneNum">
+            <summary>
+            电话号码
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Userinfo.UserPwd">
+            <summary>
+            用户密码
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Userinfo.HeadImage">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Userinfo.WechatHeadImage">
+            <summary>
+            微信头像
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Userinfo.UserType">
+            <summary>
+            用户角色  1. 中力渠道管理员 2.渠道管理员 3.渠道销售员
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Userinfo.UserStatus">
+            <summary>
+            用户状态  0.取消开通 1 .正常 2.停用 3.删除 4.未审核
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Userinfo.IsContacts">
+            <summary>
+            是否是联系人（0.不是erp联系人 1.是erp联系人）
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Userinfo.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.DataModel.Entity.YY_Userinfo.OpenId">
+            <summary>
+            微信openid
+            </summary>
+        </member>
+        <member name="T:Salary.Data.DbContextFactory">
+            <summary>
+            获取DbContext(保证一次请求中DbContext唯一)
+            </summary>
+        </member>
+        <member name="T:Salary.Data.EFUnitOfWork">
+            <summary>
+            工作单实现类
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityCreateDto.ActivityName">
+            <summary>
+            活动名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityCreateDto.StartTime">
+            <summary>
+            开始时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityCreateDto.EndTime">
+            <summary>
+            结束时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityCreateDto.CoverImg">
+            <summary>
+            封面图片
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityCreateDto.LeadTeacher">
+            <summary>
+            主讲老师
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityCreateDto.Address">
+            <summary>
+            详细地址
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityCreateDto.Principal">
+            <summary>
+            活动负责人
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityQueryDto.ActivityName">
+            <summary>
+            活动名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityQueryDto.ActivityStatus">
+            <summary>
+            活动状态
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityQueryDto.PageSize">
+            <summary>
+            每页显示的条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityQueryDto.PageIndex">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityUpdateDto.ActivityName">
+            <summary>
+            活动名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityUpdateDto.StartTime">
+            <summary>
+            开始时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityUpdateDto.EndTime">
+            <summary>
+            结束时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityUpdateDto.LeadTeacher">
+            <summary>
+            主讲老师
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityUpdateDto.Address">
+            <summary>
+            详细地址
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Activity.ActivityUpdateDto.Principal">
+            <summary>
+            活动负责人
+            </summary>
+        </member>
+        <member name="P:Salary.Models.BasePaging.PageSize">
+            <summary>
+            每页的记录数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.BasePaging.TotalPage">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.BasePaging.TotalCount">
+            <summary>
+            总条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.BasePaging.CurrentPage">
+            <summary>
+            当前页码
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Base.BaseFilter.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Base.BaseFilter.Name">
+            <summary>
+            显示的值
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactCreateDto.ContactName">
+            <summary>
+            联系人姓名
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactCreateDto.ContactPhone">
+            <summary>
+            联系人电话
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactCreateDto.ContactJob">
+            <summary>
+            联系人职位
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactCreateDto.WechatNum">
+            <summary>
+            微信号
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactCreateDto.QQNum">
+            <summary>
+            qq号
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactCreateDto.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactCreateDto.IdCard">
+            <summary>
+            身份证
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactCreateDto.CId">
+            <summary>
+            客户表id（公司Id）
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactCreateDto.IsFirst">
+            <summary>
+            是否第一联系人
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactDto.ContactName">
+            <summary>
+            联系人姓名
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactDto.ContactPhone">
+            <summary>
+            联系人电话
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactDto.ContactJob">
+            <summary>
+            联系人职位
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactDto.WechatNum">
+            <summary>
+            微信号
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactDto.TrueName">
+            <summary>
+            销售员
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactDto.CompanyName">
+            <summary>
+            客户表id（公司Id）
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactDto.IsFirst">
+            <summary>
+            是否第一联系人
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactDto.LastTime">
+            <summary>
+            最后一次联系时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactDto.QQNum">
+            <summary>
+            qq号
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactDto.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactQueryDto.CompanyName">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactQueryDto.ContactName">
+            <summary>
+            联系人姓名
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactQueryDto.ContactPhone">
+            <summary>
+            联系人电话
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactQueryDto.SalesId">
+            <summary>
+            销售员id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactQueryDto.PageSize">
+            <summary>
+            每页显示的条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactQueryDto.PageIndex">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactUpdateDto.ContactName">
+            <summary>
+            联系人姓名
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactUpdateDto.ContactPhone">
+            <summary>
+            联系人电话
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactUpdateDto.ContactJob">
+            <summary>
+            联系人职位
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactUpdateDto.WechatNum">
+            <summary>
+            微信号
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactUpdateDto.QQNum">
+            <summary>
+            qq号
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactUpdateDto.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactUpdateDto.IdCard">
+            <summary>
+            身份证
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactUpdateDto.CId">
+            <summary>
+            客户表id（公司Id）
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyContact.CompanyContactUpdateDto.IsFirst">
+            <summary>
+            是否第一联系人
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordCreateDto.ContactTime">
+            <summary>
+            联系时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordCreateDto.ContactSummary">
+            <summary>
+            联系摘要
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordCreateDto.ContactId">
+            <summary>
+            联系人id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordCreateDto.SalesId">
+            <summary>
+            销售员id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordDto.IsAction">
+            <summary>
+            是否可以操作（编辑和删除）（0不可以  1可以）
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordDto.ContactTime">
+            <summary>
+            联系时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordDto.ContactSummary">
+            <summary>
+            联系摘要
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordDto.ContactName">
+            <summary>
+            联系人
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordDto.TrueName">
+            <summary>
+            销售员
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordDto.CompanyName">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordDto.CurrentTrueName">
+            <summary>
+            客户归属销售员
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordQueryDto.CompanyName">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordQueryDto.ContactName">
+            <summary>
+            联系人姓名
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordQueryDto.ContactPhone">
+            <summary>
+            联系人电话
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordQueryDto.SalesId">
+            <summary>
+            销售员id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordQueryDto.PageSize">
+            <summary>
+            每页显示的条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.ComapnyRecord.CompanyRecordQueryDto.PageIndex">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.CompanyRecord.CompanyRecordUpdateDto.ContactSummary">
+            <summary>
+            联系摘要
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.ComapnyDto.IsNew">
+            <summary>
+            是否最新 0不是 1是
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyCreateDto.CompanyName">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyCreateDto.Industry">
+            <summary>
+            所属行业
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyCreateDto.SalesId">
+            <summary>
+            销售员id  销售员id对用户的id，如果为公海客户为0，如果为垃圾客户为-1
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyCreateDto.SourceType">
+            <summary>
+            客户来源（1 .中力友友录入2.中力友友手工录入 3活动推广）
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyCreateDto.CompanySize">
+            <summary>
+            公司规模
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyCreateDto.EstablishedTime">
+            <summary>
+            成立时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyCreateDto.AssignTime">
+            <summary>
+            指派时间（用来显示new）
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyCreateDto.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyCreateDto.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyCreateDto.Address">
+            <summary>
+            地址
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyQueryDto.CompanyName">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyQueryDto.SalesId">
+            <summary>
+            销售员id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyQueryDto.ChannelType">
+            <summary>
+            客户类型 1.我的客户 2.客户公海 3.客户回收站
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyQueryDto.PageSize">
+            <summary>
+            每页显示的条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyQueryDto.PageIndex">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyUpdateDto.CompanyName">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyUpdateDto.Industry">
+            <summary>
+            所属行业
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyUpdateDto.SalesId">
+            <summary>
+            销售员id  销售员id对用户的id，如果为公海客户为0，如果为垃圾客户为-1
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyUpdateDto.SourceType">
+            <summary>
+            客户来源（1 .中力友友录入2.中力友友手工录入 3活动推广）
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyUpdateDto.CompanySize">
+            <summary>
+            公司规模
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyUpdateDto.EstablishedTime">
+            <summary>
+            成立时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyUpdateDto.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyUpdateDto.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.CompanyUpdateDto.Address">
+            <summary>
+            地址
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.ToggleCompany.Ids">
+            <summary>
+            客户id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Company.ToggleCompany.SalesId">
+            <summary>
+            销售员Id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.AuditEnrollDto.Id">
+            <summary>
+            报名id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.AuditEnrollDto.Opinion">
+            <summary>
+            报名意见
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.AuditEnrollDto.IsPass">
+            <summary>
+            审核是否通过 0不通过 1通过
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.AuditEnrollDto.CompanyName">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.AuditEnrollDto.ContactName">
+            <summary>
+            联系人名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.AuditEnrollDto.ContactPhone">
+            <summary>
+            联系人电话
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.AuditEnrollDto.ContactJob">
+            <summary>
+            联系人职位
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.AuditModel.Id">
+            <summary>
+            报名id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.AuditModel.IsPass">
+            <summary>
+            审核是否通过 0不通过 1通过
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.ClassTime.Time">
+            <summary>
+            课程时间列表
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.ClassTime.CoverImg">
+            <summary>
+            封面图片
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.CreateEnrollDto.CompanyName">
+            <summary>
+            客户（公司）名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.CreateEnrollDto.ContactName">
+            <summary>
+            联系人名字
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.CreateEnrollDto.ContactPhone">
+            <summary>
+            联系手机
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.CreateEnrollDto.ContactJob">
+            <summary>
+            联系人职位
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.CreateEnrollDto.ClassTime">
+            <summary>
+            课程时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.CreateEnrollDto.OpenId">
+            <summary>
+            销售员openId
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.CreateEnrollDto.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.CreateEnrollDto.MId">
+            <summary>
+            素材id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.CreateEnrollDto.IsActivity">
+            <summary>
+            0,不是推广活动 大于0为活动id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.RowNum">
+            <summary>
+            编号
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.CompanyName">
+            <summary>
+            客户（公司）名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.ContactName">
+            <summary>
+            联系人名字
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.ContactPhone">
+            <summary>
+            联系手机
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.ContactJob">
+            <summary>
+            联系人职位
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.ClassTime">
+            <summary>
+            课程时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.SalesName">
+            <summary>
+            销售员名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.EnrollStatus">
+            <summary>
+            报名状态
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.EnrollStatusName">
+            <summary>
+            报名状态详情
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.AuditTime">
+            <summary>
+            审核时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.EnrollModel.AuditOpinion">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryEnrollDto.EnrollStatus">
+            <summary>
+            报名状态
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryEnrollDto.Salesman">
+            <summary>
+            销售员
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryEnrollDto.CompanyName">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryEnrollDto.MaterialType">
+            <summary>
+            素材类别
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryEnrollDto.PageSize">
+            <summary>
+            每页显示的条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryEnrollDto.PageIndex">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryEnrollDto.ActivityId">
+            <summary>
+            活动id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryWechatEnrollResult.MTId">
+            <summary>
+            素材类别id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryWechatEnrollResult.GlobalSearch">
+            <summary>
+            全局搜索
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryWechatEnrollResult.OpenId">
+            <summary>
+            微信openid
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryWechatEnrollResult.PageSize">
+            <summary>
+            每页显示的条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.QueryWechatEnrollResult.PageIndex">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.UpdateEnrollDto.Id">
+            <summary>
+            报名id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.UpdateEnrollDto.CompanyName">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.UpdateEnrollDto.ContactName">
+            <summary>
+            联系人名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.UpdateEnrollDto.ContactPhone">
+            <summary>
+            联系人电话
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Enroll.UpdateEnrollDto.ContactJob">
+            <summary>
+            联系人职位
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncCreateDto.Name">
+            <summary>
+            导航名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncCreateDto.ParentId">
+            <summary>
+            导航父亲id  如果添加为父id，为0
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncCreateDto.DisOrder">
+            <summary>
+            导航排序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncCreateDto.Enable">
+            <summary>
+            导航是否可用 0不可用，1.可用
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncCreateDto.Icon">
+            <summary>
+            导航图标
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncCreateDto.Url">
+            <summary>
+            导航链接
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncModel.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncModel.Name">
+            <summary>
+            导航名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncModel.Icon">
+            <summary>
+            导航图标
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncModel.Url">
+            <summary>
+            导航链接
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncModel.ParentId">
+            <summary>
+            导航父亲id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncModel.DisOrder">
+            <summary>
+            导航排序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncModel.Enable">
+            <summary>
+            导航是否可用
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncQueryDto.FuncType">
+            <summary>
+            菜单级别  1.父级菜单  2.子菜单
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncUpdateDto.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncUpdateDto.Name">
+            <summary>
+            导航名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncUpdateDto.ParentId">
+            <summary>
+            导航父亲id  如果添加为父id，为0
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncUpdateDto.DisOrder">
+            <summary>
+            导航排序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncUpdateDto.Enable">
+            <summary>
+            导航是否可用 0不可用，1.可用
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncUpdateDto.Icon">
+            <summary>
+            导航图标
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Function.FuncUpdateDto.Url">
+            <summary>
+            导航链接
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Home.LoginModel.PhoneNum">
+            <summary>
+            电话号码（用户名）
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Home.LoginModel.UserPwd">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Home.LoginModel.IsAutoLogin">
+            <summary>
+            是否自动登陆
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Home.RoleModel.PhoneNum">
+            <summary>
+            电话号码
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Home.RoleModel.UserType">
+            <summary>
+            切换到的角色  2.渠道管理员  3. 渠道销售员
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Home.RolePrivilege.Id">
+            <summary>
+            角色id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Home.RolePrivilege.Privilege">
+            <summary>
+            权限列表
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Home.UpdatePwd.Id">
+            <summary>
+            用户的id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Home.UpdatePwd.OldPwd">
+            <summary>
+            用户密码（旧）
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Home.UpdatePwd.NewPwd">
+            <summary>
+            用户的密码（新）
+            </summary>
+        </member>
+        <member name="P:Salary.Models.MaterialType.CreateMaterialTypeDto.TypeName">
+            <summary>
+            类别名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.MaterialType.CreateMaterialTypeDto.CoverImg">
+            <summary>
+            封面图片
+            </summary>
+        </member>
+        <member name="P:Salary.Models.MaterialType.UpdateMaterialTypeDto.TypeName">
+            <summary>
+            类别名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.MaterialType.UpdateMaterialTypeDto.CoverImg">
+            <summary>
+            封面图片
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.BrowseDataDto.PageSize">
+            <summary>
+            每页显示的条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.BrowseDataDto.PageIndex">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.MaterialTitle">
+            <summary>
+            素材标题
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.MaterialContent">
+            <summary>
+            素材内容
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.MaterialSummary">
+            <summary>
+            素材摘要
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.CoverImg">
+            <summary>
+            素材封面
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.MaterialTips">
+            <summary>
+            素材小提示
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.MTId">
+            <summary>
+            素材类别
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.MaterialType">
+            <summary>
+            素材来源类型1.中力素材 2. 渠道素材 3活动推广素材
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.ActivityId">
+            <summary>
+            活动推广id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.IsActive">
+            <summary>
+            是否可用
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.ShareSource">
+            <summary>
+            分享来源 0.渠道添加不分享 1全部，2.中力  3.渠道
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.ChannelIds">
+            <summary>
+            当分享来源为3时，记录的渠道id 用,号隔开
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.CreateMaterialDto.VirtualTimes">
+            <summary>
+            虚拟点击量
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialBrowswModel.OpenId">
+            <summary>
+            微信的openid
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialBrowswModel.MId">
+            <summary>
+            素材id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialBrowswModel.DeviceCode">
+            <summary>
+            浏览器机器码
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.RowNum">
+            <summary>
+            行号
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.DisplayName">
+            <summary>
+            显示的名字
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.MaterialTitle">
+            <summary>
+            素材标题
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.CoverImg">
+            <summary>
+            素材封面
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.MaterialTypeName">
+            <summary>
+            素材类别名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.IsActive">
+            <summary>
+            是否可用
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.ChannelShare">
+            <summary>
+            渠道分享
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.AllShare">
+            <summary>
+            所有分享
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.SalesShare">
+            <summary>
+            销售员分享
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.ChannelBrowse">
+            <summary>
+            渠道浏览
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.AllBrowse">
+            <summary>
+            所有浏览
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.SalesBrowse">
+            <summary>
+            销售员浏览
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.SalesEnrollCount">
+            <summary>
+            销售员报名人数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.ChannelEnrollCount">
+            <summary>
+            渠道报名人数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.AllEnrollCount">
+            <summary>
+            所有报名人数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.SalesParticipate">
+            <summary>
+            销售员参课数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.ChannelParticipate">
+            <summary>
+            渠道参课
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.AllParticipate">
+            <summary>
+            所有参课数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.LastShareTime">
+            <summary>
+            最后分享时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialModel.DeleteIsable">
+            <summary>
+            删除是否可用 0不可删除 1可删除
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialShareModel.OpenId">
+            <summary>
+            微信的openid
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.MaterialShareModel.MId">
+            <summary>
+            素材id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDetail.Id">
+            <summary>
+            素材id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDetail.OpenId">
+            <summary>
+            微信openid
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDetail.IsTest">
+            <summary>
+            是否是测试 0 不是，1是
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDto.MTId">
+            <summary>
+            素材类别id 
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDto.MaterialTitle">
+            <summary>
+            素材标题
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDto.MaterialType">
+            <summary>
+            素材来源类型0.为全部  1.中力素材 2. 渠道素材 3活动推广素材
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDto.PageSize">
+            <summary>
+            每页显示的条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDto.PageIndex">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDto.ShareOrder">
+            <summary>
+            分享排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDto.BrowseOrder">
+            <summary>
+            浏览排序  1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDto.EnrollOrder">
+            <summary>
+            报名排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryMaterialDto.ParticipateOrder">
+            <summary>
+            参课排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryWechatMaterialDto.MaterialTitle">
+            <summary>
+            素材标题
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryWechatMaterialDto.MaterialType">
+            <summary>
+            素材类别 1.中力素材 2. 渠道素材 3活动推广素材
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryWechatMaterialDto.MTId">
+            <summary>
+            素材类别 股权激励 商业创新
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryWechatMaterialDto.OpenId">
+            <summary>
+            微信openid
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryWechatMaterialDto.PageSize">
+            <summary>
+            每页显示的条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.QueryWechatMaterialDto.PageIndex">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.MaterialTitle">
+            <summary>
+            素材标题
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.MaterialContent">
+            <summary>
+            素材内容
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.MaterialSummary">
+            <summary>
+            素材摘要
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.CoverImg">
+            <summary>
+            素材封面
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.MaterialTips">
+            <summary>
+            素材小提示
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.MTId">
+            <summary>
+            素材类别
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.MaterialType">
+            <summary>
+            素材来源类型1.中力素材 2. 渠道素材 3活动推广素材
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.ActivityId">
+            <summary>
+            活动推广id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.IsActive">
+            <summary>
+            是否可用
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.ShareSource">
+            <summary>
+            分享来源 1全部，2.中力  3.渠道
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.ChannelIds">
+            <summary>
+            当分享来源为3时，记录的渠道id 用,号隔开
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.VirtualTimes">
+            <summary>
+            虚拟点击量
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Material.UpdateMaterialDto.DisplayTime">
+            <summary>
+            微信显示时间
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelExportQueryDto.ChannelId">
+            <summary>
+            渠道的id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelExportQueryDto.SalesId">
+            <summary>
+            销售员id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelSalesQueryDto.ShareOrder">
+            <summary>
+            分享排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelSalesQueryDto.BrowseOrder">
+            <summary>
+            浏览排序  1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelSalesQueryDto.EnrollOrder">
+            <summary>
+            报名排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelSalesQueryDto.ParticipateOrder">
+            <summary>
+            参课排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelReportDto.CircleData">
+            <summary>
+            顶部圆数据
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelReportDto.FunnelData">
+            <summary>
+            漏斗数据
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryNoPagingDto.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryNoPagingDto.SalesId">
+            <summary>
+            销售员id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryNoPagingDto.MTId">
+            <summary>
+            素材类别Id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryNoPagingDto.MaterialTitle">
+            <summary>
+            素材标题
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryDto.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryDto.SalesId">
+            <summary>
+            销售员id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryDto.MTId">
+            <summary>
+            素材类别Id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryDto.MaterialTitle">
+            <summary>
+            素材标题
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryDto.PageSize">
+            <summary>
+            每页显示的条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryDto.PageIndex">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryDto.ShareOrder">
+            <summary>
+            分享排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryDto.BrowseOrder">
+            <summary>
+            浏览排序  1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryDto.EnrollOrder">
+            <summary>
+            报名排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.ChannelYYQueryDto.ParticipateOrder">
+            <summary>
+            参课排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.MaterialDataQueryDto.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.MaterialSalesDataQueryDto.ShareOrder">
+            <summary>
+            分享排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.MaterialSalesDataQueryDto.BrowseOrder">
+            <summary>
+            浏览排序  1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.MaterialSalesDataQueryDto.EnrollOrder">
+            <summary>
+            报名排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.MaterialSalesDataQueryDto.ParticipateOrder">
+            <summary>
+            参课排序 1升序 2倒序
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.MaterialQueryDto.MTId">
+            <summary>
+            素材类别
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.MaterialQueryDto.MaterialTitle">
+            <summary>
+            素材名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.MaterialReportDto.MaterialTitle">
+            <summary>
+            素材标题
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.MaterialReportDto.BarData">
+            <summary>
+            树状图数据
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.SalesDataReportDto.CircleData">
+            <summary>
+            顶部圆数据
+            </summary>
+        </member>
+        <member name="P:Salary.Models.Report.SalesDataReportDto.FunnelData">
+            <summary>
+            漏斗数据
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.ChannelModel.Id">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.ChannelModel.Name">
+            <summary>
+            渠道名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.ChannelModel.IsActive">
+            <summary>
+            渠道状态  1可用 0停用
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.ChannelStatue.Id">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.ChannelStatue.Status">
+            <summary>
+            渠道开通状态  0未开通  1已开通
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.CreateWechatUser.TrueName">
+            <summary>
+            用户名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.CreateWechatUser.PhoneNum">
+            <summary>
+            电话号码
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.CreateWechatUser.UserType">
+            <summary>
+            用户角色  1. 中力渠道管理员 2.渠道管理员 3.渠道销售员
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.CreateWechatUser.UserStatus">
+            <summary>
+            用户状态  0.取消开通 1 .正常 2.停用 3.删除 4.未审核
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.CreateWechatUser.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.CreateWechatUser.OpenId">
+            <summary>
+            微信openid
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.QueryChannelDto.Type">
+            <summary>
+            渠道类别
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.QueryChannelDto.ChannelName">
+            <summary>
+            渠道名称
+            </summary>
+        </member>
+        <member name="T:Salary.Models.User.QueryUserDto">
+            <summary>
+            查询条件
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.QueryUserDto.TrueName">
+            <summary>
+            用户名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.QueryUserDto.PhoneNum">
+            <summary>
+            电话号码
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.QueryUserDto.UserStatus">
+            <summary>
+            用户状态
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.QueryUserDto.UserType">
+            <summary>
+            用户角色  1.中力渠道管理员  2.渠道管理员  3.渠道销售员
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.QueryUserDto.PageSize">
+            <summary>
+            每页显示的条数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.QueryUserDto.PageIndex">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.QueryUserPaging.UserList">
+            <summary>
+            用户列表
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.ToggleChannelStatus.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.ToggleChannelStatus.UserStatus">
+            <summary>
+            用户状态  0.取消开通 1 .正常 2.停用 3.删除 4.未审核
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UpdateChannelUserDto.TrueName">
+            <summary>
+            用户名字
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UpdateChannelUserDto.PhoneNum">
+            <summary>
+            电话号码
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UpdateChannelUserDto.UserStatus">
+            <summary>
+            用户状态  0.取消开通 1 .正常 2.停用 3.删除 4.未审核
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UpdateUserDto.TrueName">
+            <summary>
+            用户名字
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UpdateUserDto.PhoneNum">
+            <summary>
+            电话号码
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.Userinfo.TrueName">
+            <summary>
+            用户名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.Userinfo.PhoneNum">
+            <summary>
+            电话号码
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.Userinfo.HeadImage">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.Userinfo.UserType">
+            <summary>
+            用户角色  1. 中力渠道管理员 2.渠道管理员 3.渠道销售员
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.Userinfo.UserStatus">
+            <summary>
+            用户状态  0.取消开通 1 .正常 2.停用 3.删除 4.未审核
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.Userinfo.IsContacts">
+            <summary>
+            是否是联系人（0.不是erp联系人 大于0 是erp联系人，并且为联系人id）
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.Userinfo.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.Userinfo.OpenId">
+            <summary>
+            微信openid
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.RowNum">
+            <summary>
+            显示的序号
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.DisplayName">
+            <summary>
+            显示的提示文字
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.Id">
+            <summary>
+            标识列
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.TrueName">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.PhoneNum">
+            <summary>
+            电话号码
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.WechatHeadImage">
+            <summary>
+            微信头像
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.Job">
+            <summary>
+            职业
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.UserStatus">
+            <summary>
+            用户状态
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.UserType">
+            <summary>
+            用户角色  1中力渠道管理员  2渠道管理员  3 渠道销售员
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.UserStatusName">
+            <summary>
+            用户状态显示的值
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.ChannelId">
+            <summary>
+            渠道id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.ChannelName">
+            <summary>
+            渠道名称
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.HeadImage">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserinfoDto.IsDelete">
+            <summary>
+            是否可以删除 0不能 1能
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserStatus.Id">
+            <summary>
+            用户id
+            </summary>
+        </member>
+        <member name="P:Salary.Models.User.UserStatus.Status">
+            <summary>
+            用户状态  0.取消开通 1 .正常 2.停用 3.删除 4.未审核
+            </summary>
+        </member>
+        <member name="M:Salary.Service.CompanyService.ToggleCompany(System.Collections.Generic.List{System.Int32},System.Int32)">
+            <summary>
+            切换客户到公海或回收站
+            </summary>
+            <param name="ids"></param>
+            <param name="isPublic">0表示回收站，1表示公海</param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Service.UserService.CustomPwd(Salary.Models.Home.UpdatePwd)">
+            <summary>
+             2.用户不存在 3.密码不匹配
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Salary.Service.UserService.SendMessage(System.String,System.String)">
+            <summary>
+            发新增消息
+            </summary>
+        </member>
+        <member name="M:Salary.Service.UserService.GetSalesUser(System.String)">
+            <summary>
+            根据用户的openid查询用户
+            </summary>
+            <param name="openId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Qcloud.Sms.SmsSingleSender.Send(System.Int32,System.String,System.String,System.String,System.String,System.String)">
+            普通单发短信接口，明确指定内容，如果有多个签名，请在内容中以【】的方式添加到信息内容中，否则系统将使用默认签名
+            @param type 短信类型，0 为普通短信，1 营销短信
+            @param nationCode 国家码，如 86 为中国
+            @param phoneNumber 不带国家码的手机号
+            @param msg 信息内容，必须与申请的模板格式一致，否则将返回错误
+            @param extend 扩展码，可填空
+            @param ext 服务端原样返回的参数，可填空
+            @return SmsSingleSenderResult
+        </member>
+        <member name="M:Qcloud.Sms.SmsSingleSender.SendWithParam(System.String,System.String,System.Int32,System.Collections.Generic.List{System.String},System.String,System.String,System.String)">
+            指定模板单发
+            @param nationCode 国家码，如 86 为中国
+            @param phoneNumber 不带国家码的手机号
+            @param templId 模板 id
+            @param templParams 模板参数列表，如模板 {1}...{2}...{3}，那么需要带三个参数
+            @param extend 扩展码，可填空
+            @param ext 服务端原样返回的参数，可填空
+            @return SmsSingleSenderResult
+        </member>
+        <member name="M:Qcloud.Sms.SmsMultiSender.Send(System.Int32,System.String,System.Collections.Generic.List{System.String},System.String,System.String,System.String)">
+            普通群发短信接口，明确指定内容，如果有多个签名，请在内容中以【】的方式添加到信息内容中，否则系统将使用默认签名
+            【注意】海外短信无群发功能
+            @param type 短信类型，0 为普通短信，1 营销短信
+            @param nationCode 国家码，如 86 为中国
+            @param phoneNumbers 不带国家码的手机号列表
+            @param msg 信息内容，必须与申请的模板格式一致，否则将返回错误
+            @param extend 扩展码，可填空
+            @param ext 服务端原样返回的参数，可填空
+            @return SmsMultiSenderResult
+        </member>
+        <member name="M:Qcloud.Sms.SmsMultiSender.SendWithParam(System.String,System.Collections.Generic.List{System.String},System.Int32,System.Collections.Generic.List{System.String},System.String,System.String,System.String)">
+            指定模板群发
+            【注意】海外短信无群发功能
+            @param nationCode 国家码，如 86 为中国
+            @param phoneNumbers 不带国家码的手机号列表
+            @param templId 模板 id
+            @param params 模板参数列表
+            @param sign 签名，如果填空，系统会使用默认签名
+            @param extend 扩展码，可以填空
+            @param ext 服务端原样返回的参数，可以填空
+            @return SmsMultiSenderResult
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta content="telephone=no" name="format-detection">
+    <title>考勤确认单</title>
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="/Asset/dist/js/viewport.js"></script>
+    <link rel="stylesheet" href="/Asset/dist/css/reset.css">
+    <link rel="stylesheet" href="/Asset/dist/css/info.css">
+    <link rel="stylesheet" href="/Asset/dist/css/ov_tip.css">
+    <link href="../../Asset/plugins/layui/css/layui.css" rel="stylesheet" />
+</head>
+
+<body>
+
+
+    <div class="Info_main">
+        <h1 class="Info_main_h1">考勤确认单</h1>
+        <div class="Info_ul">
+            <div class="Info_li">
+                <a class="Info_li_a flexbox">
+                    <span>姓名</span>
+                    <p class="flex1" id="I_Name"></p>
+                </a>
+                <a class="Info_li_a flexbox">
+                    <span>部门</span>
+                    <p class="flex1" id="I_DepartmentName"></p>
+                </a>
+            </div>
+        </div>
+
+        <div class="Info_ul">
+            <div class="Info_li">
+                <a class="Info_li_a  flexbox" id="I_phone_href">
+                    <span>考勤月份</span>
+                    <p id="edit_Month" class="flex1"></p>
+                </a>
+                <a class="Info_li_a  flexbox">
+                    <span>应出勤天数</span>
+                    <p id="edit_TotalDays" class="flex1"></p>
+                </a>
+                <a class="Info_li_a  flexbox">
+                    <span>确认出勤天数</span>
+                    <p id="edit_FinalDays" class="flex1"></p>
+                </a>
+            </div>
+        </div>
+        <textarea class="info_tex" id="opinion" placeholder="审核意见"></textarea>
+
+        <div class="Info_btn ">
+            <a id="btn_agree" class="Info_btn_agree" href="javascript:void(0)">同意</a>
+            <a id="btn_veto" class="Info_btn_veto" href="javascript:void(0)">否决</a>
+        </div>
+
+    </div>
+    <script src="../../Asset/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../../Asset/dist/js/common.js"></script>
+    <script src="../../Asset/dist/js/config.js"></script>
+    <script src="../../Asset/dist/js/loadovo.js"></script>
+    <script src="../../Asset/dist/js/ov_tip.js"></script>
+    <script src="../../Asset/plugins/layui/layui.js"></script>
+    <script>
+        $(function () {
+            layui.use('layer', function () {
+            });
+            var guid = getUrlParam('id');
+            if (guid && guid != null) {
+                $.get('/Attendance/GetEntityById/' + guid, function (data) {
+                    var edit = data.AppendData;
+                    $('#I_Name').text(edit.Name);
+                    $('#I_DepartmentName').text(edit.DepartmentName);
+                    $('#edit_Month').text(edit.Month);
+                    $("#edit_TotalDays").text(edit.TotalDays);
+                    $("#edit_FinalDays").text(edit.FinalDays);
+                    $("h1.Info_main_h1").text(edit.Month);
+                })
+            }
+
+
+            $("#btn_agree").click(function () {
+                $.post('/Attendance/ApproveByEmployee', { UserOperation: 0, Id: guid, Opinion: $("#opinion").val() }, function (data) {
+                    if (data.ResultType == 200 && data.AppendData > 0) {
+                        SuccessBox('操作成功')
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                })
+            });
+
+            $("#btn_veto").click(function () {
+                $.post('/Attendance/ApproveByEmployee', { UserOperation: 1, Id: guid, Opinion: $("#opinion").val() }, function (data) {
+                    if (data.ResultType == 200 && data.AppendData > 0) {
+                        SuccessBox('操作成功')
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                })
+            });
+
+        });
+
+    </script>
+</body>
+
+</html>

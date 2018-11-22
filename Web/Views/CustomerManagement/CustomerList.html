@@ -1,0 +1,826 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>客户列表</title>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta name="format-detection" content="telephone=no" />
+    <!-- select2 -->
+    <link href="../../plugins/select2/select2.css" rel="stylesheet" />
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- table -->
+    <link href="../../dist/css/ovcss.css" rel="stylesheet" />
+    <!-- 提示框 -->
+    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- layui 分页 -->
+    <link href="../../plugins/layui/css/layui.css" rel="stylesheet" />
+    <!--用户管理-->
+    <link href="../../dist/css/User_Center.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- 主标题 begin -->
+    <div class="ov-tit ov-line rel clearfix">
+        <h1 class="ov-theme">客户列表</h1>
+        <div class="ov-tab abs bot10 m-l15 clearfix">
+            <a class="sel fl" data-tab="1">我负责的客户</a>
+            <a class="fl" data-tab="2">客户公海</a>
+            <a class="fl" data-tab="3">客户回收站</a>
+        </div>
+        <div class="icon_fun abs bot10">
+            <span class="glyphicon glyphicon-plus iconfont icon_add " id="open_Customer_Modal" title="添加客户"></span>
+        </div>
+    </div>
+    <!-- 主标题 end -->
+    <!-- 内容表格 begin -->
+    <div class="ov-form table-responsive I_department_form">
+        <!-- 按钮组 -->
+        <div class="ov_btn clearfix">
+            <div class="search_ul">
+                <input type="text" name="search_name" class="form-control" id="I_search_name" placeholder="公司名称">
+                <select name="search_Type" class="form-control search_Type" id="I_search_Type">
+                </select>
+                <a class="search_ul_a" id="search_button">查询</a>
+            </div>
+            <div class="fr modal_channelType">
+                <span class="modal_span" id="Assign_salesmen_Modal" title="指派销售员">指派销售员</span>
+                <span class="modal_span" id="International_waters_Modal" onclick="waters_check();" title="移动到客户公海">移动到客户公海</span>
+                <span class="modal_span" id="open_recycle_Modal" onclick="ToggleInRecycle_check();" title="移动到客户回收站">移动到客户回收站</span>
+                <span class="modal_span" id="open_reduction_Modal" title="还原客户">还原客户</span>
+            </div>
+        </div>
+        <!-- 表格数据 -->
+        <table class="table table-striped table-bordered" id="I_department">
+            <thead>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <!-- 分页 begin -->
+        <div class="ov-page">
+            <div id="layui_page"></div>
+        </div>
+        <!-- 分页 end -->
+    </div>
+    <!-- 内容表格 end -->
+    <!-- 新增弹层 -->
+    <div class="ov-add modal fade I_modal" id="Increase_Modal">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_increase_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered I_increase_from">
+                        <!-- 填充表单 -->
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="close_Increase_default" class="btn btn-default">取消</button>
+                    <button type="button" id="Increase_primary" class="btn btn-primary ">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 还原弹出 -->
+    <div class="ov-edit modal fade I_modal" id="Reduction_Modal" tabindex="-1" role="dialog">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_edit_title">客户还原</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered I_Reduction_from">
+
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="Reduction_default" class="btn btn-default">取消</button>
+                    <button type="button" id="Reduction_primary" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 指派给销售员 -->
+    <div class="ov-edit modal fade I_modal" id="Salesperson_Modal" tabindex="-1" role="dialog">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_edit_title">指派销售员</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered I_Salesperson_from">
+                        <div class="form-group">
+                            <label id="add_lbl_CompanyNames" class="col-md-12 col-md-offset-2">
+                                <p>将所选客户指派给：</p>
+                                <select name="SalesId_Type" class="form-control search_Type Salesperson_sel" id="I_Salesperson"></select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="Salesperson_default" class="btn btn-default">取消</button>
+                    <button type="button" id="Salesperson_primary" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- jq -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <!-- 时间日期插件 -->
+    <script src="../../plugins/laydate/laydate.js"></script>
+    <!-- bootstrap -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- 提示框js -->
+    <script src="../../plugins/sweetalert/sweetalert.js"></script>
+    <!-- 主标题和筛选 的js -->
+    <script src="../../dist/js/form_bow.js"></script>
+    <!-- layui 分页js -->
+    <script src="../../plugins/layui/layui.js"></script>
+    <!-- 拖动js （给需要可拖动弹出层的div 添加 class（modalDialog）即可 ） -->
+    <script src="../../dist/js/jquery-ui.js"></script>
+    <!-- select2 -->
+    <script src="../../plugins/select2/select2.js"></script>
+
+    <script src="../../dist/js/loadovos.js"></script>
+    <!-- 公共脚本 -->
+    <script src="../../dist/js/common.js"></script>
+    <script src="../../dist/js/config.js"></script>
+    <script>
+        // 表格数据
+        var currentPage = 1; //当前页数
+        var page_first = 0; //第一次获取列表数据
+        var page_count = 0; //总条数
+        var editID = ''; //编辑id
+        var channelType = 1; //客户类型 1.我的客户 2.客户公海 3.客户回收站
+        var Jurisdiction = loginInfo.UserType;
+        // 翻页
+
+
+        function GetAppendData() {
+            var companyName = $('#I_search_name').val();
+            var salesId = $('#I_search_Type').val();
+            if (Jurisdiction == 3) {
+                salesId = loginInfo.Id;
+            }
+            var pageSize = 10;  //每页显示的条数
+            var pageIndex = currentPage;
+            showLoad();
+            $.ajax({
+                type: 'GET',
+                url: APIS.GetCompanyList,
+                data: {
+                    'companyName': companyName,
+                    'salesId': salesId,
+                    'channelType':channelType,
+                    'pageSize': pageSize,
+                    'pageIndex': pageIndex
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        if (channelType == 1) {
+                            $('.modal_channelType span').show();
+                            $('#open_reduction_Modal').hide();
+                           
+                            if (Jurisdiction == 3) {
+                                $('#I_search_Type').val(loginInfo.Id).hide();
+                                $('#Assign_salesmen_Modal').hide();
+                                $('#International_Receive_Modal').remove();
+                                $('#International_Reduction_Modal').remove();
+                            } else {
+                                $('#I_search_Type').show()
+                            }
+                        } else if (channelType == 2) {
+                            $('.modal_channelType span').show();
+                            $('#International_waters_Modal').hide();
+                            if (Jurisdiction == 3) {
+                                $('#I_search_Type').val(loginInfo.Id).hide();
+                                $('.modal_channelType span').hide()
+                                $("#International_Receive_Modal").remove();
+                                $('#International_Reduction_Modal').remove();
+                                $('.modal_channelType').append('<span class="modal_span" id="International_Receive_Modal" onclick="Receive_check();" title="领取客户" >领取客户</span>');
+                            } else {
+                                $('#I_search_Type').hide().val("");
+                            }
+                            
+                            $('#open_reduction_Modal').hide();
+                        } else if (channelType == 3) {
+                            $('.modal_channelType span').hide();
+                            $('#open_reduction_Modal').show();
+                            if (Jurisdiction == 3) {
+                                $('#I_search_Type').val(loginInfo.Id).hide();
+                                $('.modal_channelType span').hide()
+                                $('#International_Receive_Modal').remove();
+                                $('#International_Reduction_Modal').remove();
+                                $('.modal_channelType').append('<span class="modal_span" id="International_Reduction_Modal" onclick="Reduction_check();" title="还原客户" >还原客户</span>');
+                            } else {
+                                $('#I_search_Type').hide().val("");
+                            }
+
+                            
+                        }
+                        var data_box = data.AppendData.CompanyList;
+                        var data_thead = []; //表头的数组
+                        var data_head = '';//表头
+                        var data_main = '';//表内容
+                        page_count = data.AppendData.TotalCount; //总条数
+                        for (var i = 0; i < data_box.length; i++) {
+                            if(page_first==0){
+                                page_first =1;
+                                if(i==0){
+                                    data_head =`<tr>
+                                                <th class=" width-chk"><input type="checkbox" onclick="all_check(this);" class="allCheck" title="全选"></th>
+                                                <th class ="">客户名称</th>
+                                                <th class ="width-datetime">第一联系人姓名</th>
+                                                <th class =" width-datetime">联系人电话</th>
+                                                <th class =" width-datetime">联系人职务</th>
+                                                <th class =" width-datetime">所属行业</th>
+                                                <th class =" width-sm">销售员</th>
+                                                <th class =" width-datetime">客户来源</th>
+                                                <th class =" width-date">创建日期</th>
+                                            </tr>`;
+                                    $('#I_department thead').append(data_head);
+                                }
+                            }
+                            var element = data_box[i];
+                            
+
+                            data_main += `<tr data-id="${data_box[i].Id}">
+                                            <td class="width-chk"><input name="gv_data_ct${data_box[i].Id}_check" data-id="${data_box[i].Id}" class="SOGchk"  type="checkbox"></td>
+                                            <td><a class ="cursor" data-id="${data_box[i].Id}">${data_box[i].CompanyName}${data_box[i].IsNew == 1 ? `<span class="new_span">New</span>`: ``}</a></td>
+                                            <td>${data_box[i].ContactName}</td>
+                                            <td>${data_box[i].ContactPhone}</td>
+                                             <td>${data_box[i].ContactJob}</td>
+                                            <td>${data_box[i].Industry}</td>
+                                            <td>${data_box[i].TrueName}</td>
+                                            <td>${data_box[i].SourceType}</td>
+                                             <td>${data_box[i].CreateTime}</td>
+                                        </tr>`
+                            //${data_box[i].UserStatus == 1? '<a class ="btn_channel Reset_toggle Reset_stop" data-id="'+data_box[i].Id+'">停用</a>': '<a class ="btn_channel Reset_toggle Reset_start" data-id="'+data_box[i].Id+'" >启用</a>'}
+                        }
+                        $('#I_department tbody').html(data_main);
+                        laypage_up(page_count);
+
+                    }else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('暂无数据内容');
+                }
+            })
+        }
+
+        $('#search_button').click(function () {
+            var currentPage = 1;
+            GetAppendData();
+        })
+
+        $('body').on('click', '.ov-tab a', function () {
+            $(this).addClass('sel').siblings().removeClass('sel')
+            //var tabName = $(this).attr('data-tab'); //渠道id
+            channelType = $(this).attr('data-tab'); //渠道id
+            if (Jurisdiction == 3) {
+                $('#I_search_Type').val(loginInfo.Id).hide();
+            } else {
+                if (channelType == 1) {
+                    $('#I_search_Type').val('');
+                }
+            }
+            var currentPage = 1;
+            GetAppendData();
+            return false
+        })
+
+        //获取销售员
+        $.ajax({
+            type: "GET",
+            url: APIS.GetSaleList + '/' + loginInfo.ChannelId,
+            dataType: "json",
+            success: function (result) {
+                var data = result;
+                if (data.ResultType == 200) {
+                    var items = data.AppendData;
+                    var sale_html = '<option value="">--选择销售员--</option>';
+                    for (var i = 0; i < items.length; i++) {
+                        sale_html += '<option value="' + items[i].Id + '">' + items[i].TrueName + '</option>'
+                    }
+                    $('#I_search_Type').html(sale_html);
+                    if (Jurisdiction == 3) {
+                        $('#I_search_Type').val(loginInfo.Id).hide();
+                    }
+                } 
+            }
+        })
+
+        //初始数据
+        try {
+            GetAppendData()//获取初始表数据
+        } catch (err) {
+        }
+
+        //分页
+        function laypage_up(){
+            layui.use(['laypage', 'layer'], function(){
+                var laypage = layui.laypage
+                ,layer = layui.layer;
+                laypage.render({
+                    elem: 'layui_page'
+                    ,count: page_count
+                    ,limit: 10
+                    , curr: currentPage || 1
+                    ,layout: ['count', 'prev', 'page', 'next', 'skip']
+                    ,jump: function(obj, first){
+                        currentPage = obj.curr;
+                        if(!first){//首次不执行
+                            GetAppendData();
+
+                        }
+
+                        }
+                });
+            })
+        }
+
+        // 打开新增弹窗
+        $('body').on('click', '#open_Customer_Modal', function () {
+            $('.I_increase_title').text('添加客户');
+            $('.I_increase_from').html(`
+                                        <div class ="form-group">
+                                            <label id="add_lbl_CompanyName" class ="col-md-3 control-label">客户名称：</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_CompanyName" type="text" value="" rule="/\\S/" id="add_CompanyName" class ="form-control Idata" placeholder="客户名称">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="add_lbl_Industry" class ="col-md-3 control-label">所属行业：</label>
+                                            <div class="col-md-8">
+                                                <input name="add_Industry" type="text" value="" rule="/\\S/" id="add_Industry" class ="form-control Idata" placeholder="所属行业">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="add_lbl_CompanySize" class ="col-md-3 control-label">公司规模：</label>
+                                            <div class="col-md-8">
+                                                <input name="add_CompanySize"  value="" id="add_CompanySize" rule="/\\S/" class ="form-control Idata" placeholder="公司规模">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_EstablishedTime" class ="col-md-3 control-label">成立时间：</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_EstablishedTime"  value="" id="add_EstablishedTime" class ="form-control Idata" placeholder="成立时间">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_Province" class ="col-md-3 control-label">省份：</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_Province" " value="" id="add_Province"  class ="form-control Idata" placeholder="省份">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_City" class ="col-md-3 control-label">城市：</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_City" value="" id="add_City"  class ="form-control Idata" placeholder="城市">
+                                            </div>
+                                        </div>
+                                         <div class ="form-group">
+                                            <label id="add_lbl_Addres" class ="col-md-3 control-label">地址：</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_Addres" value="" id="add_Addres"  class ="form-control Idata" placeholder="地址">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_SalesId" class ="col-md-3 control-label">销售员：</label>
+                                            <div class ="col-md-8">
+                                                <select class ="form-control Idata" id="add_SalesId">
+                                                    <option value=''></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <input class ='hide' id="add_SourceType" hidden='hidden' value="2" />
+
+                                        `);
+            SOGDate('add_EstablishedTime');
+            $.ajax({
+                type: "GET",
+                url: APIS.GetSaleList + '/' + loginInfo.ChannelId,
+                dataType: "json",
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        var items = data.AppendData;
+                        var sale_html = '<option value="">--选择销售员跟进--</option><option value="0">客户公海</option>';
+                        for (var i = 0; i < items.length; i++) {
+                            sale_html += '<option value="' + items[i].Id + '">' + items[i].TrueName + '</option>'
+                        }
+                        $('#add_SalesId').html(sale_html);
+                        if (Jurisdiction == 3) {
+                            $('#add_SalesId').val(loginInfo.Id).attr('disabled',"disabled");
+                        }
+                    } 
+                }
+            });
+            ShowUI('Increase_Modal');
+        })
+
+
+        // 关闭新增弹窗
+        $('body').on('click','#close_Increase_default',function(){
+            HideUI('Increase_Modal');
+        })
+
+        //新增确认按钮点击
+        $("body").on('click', '#Increase_primary', function () {
+            if(required('Increase_Modal')){ //验证
+                return false;
+            }
+
+            var CompanyName = $('#add_CompanyName').val();//公司名称
+            var Industry = $('#add_Industry').val();//所属行业
+            var SalesId = $('#add_SalesId').val();//销售员id 销售员id对用户的id，如果为公海客户为0，如果为垃圾客户为-1 ,
+            var SourceType = $('#add_SourceType').val();//客户来源（1 .中力友友录入2.中力友友手工录入 3活动推广） ,
+            var CompanySize = $('#add_CompanySize').val();// 公司规模 ,
+            var EstablishedTime = $('#add_EstablishedTime').val();// 成立时间 ,
+            var Province = $('#add_Province').val();//省份 ,
+            var City = $('#add_City').val();//城市 ,
+            var Address = $('#add_Addres').val();// 地址
+           
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: APIS.AddCompany,
+                data: {
+                    "CompanyName": CompanyName,
+                    "Industry": Industry,
+                    "SalesId": SalesId,
+                    "SourceType": SourceType,
+                    "CompanySize": CompanySize,
+                    "EstablishedTime": EstablishedTime,
+                    "Province": Province,
+                    "City": City,
+                    "Address": Address
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('Increase_Modal');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+        })
+      
+    // all checkbox  num_check选择了多少条数SOGchk
+    function all_check(_this) {
+        $(".SOGchk").prop("checked", _this.checked);
+        num_check()
+    };
+    $('body').on('click','.SOGchk',function(){
+        if(!$(this).attr('checked')){
+            $('.allCheck').prop("checked", false);
+        }
+        num_check()
+    })
+    function num_check(){
+        var check_length = $('.SOGchk:checked').length;
+        $('#I_number').html(check_length);
+    }
+    // 移动到公海 check
+    function waters_check() {
+        var del_num = $('.SOGchk:checked').length;
+        var departmentIds = []; //需移动的id的集合
+        $('.SOGchk:checked').each(function(){
+            var del_data = $(this).attr("data-id");
+            departmentIds.push(del_data);
+        })
+        if(del_num > 0){
+            //ajax 执行
+            var r = confirm("确定移动到公海？")
+            if (r == true) {
+                //ajax 
+                showLoad();
+                $.ajax({
+                    type: 'POST',
+                    url: APIS.ToggelInPublic,
+                    dataType: "json",
+                    data: { '': departmentIds },
+                    success: function (data) {
+                        hideLoad();
+                        if(data.ResultType == 200){
+                            SuccessBox(data.Message);
+                            GetAppendData();
+                        }else {
+                            ErrorBox(data.Message);
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideLoad();
+                        ErrorBox('当前网络较差，请刷新重试');
+                    }
+                })
+            }
+        }else {
+            ErrorBox('请勾选要移动到公海的项');
+        }
+    }
+
+    //移到回收站
+    function ToggleInRecycle_check() {
+        var del_num = $('.SOGchk:checked').length;
+        var departmentIds = []; //需移动的id的集合
+        $('.SOGchk:checked').each(function () {
+            var del_data = $(this).attr("data-id");
+            departmentIds.push(del_data);
+        })
+        if (del_num > 0) {
+            //ajax 执行
+            var r = confirm("确定移动到回收站？")
+            if (r == true) {
+                //ajax 
+                showLoad();
+                $.ajax({
+                    type: 'POST',
+                    url: APIS.ToggleInRecycle,
+                    dataType: "json",
+                    data: { '': departmentIds },
+                    success: function (data) {
+                        hideLoad();
+                        if (data.ResultType == 200) {
+                            SuccessBox(data.Message);
+                            GetAppendData();
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideLoad();
+                        ErrorBox('当前网络较差，请刷新重试');
+                    }
+                })
+            }
+        } else {
+            ErrorBox('请勾选要移动到回收站的项');
+        }
+    }
+
+    //客户还原
+    $('#open_reduction_Modal').on('click', function () {
+        var del_num = $('.SOGchk:checked').length;
+        var departmentIds = []; //需移动的id的集合
+        $('.SOGchk:checked').each(function () {
+            var del_data = $(this).attr("data-id");
+            departmentIds.push(del_data);
+        })
+        if (del_num > 0) {
+            var red_html = '';
+            red_html += `<div class ="form-group">
+                        <label id="add_lbl_CompanyName" class ="col-md-12 col-md-offset-2"><input type="radio" name="Sale" value="0"  id="I_radio"/>还原到客户公海</label>
+                    </div>
+                    <div class ="form-group">
+                        <label id="add_lbl_CompanyNames" class ="col-md-12 col-md-offset-2"><input type="radio" name="Sale" value="1"  id='I_radios'/>指派给销售员<select name="SalesId_Type" class ="form-control search_Type SalesId_sel" id="I_SalesId">
+                </select></label>
+                    </div>`
+            $('.I_Reduction_from').html(red_html);
+            $.ajax({
+                type: "GET",
+                url: APIS.GetSaleList + '/' + loginInfo.ChannelId,
+                dataType: "json",
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        var items = data.AppendData;
+                        var sale_html = '';
+                        for (var i = 0; i < items.length; i++) {
+                            sale_html += '<option value="' + items[i].Id + '">' + items[i].TrueName + '</option>'
+                        }
+                        $('#I_SalesId').html(sale_html);
+                    }
+                }
+            });
+            ShowUI('Reduction_Modal');
+        } else {
+            ErrorBox('请勾选要移动到回收站的项');
+        }
+    })
+
+    $('body').on('click', '#Reduction_default', function () {
+        HideUI('Reduction_Modal');
+    })
+    //还原回去
+    $('body').on('click', '#Reduction_primary', function () {
+        var sale_radio = $('input[name="Sale"]:checked').length;
+        if (sale_radio > 0) {
+            var radio_val = $('input[name="Sale"]:checked').val();
+            if (radio_val == 1) {
+                radio_val = $('#I_SalesId').val();
+            }
+            var del_num = $('.SOGchk:checked').length;
+            var departmentIds = []; //需移动的id的集合
+            $('.SOGchk:checked').each(function () {
+                var del_data = $(this).attr("data-id");
+                departmentIds.push(del_data);
+            })
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                url: APIS.ToggleOutRecycle,
+                dataType: "json",
+                data: {
+                    'Ids': departmentIds,
+                    'SalesId': radio_val
+                },
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('Reduction_Modal');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+            
+        } else {
+            ErrorBox('请勾选还原至何处');
+        }
+    })
+    //指派给销售员
+    $('#Assign_salesmen_Modal').on('click', function () {
+        var del_num = $('.SOGchk:checked').length;
+        var departmentIds = []; //需移动的id的集合
+        $('.SOGchk:checked').each(function () {
+            var del_data = $(this).attr("data-id");
+            departmentIds.push(del_data);
+        })
+        if (del_num > 0) {
+            $.ajax({
+                type: "GET",
+                url: APIS.GetSaleList + '/' + loginInfo.ChannelId,
+                dataType: "json",
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        var items = data.AppendData;
+                        var sale_html = '';
+                        for (var i = 0; i < items.length; i++) {
+                            sale_html += '<option value="' + items[i].Id + '">' + items[i].TrueName + '</option>'
+                        }
+                        $('#I_Salesperson').html(sale_html);
+                        ShowUI('Salesperson_Modal');
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+        } else {
+            ErrorBox('请勾选要指派的项');
+        }
+    })
+    $('#Salesperson_default').on('click', function () {
+        HideUI('Salesperson_Modal');
+    })
+    $('#Salesperson_primary').on('click', function () {
+        var del_num = $('.SOGchk:checked').length;
+        var departmentIds = []; //需移动的id的集合
+        $('.SOGchk:checked').each(function () {
+            var del_data = $(this).attr("data-id");
+            departmentIds.push(del_data);
+        })
+        var radio_val = $('#I_Salesperson').val();
+        showLoad();
+        $.ajax({
+            type: 'POST',
+            url: APIS.ToggleOutPublic,
+            dataType: "json",
+            data: {
+                'Ids': departmentIds,
+                'SalesId': radio_val
+            },
+            success: function (data) {
+                hideLoad();
+                if (data.ResultType == 200) {
+                    SuccessBox(data.Message);
+                    HideUI('Salesperson_Modal');
+                    GetAppendData();
+                } else {
+                    ErrorBox(data.Message);
+                }
+            }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                hideLoad();
+                ErrorBox('当前网络较差，请刷新重试');
+            }
+        })
+    })
+
+    //领取客户
+    function Receive_check() {
+        var del_num = $('.SOGchk:checked').length;
+        if (del_num > 0) {
+            var departmentIds = []; //需移动的id的集合
+            $('.SOGchk:checked').each(function () {
+                var del_data = $(this).attr("data-id");
+                departmentIds.push(del_data);
+            })
+            var radio_val = loginInfo.Id; //销售员id
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                url: APIS.ToggleOutPublic,
+                dataType: "json",
+                data: {
+                    'Ids': departmentIds,
+                    'SalesId': radio_val
+                },
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        } else {
+            ErrorBox('请勾选要领取的客户');
+        }
+    }
+    //还原客户
+    function Reduction_check() {
+        var del_num = $('.SOGchk:checked').length;
+        if (del_num > 0) {
+            var departmentIds = []; //需移动的id的集合
+            $('.SOGchk:checked').each(function () {
+                var del_data = $(this).attr("data-id");
+                departmentIds.push(del_data);
+            })
+            var radio_val = loginInfo.Id; //销售员id
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                url: APIS.ToggleOutRecycle,
+                dataType: "json",
+                data: {
+                    'Ids': departmentIds,
+                    'SalesId': radio_val
+                },
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        } else {
+            ErrorBox('请勾选要还原的客户');
+        }
+    }
+    
+        //双击跳转
+    $('body').on('dblclick', '.cursor', function () {
+        var edit_id = $(this).attr('data-id');
+        var ChannelId= loginInfo.ChannelId;
+        UrlAddTabs('2304', '客户详情', 'CustomerManagement/CustomerDetails.html?edit_id=' + edit_id + '&ChannelId=' + ChannelId + '&channelType=' + channelType);
+    })
+
+    </script>
+</body>
+
+</html>

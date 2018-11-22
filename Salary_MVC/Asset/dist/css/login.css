@@ -1,0 +1,326 @@
+.login_main {
+
+}
+.login_bg {
+    position: relative;
+    width:100%;
+    height:723px;
+    background:linear-gradient(0deg,rgba(25,81,177,0.87),rgba(76,132,235,1));
+}
+.login_bg .bg1 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: url(../img/ind_bg.png) no-repeat;
+    z-index: 5;
+    background-size: 100%;;
+}
+.login_bg .bg3 {
+    position: absolute;
+    top: 96px;
+    width:200px;
+    height:200px;
+    left: 50%;
+    margin-left: -100px;
+    border-radius: 50%;
+    z-index: 8;
+}
+.login_bg  p {
+    font-size:40px;
+    font-family:MicrosoftYaHei-Bold;
+    font-weight:bold;
+    color:rgba(255,255,255,1);
+    position: absolute;
+    top: 324px;
+    width: 100%;
+    text-align: center;
+    border-radius: 50%;
+    z-index: 8;
+}
+.login_box {
+    width:702px;
+    height:589px;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 2px 50px 0px rgba(60,114,211,0.3);
+    border-radius:20px;
+    margin: -273px auto 0;
+    position: relative;
+    z-index: 999;
+}
+.login_box  label {
+    margin: 0 50px;
+    display: block;
+    position: relative;
+    border-bottom: 2px solid #e5e5e5;
+}
+.login_box span {
+    position: absolute;
+}
+.login_user span {
+    display: inline-block;
+    background: url(../img/user.png) no-repeat;
+    background-size: 41px ;
+    width:50px;
+    height:50px;
+    color:rgba(144,147,153,1);
+    top: 44px;
+}
+.login_pw span {
+    display: inline-block;
+    background: url(../img/password.png) no-repeat;
+    background-size: 53px;
+    width:50px;
+    height:50px;
+    color:rgba(144,147,153,1);
+    top: 27px;
+}
+.login_box input {
+    width: 100%;
+    height:32px;
+    font-size:32px;
+    font-weight:400;
+    color:rgba(192,196,204,1);
+    line-height: 32px;
+    text-indent: 70px;
+    padding: 50px 0;
+    border:none;
+}
+.login_btn {
+    display: block;
+    margin: 75px 50px 0;
+    text-align: center;
+    height:88px;
+    background:rgba(58,114,215,1);
+    border-radius:14px;
+    font-size:36px;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    line-height: 88px;
+}
+.reset_pw {
+    margin-top: 39px;
+    float: right;
+    margin-right: 50px;
+    font-size:32px;
+    font-weight:400;
+    color:rgba(96,98,102,1);
+}
+.login_pop {
+    position: fixed;
+    z-index: 9998;
+    display: none;
+}
+.login_pop_show{
+    display: block;
+}
+.pop_bg {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9998;
+    background: rgba(0,0,0,0.5);
+}
+.pop_box {
+    position: fixed;
+    bottom: -600px;
+    width: 100%;
+    z-index: 9999;
+    background: #fff;
+}
+.login_pop h3 {
+    padding: 40px 24px;
+    font-size:26px;
+    line-height: 36px;
+    font-weight:400;
+    color:rgba(236,91,115,1)
+}
+.login_pop label {
+    display: block;
+    margin-bottom: 15px;
+    padding: 20px  70px
+}
+.login_pop input {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: 6px;
+}
+.login_pop label span {
+    font-size:30px;
+    font-weight:400;
+    color:rgba(48,49,51,1);
+}
+.login_rebtn {
+    display: block;
+    margin: 40px 24px 45px;
+    text-align: center;
+    height:88px;
+    background:rgba(58,114,215,1);
+    border-radius:14px;
+    font-size:36px;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    line-height: 88px;
+    border-top:1px solid #e5e5e5;
+}
+.login_cancel {
+    border-top: 24px solid #999;
+    text-align: center;
+    display: block;
+    line-height: 88px;
+    height:88px;
+    background:rgba(255,255,255,1);
+    font-size:32px;
+    font-weight:400;
+    color:rgba(48,49,51,1);
+}
+.login_popup {
+    bottom: 0;
+}
+
+.reset_box {
+    height: auto;
+    padding: 30px 0 75px; 
+}
+.reset_btn {
+    display: block;
+    margin: 75px 50px 0;
+    text-align: center;
+    height:88px;
+    background:rgba(58,114,215,1);
+    border-radius:14px;
+    font-size:36px;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    line-height: 88px;
+    cursor: pointer;
+}
+.login_box h3 {
+    margin: 17px 50px 29px;
+    line-height: 32px;
+    font-size:26px;
+    font-weight:400;
+    color:rgba(236,91,115,1);
+}
+.login_box h2 {
+    margin: 0 50px 30px;
+    line-height: 42px;
+    font-size:32px;
+    font-weight:bold;
+    color:rgba(48,49,51,1);
+}
+.login_code {
+    width: 45%;
+    position: relative;
+    border-bottom: none !important;
+}
+.login_code::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 295px;
+    height: 2px;
+    background: #e5e5e5;
+}
+.login_code + .Msg_code {
+    position: absolute;
+    right: 66px;
+    margin-top: -85px;
+    height: 32px;
+    font-size: 32px;
+    color: #fff;
+    line-height: 32px;
+    font-size:32px;
+    font-weight:bold;
+    color:rgba(24,79,175,1);
+    display: inline-block;
+    padding: 25px 15px;
+    cursor: pointer;
+}
+.login_code span {
+    display: inline-block;
+    background: url(../img/code.png) no-repeat;
+    background-size: 53px;
+    width:50px;
+    height:50px;
+    color:rgba(144,147,153,1);
+    top: 27px;
+}
+.modify_main {
+    height: 100%;
+    background: #fff;
+}
+.modify_box {
+    background: #fff;
+    padding: 29px 24px;
+}
+.modify_h3 {
+    font-size:30px;
+    font-family:MicrosoftYaHei;
+    font-weight:400;
+    color:rgba(96,98,102,1);
+    line-height: 45px;
+    margin-bottom: 10px;
+}
+.modify_h1 {
+    font-size:48px;
+    font-family:MicrosoftYaHei;
+    font-weight:400;
+    color:rgba(255,123,44,1);
+    margin: 38px auto;
+    text-align: center;
+}
+.modify_user {
+
+}
+.modify_box  label {
+    margin: 0 50px;
+    display: block;
+    position: relative;
+    border-bottom: 2px solid #e5e5e5;
+}
+
+.modify_box label span {
+    position: absolute;
+    display: inline-block;
+    background: url(../img/password.png) no-repeat;
+    background-size: 50px ;
+    width:50px;
+    height:50px;
+    color:rgba(144,147,153,1);
+    top: 41px;
+}
+.modify_box label input {
+    width: 100%;
+    height: 32px;
+    font-size: 32px;
+    font-weight: 400;
+    color: rgba(192,196,204,1);
+    line-height: 32px;
+    text-indent: 70px;
+    padding: 50px 0;
+    border: none;
+}
+
+.modify_box .Msg_code {
+    position: fixed;
+    right: 66px;
+    margin-top: -110px;
+    height: 32px;
+    font-size: 32px;
+    color: #fff;
+    line-height: 32px;
+    font-size:32px;
+    font-weight:bold;
+    color:rgba(24,79,175,1);
+    display: inline-block;
+    padding: 25px 15px;
+    cursor: pointer;
+}
+.modify_box .reset_btn {
+
+}

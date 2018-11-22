@@ -1,0 +1,187 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "合成工资";
+    DateTime month = DateTime.Parse(this.ViewData["masterMonth"].ToString());
+    int index = 0;
+}
+
+@section customStyle{
+
+    <style>
+        .bg_blue{
+
+            cursor:pointer;
+
+            z-index:9998;
+        }
+        #search_button{
+            visibility:hidden;
+        }
+    </style>
+}
+<!-- 主标题 begin -->
+<div class="ov-tit ov-line rel clearfix">
+    <h1 class="ov-theme">合成工资</h1>
+    <input type="hidden" id="housermoneymaster_id" data-comment="公积金主表记录的Id" value="" />
+    <div class="search_ul">
+        <input class="layui-input" id="I_search_month" placeholder="" type="text">
+        <a class="search_ul_a" id="search_button">查询</a>
+    </div>
+    <div class="icon_fun abs bot10">
+        @*<a class="add_right_btn add_Sale_code" id="open_Approve_Modal">合成工资</a>*@
+    </div>
+</div>
+<!-- 主标题 end -->
+<!-- 圆形图片begin -->
+<div class="I_Circle">
+    <div class="circle_box bg_blue" >
+        <h3>合成工资</h3>
+    </div>
+    <div class="crlcle_ul">
+        <a id="Attendence" class="I_box" data-menuid="@(index++)"  data-tit=""  data-href="">
+            <h3>考勤</h3>
+            <p>状态：<span></span></p>
+        </a>
+        <a id="ShortSalary" class="I_box" data-menuid="@(index++)" data-tit="" data-href="" >
+            <h3>奖惩</h3>
+            <p>状态：<span></span></p>
+        </a>
+        <a id="Bonus" class="I_box" data-menuid="@(index++)" data-tit="" data-href="" >
+            <h3>津贴</h3>
+            <p>状态：<span></span></p>
+        </a>
+        <a id="EmployeeSalary" class="I_box" data-menuid="@(index++)" data-tit="" data-href="" >
+            <h3>调薪</h3>
+            <p>状态：<span></span></p>
+        </a>
+        <a id="Employee" class="I_box" data-menuid="@(index++)"  data-tit="" data-href="">
+            <h3>员工信息</h3>
+            <p>状态：<span></span></p>
+        </a>
+        <a id="HouseMoney" class="I_box" data-menuid="@(index++)" data-tit="" data-href="" >
+            <h3>公积金</h3>
+            <p>状态：<span></span></p>
+        </a>
+        <a id="SocialMoney" class="I_box" data-menuid="@(index++)" data-tit="" data-href="" >
+            <h3>社保</h3>
+            <p>状态：<span></span></p>
+        </a>
+    </div>
+
+</div>
+
+<!-- 圆形图片end -->
+
+@section customScript{
+    <script>
+        var monthValue = "@(month.ToString("yyyy-MM"))";
+        //var monthValueMax="@(DateTime.Now.ToString("yyyy-MM"))";
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#I_search_month' //指定元素
+                 , type: 'month'
+                , value: monthValue
+                , showBottom: false
+                        , ready: function (date) {
+                            $(".layui-laydate").off('click').on('click', '.laydate-month-list li', function () {
+                                $(".layui-laydate").remove();
+                            });
+                        }
+                        , change: function (value, dates, edate) {
+                            $('#I_search_month').val(value);
+                            GetAppendData();
+                        }
+                // , max:monthValueMax
+            });
+            $(".crlcle_ul>a").click(function () {
+
+                var href = $(this).data("href");
+                if (!href)
+                    return false;
+                var title = "未就绪-"+$(this).find("h3").text();
+                UrlAddTabs($(this).data("menuid"), title, href);
+                //addTabs({
+                //    id: '5555',
+                //    title: '12346',
+                //    close: true,
+                //    url: href,
+                //    urlType: "abosulte"
+                //});
+            });
+
+
+            //初始数据
+            try {
+                GetAppendData()//获取初始表数据
+            } catch (err) {
+            }
+
+        });
+    </script>
+    <script>
+        // 表格数据
+        var page_first = 0; //第一次获取列表数据
+        var editID = ''; //编辑id
+        // 翻页
+        function GetAppendData() {
+            var I_search_month = $('#I_search_month').val();
+            zlpost("../MonthlySalary/GetMasterByMonth", { month: I_search_month }, function (data) {
+                if (data.AppendData && data.AppendData.Id) {
+                    window.location.href = "../MonthlySalary/Index?month=" + I_search_month;
+                    return;
+                }
+                GetAppendDataInternal(I_search_month);
+            });
+        };
+
+        
+
+
+        function GetAppendDataInternal(I_search_month) {
+            zlpost("../MonthlySalary/Validate", { "month": I_search_month }, function (data) {
+                $(".crlcle_ul a").each(function (index, el) {
+                    var id = $(el).attr("id");
+                    $(el).removeClass("boxcolor_red");
+                    $(el).data("tit", "就绪");
+                    if (data.AppendData[id].IsOk) {
+                        $(el).find("p>span").text("就绪");
+                        $(el).data("href", "");
+                        $(el).click(function () {
+                            return false;
+                        });
+                    } else {
+                        $(el).find("span").text("未就绪");
+                        $(el).addClass("boxcolor_red");
+                        $(el).data("tit", data.AppendData[id].Msg.join(","))
+                        $(el).data("href", data.AppendData[id].Url);
+                    }
+                });
+            });
+        };
+
+        $('#search_button').click(function () {
+            GetAppendData();
+        })
+
+        layui.use('layer', function () {
+            var layer = layui.layer;
+            $('.I_box').hover(function () {
+                var title = $(this).data('tit');
+                if (title && title != "" && title != 'null') {
+                    layer.tips(title, this);
+                }
+            }, function () {
+            });
+        });
+
+        $("body").on("click", ".bg_blue", function () {
+            var I_search_month = $('#I_search_month').val();
+            zlpost("../MonthlySalary/Generate", { 'month': I_search_month }, function () {
+                window.location.href = "../MonthlySalary/Index?month=" + I_search_month;
+            });
+        });
+
+    </script>
+}

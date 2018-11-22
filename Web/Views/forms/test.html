@@ -1,0 +1,912 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ERP表单页面</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- table -->
+    <link href="../../dist/css/ovcss.css" rel="stylesheet" />
+    <!-- 提示框 -->
+    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- layui 分页 -->
+    <link href="../../plugins/layui/css/layui.css" rel="stylesheet" />
+    <!-- 搜索下拉框 css -->
+    <link href="../../plugins/SOGChosen/chosen.css" rel="stylesheet" />
+    <!-- 多选框 -->
+    <link href="../../plugins/select2/select2.css" rel="stylesheet" />
+   
+</head>
+
+<body>
+        
+    <!-- 主标题 begin -->
+    <div class="ov-tit ov-line rel clearfix">
+        <h1 class="ov-theme">推广活动</h1>
+        <div class="ov-tab abs bot10 m-l15 clearfix">
+            <a class="sel fl" data-tab="我的渠道">我的渠道</a>
+            <a class="fl" data-tab="公海渠道">公海渠道</a>
+            <a class="fl" data-tab="全部渠道">全部渠道</a>
+        </div>
+        <div class="icon_fun abs bot10">
+            <span class="glyphicon glyphicon-plus iconfont icon_add " data-toggle="modal" data-target="#addModal" aria-hidden="true"
+                title="新增"></span>
+            <span class="glyphicon glyphicon glyphicon-cog icon_add" aria-hidden="true" data-toggle="modal" data-target="#popupModal" title="信息"></span>
+            <span class="glyphicon glyphicon-download-alt icon_add" aria-hidden="true" title="下载"></span>
+
+        </div>
+
+    </div>
+    <!-- 主标题 end -->
+    
+    <!-- 筛选 begin  -->
+    <div class="ov-screen">
+        <!-- 目前选择的条件 -->
+        <div class="ov-choice">
+            <span class="choice_span">筛选条件</span>
+            <!-- <a data-id="1">
+            <i>渠道商分类:</i>
+            <em>全部</em>
+        </a>
+        <a data-id="2">
+            <i>负责人:</i>
+            <em>全部</em>
+        </a>
+        <a data-id="3">
+            <i>负责人:</i>
+            <em>全部</em>
+        </a> -->
+        </div>
+        <!-- 条件预览 -->
+        <div class="ov-preview">
+            <ul>
+                <li data-id="1">
+                    <span class="preview_span">渠道商分类</span>
+                    <div class="ov-nav">
+                        <a class="active" data-name="全部">全部</a>
+                        <a data-name="高校机构">高校机构</a>
+                        <a data-name="协会机构">协会机构</a>
+                        <a data-name="专业服务机构">专业服务机构</a>
+                        <a data-name="金融机构">金融机构</a>
+                        <a data-name="其他渠道">其他渠道</a>
+                        <a data-name="个人代理">个人代理</a>
+                        <a data-name="政府机构">政府机构</a>
+                        <a data-name="互联网">互联网</a>
+                        <a data-name="培训咨询公司">培训咨询公司</a>
+                        <a data-name="转介绍">转介绍</a>
+                    </div>
+                </li>
+                <li data-id="2">
+                    <span class="preview_span">负责人</span>
+                    <div class="ov-nav">
+                        <a class="active" data-name="全部">全部</a>
+                        <a data-name="刘建刚">刘建刚</a>
+                        <a data-name="李建辉">李建辉</a>
+                        <a data-name="邹骏">邹骏</a>
+                        <a data-name="宋卫华">宋卫华</a>
+                        <a data-name="许亚梅">许亚梅</a>
+                        <a data-name="钟欣彤">钟欣彤</a>
+                        <a data-name="林醒霞">林醒霞</a>
+                        <a data-name="朱聪">朱聪</a>
+                        <a data-name="裴春晓">裴春晓</a>
+                        <a data-name="廖嘉宜">廖嘉宜</a>
+                        <a data-name="王振华">王振华</a>
+                        <a data-name="赵泽辉">赵泽辉</a>
+                        <a data-name="黄辉煌">黄辉煌</a>
+                        <a data-name="杨玉梅">杨玉梅</a>
+                        <a data-name="李志萍">李志萍</a>
+                        <a data-name="周智萍">周智萍</a>
+                        <a data-name="马曼璇">马曼璇</a>
+                        <a data-name="吴泽宏">吴泽宏</a>
+                        <a data-name="游丹">游丹</a>
+                        <a data-name="韦仕荣">韦仕荣</a>
+                        <a data-name="刘金花">刘金花</a>
+                        <a data-name="徐亮">徐亮</a>
+                        <a data-name="蔡旭">蔡旭</a>
+                        <a data-name="祝得娴">祝得娴</a>
+                        <a data-name="唐艳涛">唐艳涛</a>
+                        <a data-name="郭晏">郭晏</a>
+                        <a data-name="陈海静">陈海静</a>
+                        <a data-name="谢广东">谢广东</a>
+                        <a data-name="杨燕伊">杨燕伊</a>
+                        <a data-name="孟楠楠">孟楠楠</a>
+                        <a data-name="李允标">李允标</a>
+                        <a data-name="曹霞">曹霞</a>
+                    </div>
+                </li>
+                <li data-id="3">
+                    <span class="preview_span">渠道级别</span>
+                    <div class="ov-nav">
+                        <a class="active" data-name="全部">全部</a>
+                        <a data-name="一次性资源型">一次性资源型</a>
+                        <a data-name="可复制资源型">可复制资源型</a>
+                        <a data-name="持续资源型">持续资源型</a>
+                        <a data-name="团队驱动型">团队驱动型</a>
+                        <a data-name="品牌+团队型">品牌+团队型</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="preview_li">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-primary" id="btn_screen">城市</button>
+                        <button type="button" class="btn btn-primary dropdown-toggle" id="btn_dropdown" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <div id="ul_ddl_field_search" class="dropdown-menu">
+                            <div class="ul_ddl_li" id="CB_BUSINESS_NAME" text="渠道商">
+                                <a>渠道商</a>
+                            </div>
+                            <div class="ul_ddl_li" id="CB_PROVINCE" text="省份">
+                                <a>省份</a>
+                            </div>
+                            <div class="ul_ddl_li" id="CB_CITY" text="城市">
+                                <a>城市</a>
+                            </div>
+                        </div>
+                    </div>
+                    <input name="txt_field_content" type="text" id="txt_field_content" class="ov-field form-control" placeholder="渠道商/省份/城市">
+                    <div class="input-group-btn">
+                        <input type="submit" name="btn_content_search" value="搜索" id="btn_content_search" class="btn btn-primary">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ov-select">
+            <a class="ov_up_btn up_icon">
+                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+            </a>
+            <a class="ov_up_btn down_icon">
+                <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+            </a>
+        </div>
+    </div>
+    <!-- 筛选 end  -->
+
+    <!-- 内容表格 begin -->
+    <div class="ov-form table-responsive">
+        <!-- 按钮组 -->
+        <div class="ov_btn">
+            <span class="ov-add">已选<span class="number0">0</span>个合作伙伴</span>
+            <a class="btn ov-del" onclick="del_check()" href="javascript:void(0);"><span class="glyphicon glyphicon-trash"></span></a>
+            <input type="submit" value="移到公海" onclick=""  class="btn btn-success" >
+            <div class="fr">
+                <span class="glyphicon glyphicon glyphicon-cog icon_add" aria-hidden="true" data-toggle="modal" data-target="#popupModal" title="信息"></span>
+                <span class="glyphicon glyphicon-download-alt icon_add" aria-hidden="true" title="下载"></span>
+                <span class="ov-add">总页数<span class="number0">4</span>，当前条数<span class="number0">4</span>条</span>
+            </div>
+        </div>
+        <!-- 表格数据 -->
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="width-chk"><input type="checkbox" onclick="all_check(this);" class="allCheck"></th>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                    <th>操作</th>
+                    <th>二维码</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-id="1">
+                    <td class="width-chk"><input name="gv_data_ctl01_check" type="checkbox"></td>
+                    <td>1</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>
+                        <a class="glyphicon glyphicon-edit icon_biue margin-auto modal_edit" data-toggle="modal" data-target="#editModal" data-whatever="1"
+                            data-id="1"></a>
+                        <a class="glyphicon glyphicon-remove icon_red margin-auto modal_del"></a>
+                    </td>
+                    <td>
+                        <a class="icon_white back_blue mode_id" data-toggle="modal" data-target="#codeModal" data-whatever="1" data-id="1">二维码</a>
+                    </td>
+                </tr>
+                <tr data-id="2">
+                    <td class="width-chk"><input name="gv_data_ctl02_check" type="checkbox"></td>
+                    <td>2</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    <td>
+                        <a class="glyphicon glyphicon-edit icon_biue margin-auto modal_edit" data-toggle="modal" data-target="#editModal" data-whatever="2"
+                            data-id="2"></a>
+                        <a class="glyphicon glyphicon-remove icon_red margin-auto modal_del"></a>
+                    </td>
+                    <td>
+                        <a class="icon_white back_blue mode_id" data-toggle="modal" data-target="#codeModal" data-whatever="2" data-id="2">二维码</a>
+                    </td>
+                </tr>
+                <tr data-id="3">
+                    <td class="width-chk"><input name="gv_data_ctl03_check" type="checkbox"></td>
+                    <td>3</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>
+                        <a class="glyphicon glyphicon-edit icon_biue margin-auto modal_edit" data-toggle="modal" data-target="#editModal" data-whatever="3"
+                            data-id="3"></a>
+                        <a class="glyphicon glyphicon-remove icon_red margin-auto modal_del"></a>
+                    </td>
+                    <td>
+                        <a class="icon_white back_blue mode_id" data-toggle="modal" data-target="#codeModal" data-whatever="3" data-id="3">二维码</a>
+                    </td>
+                </tr>
+                <tr data-id="4">
+                    <td class="width-chk"><input name="gv_data_ctl04_check" type="checkbox"></td>
+                    <td>4</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    <td>
+                        <a class="glyphicon glyphicon-edit icon_biue margin-auto modal_edit" data-toggle="modal" data-target="#editModal" data-whatever="4"
+                            data-id="4"></a>
+                        <a class="glyphicon glyphicon-remove icon_red margin-auto modal_del"></a>
+                    </td>
+                    <td>
+                        <a class="icon_white back_blue mode_id" data-toggle="modal" data-target="#codeModal" data-whatever="4" data-id="4">二维码</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 分页 begin -->
+        <div class="ov-page">
+            <div id="layui_page" class="paging form_paging"></div>
+        </div>
+        <!-- 分页 end -->
+    </div>
+    <!-- 内容表格 end -->
+
+    <!-- ov弹窗 begin -->
+    <div class="ov-popup modal fade" id="popupModal" tabindex="-1" role="dialog" aria-labelledby="popupModal">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                     <!-- 内容图片区域 -->
+                    <p>内容</p>
+                    <p>内容</p>
+                    <p>内容</p>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" >确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ov弹窗 end -->
+
+    <!-- 二维码弹层 -->
+    <div class="ov-code modal fade" id="codeModal" tabindex="-1" role="dialog" aria-labelledby="codeModal">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer modal_btn">
+
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增弹层 -->
+    <div class="ov-add modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered">
+                        <div class="form-group">
+                            <label id="add_lbl_CB_BUSINESS_NAME" class="col-md-3 control-label">渠道商</label>
+                            <div class="col-md-8">
+                                <input name="add_CB_BUSINESS_NAME" type="text" value="123" id="add_CB_BUSINESS_NAME" rule="/\S/" class="form-control" placeholder="渠道商">
+                            </div>
+                        </div>
+
+                        <!-- SOGDate -->
+                        <div class="form-group">
+                            <label  class="col-md-3 control-label ">SOGDate</label>
+                            <div class="col-md-8">
+                                <input name="add_CB_BUSINESS_SOGDate" type="data"  class="form-control SOGDate" placeholder="日期">
+                            </div>
+                        </div>
+                        <!-- SOGDateTime -->
+                        <div class="form-group">
+                            <label id="add_lbl_CB_BUSINESS_data" class="col-md-3 control-label ">SOGDateTime</label>
+                            <div class="col-md-8">
+                                <input name="add_CB_BUSINESS_data" type="data"  id="add_CB_BUSINESS_data" class="form-control SOGDateTime" placeholder="时间">
+                            </div>
+                        </div>
+                        <!-- SOGDateRange -->
+                        <div class="form-group">
+                            <label  class="col-md-3 control-label ">DateRange</label>
+                            <div class="col-md-8">
+                                <input name="add_CB_BUSINESS_SOGDateRange" type="data"  class="form-control SOGDateRange" placeholder="日期">
+                            </div>
+                        </div>
+                        <!-- SOGDateTimeRange -->
+                        <div class="form-group">
+                            <label  class="col-md-3 control-label ">DateTimeRange</label>
+                            <div class="col-md-8">
+                                <input name="add_CB_BUSINESS_SOGDateTimeRange" type="data"  class="form-control SOGDateTimeRange" placeholder="日期">
+                            </div>
+                        </div>
+                        <!-- 多选 SOGMitiSelect -->
+                        <div class="form-group">
+                            <label  class="col-md-3 control-label ">SOGMitiSelect</label>
+                            <div class="col-md-8">
+                                    <select class="js-example-basic-multiple SOGMitiSelect" multiple>
+                                            <option value="1">用户管理</option>
+                                            <option value="2">角色管理</option>
+                                            <option value="3">部门管理</option>
+                                            <option value="4">菜单管理</option>
+                                            <option value="5">订单查询</option>
+                                            <option value="6">订单导入</option>
+                                            <option value="7">订单删除</option>
+                                            <option value="8">订单撤销</option>
+                                            <option value="9">基础数据维护</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <!-- 多选 SOGMitiSelect -->
+                        <div class="form-group">
+                                <label  class="col-md-3 control-label ">SOGMitiSelect1</label>
+                                <div class="col-md-8">
+                                        <select class="js-example-basic-multiple SOGMitiSelect" multiple>
+                                                <option value="1">用户管理</option>
+                                                <option value="2">角色管理</option>
+                                                <option value="3">部门管理</option>
+                                                <option value="4">菜单管理</option>
+                                                <option value="5">订单查询</option>
+                                                <option value="6">订单导入</option>
+                                                <option value="7">订单删除</option>
+                                                <option value="8">订单撤销</option>
+                                                <option value="9">基础数据维护</option>
+                                        </select>
+                                </div>
+                            </div>
+
+                        <div class="form-group">
+                            <label id="add_lbl_CB_CATEGORY_ID" class="col-md-3 control-label">渠道商分类</label>
+                            <div class="col-md-8">
+                                <select name="add_CB_CATEGORY_ID" id="add_CB_CATEGORY_ID" class="form-control" placeholder="渠道商分类">
+                                    <option selected="selected" value=""></option>
+                                    <option value="2040">高校机构</option>
+                                    <option value="2042">协会机构</option>
+                                    <option value="2046">专业服务机构</option>
+                                    <option value="2047">金融机构</option>
+                                    <option value="2048">其他渠道</option>
+                                    <option value="2077">个人代理</option>
+                                    <option value="2078">政府机构</option>
+                                    <option value="2079">互联网</option>
+                                    <option value="2080">培训咨询公司</option>
+                                    <option value="2082">转介绍</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="add_lbl_CB_level" class="col-md-3 control-label">渠道级别</label>
+                            <div class="col-md-8">
+                                <select name="add_CB_level" id="add_CB_level" class="form-control" placeholder="渠道级别">
+                                    <option selected="selected" value=""></option>
+                                    <option value="01">一次性资源型</option>
+                                    <option value="02">可复制资源型</option>
+                                    <option value="03">持续资源型</option>
+                                    <option value="04">团队驱动型</option>
+                                    <option value="05">品牌+团队型</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="add_lbl_CB_PROVINCE" class="col-md-3 control-label">省份</label>
+                            <div class="col-md-8">
+                                <select name="add_CB_PROVINCE" id="add_CB_PROVINCE" class=" SOGChosen " placeholder="省份" style="display: none;">
+                                    <option selected="selected" value=""></option>
+                                    <option value="安徽省">安徽省</option>
+                                    <option value="澳门">澳门</option>
+                                    <option value="北京市">北京市</option>
+                                    <option value="福建省">福建省</option>
+                                    <option value="甘肃省">甘肃省</option>
+                                    <option value="广东省">广东省</option>
+                                    <option value="广西壮族自治区">广西壮族自治区</option>
+                                    <option value="贵州省">贵州省</option>
+                                    <option value="海南省">海南省</option>
+                                    <option value="河北省">河北省</option>
+                                    <option value="河南省">河南省</option>
+                                    <option value="黑龙江省">黑龙江省</option>
+                                    <option value="湖北省">湖北省</option>
+                                    <option value="湖南省">湖南省</option>
+                                    <option value="吉林省">吉林省</option>
+                                    <option value="江苏省">江苏省</option>
+                                    <option value="江西省">江西省</option>
+                                    <option value="辽宁省">辽宁省</option>
+                                    <option value="内蒙古">内蒙古</option>
+                                    <option value="宁夏回族自治区">宁夏回族自治区</option>
+                                    <option value="青海省">青海省</option>
+                                    <option value="山东省">山东省</option>
+                                    <option value="山西省">山西省</option>
+                                    <option value="陕西省">陕西省</option>
+                                    <option value="上海市">上海市</option>
+                                    <option value="四川省">四川省</option>
+                                    <option value="台湾">台湾</option>
+                                    <option value="台湾省">台湾省</option>
+                                    <option value="天津市">天津市</option>
+                                    <option value="西藏自治区">西藏自治区</option>
+                                    <option value="香港">香港</option>
+                                    <option value="新疆维吾尔自治区">新疆维吾尔自治区</option>
+                                    <option value="云南省">云南省</option>
+                                    <option value="浙江省">浙江省</option>
+                                    <option value="重庆市">重庆市</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="add_lbl_CB_CITY" class="col-md-3 control-label">城市</label>
+                            <div class="col-md-8">
+                                <select name="add_CB_CITY" id="add_CB_CITY" class=" SOGChosen " placeholder="城市" style="display: none;">
+                                    <option selected="selected" value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="add_lbl_CB_PRODUCT_SERVICE" class="col-md-3 control-label">产品服务</label>
+                            <div class="col-md-8">
+                                <input name="add_CB_PRODUCT_SERVICE" type="text" id="add_CB_PRODUCT_SERVICE" class="form-control" placeholder="产品服务">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="add_lbl_CB_CUSTOMER_RESOURCES" class="col-md-3 control-label">客户资源</label>
+                            <div class="col-md-8">
+                                <input name="add_CB_CUSTOMER_RESOURCES" type="text" id="add_CB_CUSTOMER_RESOURCES" class="form-control" placeholder="客户资源">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="add_primary" class="btn btn-primary ">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑弹出 -->
+    <div class="ov-edit modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered">
+                        <div class="form-group">
+                            <label id="edit_lbl_CB_BUSINESS_NAME" class="col-md-3 control-label">渠道商</label>
+                            <div class="col-md-8">
+                                <input name="edit_CB_BUSINESS_NAME" type="text" id="edit_CB_BUSINESS_NAME" rule="/\S/" class="form-control" placeholder="渠道商">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="edit_lbl_CB_CATEGORY_ID" class="col-md-3 control-label">渠道商分类</label>
+                            <div class="col-md-8">
+                                <select name="edit_CB_CATEGORY_ID" id="edit_CB_CATEGORY_ID" class="form-control" placeholder="渠道商分类">
+                                    <option selected="selected" value=""></option>
+                                    <option value="2040">高校机构</option>
+                                    <option value="2042">协会机构</option>
+                                    <option value="2046">专业服务机构</option>
+                                    <option value="2047">金融机构</option>
+                                    <option value="2048">其他渠道</option>
+                                    <option value="2077">个人代理</option>
+                                    <option value="2078">政府机构</option>
+                                    <option value="2079">互联网</option>
+                                    <option value="2080">培训咨询公司</option>
+                                    <option value="2082">转介绍</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="edit_lbl_CB_OWNER_USER_ID" class="col-md-3 control-label">负责人</label>
+                            <div class="col-md-8">
+                                <select name="edit_CB_OWNER_USER_ID" id="edit_CB_OWNER_USER_ID" class=" SOGChosen " placeholder="负责人">
+                                    <option value="1">刘建刚</option>
+                                    <option selected="selected" value="2">李建辉</option>
+                                    <option value="3">邹骏</option>
+                                    <option value="24">宋卫华</option>
+                                    <option value="27">许亚梅</option>
+                                    <option value="53">钟欣彤</option>
+                                    <option value="54">林醒霞</option>
+                                    <option value="56">朱聪</option>
+                                    <option value="57">裴春晓</option>
+                                    <option value="62">廖嘉宜</option>
+                                    <option value="72">王振华</option>
+                                    <option value="79">赵泽辉</option>
+                                    <option value="98">黄辉煌</option>
+                                    <option value="100">杨玉梅</option>
+                                    <option value="101">李志萍</option>
+                                    <option value="104">周智萍</option>
+                                    <option value="113">马曼璇</option>
+                                    <option value="118">吴泽宏</option>
+                                    <option value="147">游丹</option>
+                                    <option value="183">韦仕荣</option>
+                                    <option value="194">刘金花</option>
+                                    <option value="212">徐亮</option>
+                                    <option value="216">蔡旭</option>
+                                    <option value="221">祝得娴</option>
+                                    <option value="223">唐艳涛</option>
+                                    <option value="229">郭晏</option>
+                                    <option value="237">陈海静</option>
+                                    <option value="245">谢广东</option>
+                                    <option value="248">杨燕伊</option>
+                                    <option value="252">孟楠楠</option>
+                                    <option value="275">李允标</option>
+                                    <option value="283">曹霞</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="edit_lbl_CB_level" class="col-md-3 control-label">渠道级别</label>
+                            <div class="col-md-8">
+                                <select name="edit_CB_level" id="edit_CB_level" class="form-control" placeholder="渠道级别">
+                                    <option value=""></option>
+                                    <option selected="selected" value="01">一次性资源型</option>
+                                    <option value="02">可复制资源型</option>
+                                    <option value="03">持续资源型</option>
+                                    <option value="04">团队驱动型</option>
+                                    <option value="05">品牌+团队型</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="edit_lbl_CB_PROVINCE" class="col-md-3 control-label">省份</label>
+                            <div class="col-md-8">
+                                <select name="edit_CB_PROVINCE" id="edit_CB_PROVINCE" class=" SOGChosen " placeholder="省份" style="display: none;">
+                                    <option value="安徽省">安徽省</option>
+                                    <option value="澳门">澳门</option>
+                                    <option value="北京市">北京市</option>
+                                    <option value="福建省">福建省</option>
+                                    <option value="甘肃省">甘肃省</option>
+                                    <option selected="selected" value="广东省">广东省</option>
+                                    <option value="广西壮族自治区">广西壮族自治区</option>
+                                    <option value="贵州省">贵州省</option>
+                                    <option value="海南省">海南省</option>
+                                    <option value="河北省">河北省</option>
+                                    <option value="河南省">河南省</option>
+                                    <option value="黑龙江省">黑龙江省</option>
+                                    <option value="湖北省">湖北省</option>
+                                    <option value="湖南省">湖南省</option>
+                                    <option value="吉林省">吉林省</option>
+                                    <option value="江苏省">江苏省</option>
+                                    <option value="江西省">江西省</option>
+                                    <option value="辽宁省">辽宁省</option>
+                                    <option value="内蒙古">内蒙古</option>
+                                    <option value="宁夏回族自治区">宁夏回族自治区</option>
+                                    <option value="青海省">青海省</option>
+                                    <option value="山东省">山东省</option>
+                                    <option value="山西省">山西省</option>
+                                    <option value="陕西省">陕西省</option>
+                                    <option value="上海市">上海市</option>
+                                    <option value="四川省">四川省</option>
+                                    <option value="台湾">台湾</option>
+                                    <option value="台湾省">台湾省</option>
+                                    <option value="天津市">天津市</option>
+                                    <option value="西藏自治区">西藏自治区</option>
+                                    <option value="香港">香港</option>
+                                    <option value="新疆维吾尔自治区">新疆维吾尔自治区</option>
+                                    <option value="云南省">云南省</option>
+                                    <option value="浙江省">浙江省</option>
+                                    <option value="重庆市">重庆市</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="edit_lbl_CB_CITY" class="col-md-3 control-label">城市</label>
+                            <div class="col-md-8">
+                                <select name="edit_CB_CITY" id="edit_CB_CITY" class=" SOGChosen " placeholder="城市" style="display: none;">
+                                    <option value=""></option>
+                                    <option selected="selected" value="深圳市">深圳市</option>
+                                </select>
+                                <script type="text/javascript"></script>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="edit_lbl_CB_PRODUCT_SERVICE" class="col-md-3 control-label">产品服务</label>
+                            <div class="col-md-8">
+                                <input name="edit_CB_PRODUCT_SERVICE" type="text" id="edit_CB_PRODUCT_SERVICE" class="form-control" placeholder="产品服务">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="edit_lbl_CB_CUSTOMER_RESOURCES" class="col-md-3 control-label">客户资源</label>
+                            <div class="col-md-8">
+                                <input name="edit_CB_CUSTOMER_RESOURCES" type="text" id="edit_CB_CUSTOMER_RESOURCES" class="form-control" placeholder="客户资源">
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none;">
+                            <label id="edit_lbl_CB_ID" class="col-md-3 control-label">渠道商ID</label>
+                            <div class="col-md-8">
+                                <input name="edit_CB_ID" type="text" id="edit_CB_ID" class=" numWidth form-control" placeholder="渠道商ID" readonly="readonly"
+                                    rule="/^-?\d*$/">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- jq -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <!-- 时间日期插件 -->
+    <script src="../../plugins/laydate/laydate.js"></script>
+    <!-- bootstrap -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- 提示框js -->
+    <script src="../../plugins/sweetalert/sweetalert.js"></script>
+    <!-- 主标题和筛选 的js -->
+    <script src="../../dist/js/form_bow.js"></script>
+    <!-- layui 分页js -->
+    <script src="../../plugins/layui/layui.js"></script>
+    <!-- 拖动js （给需要可拖动弹出层的div 添加 class（modalDialog）即可 ） -->
+    <script src="../../dist/js/jquery-ui.js"></script>
+    <!-- 搜索下拉框 js -->
+    <script src="../../plugins/SOGChosen/chosen.jquery.js"></script>
+    <!-- 多选框 js -->
+    <script src="../../plugins/select2/select2.js"></script>
+    <script>
+        /* form_table begin */
+        //新增确认按钮点击
+        $("body").on('click', '#add_primary', function () {
+            //ajax提交
+
+            $(this).parents('.modal').modal('hide');//关闭当前弹出框
+        })
+        //编辑按钮点击 
+        $('#editModal').on('show.bs.modal', function (event) {  //在调用 show 方法后触发。
+            var button = $(event.relatedTarget) // 触发事件的按钮  
+            var recipient = button.data('whatever') // 解析出data-whatever内容  
+            var modal = $(this)
+            modal.find('.modal-title').text('Message To ' + recipient)
+            $('#edit_CB_BUSINESS_NAME').val(recipient); //渠道商
+            $('#edit_CB_CATEGORY_ID').val("2040");//渠道商分类
+            $('#edit_CB_level').val('01');//渠道级别
+            $("#edit_CB_PRODUCT_SERVICE").val('123');//产品服务
+            $("#edit_CB_CUSTOMER_RESOURCES").val('456');//客户资源
+
+        })
+        // 城市联动 begin
+        $("#add_CB_PROVINCE").change(function () {
+            var CB_PROVINCE = $(this).val();
+            var data = GetCity(CB_PROVINCE);
+            if (data.status == 1) {
+                var add_CB_CITY = $("#add_CB_CITY");
+                BindListControl(add_CB_CITY, data.items, true);
+                $("#add_CB_CITY").trigger("chosen:updated");
+            }
+        });
+        $("#edit_CB_PROVINCE").change(function () {
+            var CB_PROVINCE = $(this).val();
+            var data = GetCity(CB_PROVINCE);
+            if (data.status == 1) {
+                var edit_CB_CITY = $("#edit_CB_CITY");
+                BindListControl(edit_CB_CITY, data.items, true);
+                $("#edit_CB_CITY").trigger("chosen:updated");
+            }
+        });
+        function BindListControl(obj_control, obj_data, is_empty) {
+            obj_control.empty();
+            if (is_empty) {
+                obj_control.append("<option value=''></option>")
+            }
+            for (var i = 0; i < obj_data.length; i++) {
+                obj_control.append(ListItem(obj_data[i].YS_CODE, obj_data[i].YS_DESC));
+            }
+        };
+        function ListItem(value, desc) {
+            var str_item = "<option value='" + value + "'>" + desc + "</option>";
+            return str_item;
+        };
+        function GetCity(CB_PROVINCE) {
+            var data = {};
+            $.ajax({
+                type: 'post',
+                url: '/channel_business_new/ajax_channel_info.aspx?action=GetCity',
+                async: false,
+                data: { "CB_PROVINCE": CB_PROVINCE },
+                datatype: "json",
+                success: function (result) {
+                    data = $.parseJSON(result);
+                }
+            });
+            return data;
+        }
+        // 城市联动 end
+
+        //删除按钮点击
+        $('body').on('click', '.modal_del', function () {
+            var _this = $(this);
+            var delID = _this.parents('tr').attr('data-id');
+            var r = confirm("确定删除？")
+            if (r == true) {
+                //ajax 删除
+                _this.parents('tr').remove();
+            }
+        })
+        /* 二维码 */
+        $('#codeModal').on('show.bs.modal', function (event) {  //在调用 show 方法后触发。
+            var button = $(event.relatedTarget) // 触发事件的按钮  
+            var recipient = button.data('whatever') // 解析出data-whatever内容  
+            var modal = $(this)
+            modal.find('.modal-title').text('Message To ' + recipient)
+            modal.find('.modal-body').text(recipient)
+        })
+
+        // 分页
+        // function CreatePageHtml(itemcount) {
+        //     var page = paging('.form_paging', {
+        //         pageTotal: itemcount,//总条数
+        //         pageSize: 15,//每页显示条数
+        //         callback: function (index) {
+        //             console.log(index)
+        //         }
+        //     })
+        // }
+        // CreatePageHtml(550);
+        //完整功能
+        layui.use(['laypage', 'layer'], function(){
+            var laypage = layui.laypage
+            ,layer = layui.layer;
+                    laypage.render({
+                        elem: 'layui_page'
+                        ,count: 100
+                        ,layout: ['count', 'prev', 'page', 'next', 'skip']
+                        ,jump: function(obj){
+                        //console.log(obj)
+                        }
+                    });
+        })
+        /* form_table end */
+
+        //时间控件  js
+        // .SOGDate
+        // .SOGDateTime
+        // .SOGDateRange
+        // .SOGDateTimeRange
+
+
+        // laydate.render({
+        //     elem: '.SOGDateTime' //id
+        //     /*
+        //       1、year 年选择器 只提供年列表选择;2、month	年月选择器	只提供年、月选择；3、date	日期选择器	可选择：年、月、日。type默认值，一般可不填
+        //       4、time	时间选择器	只提供时、分、秒选择；5、datetime	日期时间选择器	可选择：年、月、日、时、分、秒
+        //     */
+        //     ,type: 'datetime' 
+        //     /*
+        //       yyyy-MM-dd HH:mm:ss	2017-08-18 20:08:08
+        //       yyyy年MM月dd日 HH时mm分ss秒	2017年08月18日 20时08分08秒
+        //       yyyyMMdd	20170818
+        //       dd/MM/yyyy	18/08/2017
+        //       yyyy年M月	2017年8月
+        //       M月d日	8月18日
+        //       北京时间：HH点mm分	北京时间：20点08分
+        //       yyyy年的M月某天晚上，大概H点	2017年的8月某天晚上，大概20点
+        //     */
+        //     ,format: 'yyyy年MM月dd日 HH:mm' //可任意组合
+        //     ,theme: '#3bb9ef' //主题颜色
+        //     ,range: true //或 range: '~' 来自定义分割字符
+        //     ,ready: function(date){//控件初始打开的回调
+        //         console.log(date); //得到初始的日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+        //     }
+        //     , change: function (value, date, endDate) {//日期时间被切换后的回调
+        //         console.log(value);
+        //         document.getElementById('add_CB_BUSINESS_data').value = value;
+        //     },done: function(value, date, endDate){//控件选择完毕后的回调
+        //         console.log(value); //得到日期生成的值，如：2017-08-18
+        //         console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+        //         console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+        //     }
+        // });
+
+    //.SOGChosen 筛选 有搜索
+
+    //.SOGMitiSelect 多选
+    $(".SOGMitiSelect").select2({
+        placeholder: "请至少选择一个",
+		tags:true,
+		createTag:function (decorated, params) {
+			return null;
+		},
+		width:'100%'
+    });
+
+    // all checkbox  num_check选择了多少条数
+    function all_check(_this) {
+        if (_this.checked) {
+            $(":checkbox[name$=_check]").prop("checked", true);
+        } else {
+            $(":checkbox[name$=_check]").prop("checked", false);
+        }
+        num_check()
+    };
+    $('body').on('click',':checkbox[name$=_check]',function(){
+        if(!$(this).attr('checked')){
+            $('.allCheck').prop("checked", false);
+        }
+        num_check()
+    })
+    function num_check(){
+        var check_length = $(':checkbox[name$=_check]:checked').length;
+        $('.number0').html(check_length);
+    }
+    // 删除check
+    function del_check(){
+        var del_num = $(':checkbox[name$=_check]:checked').length;
+        var del_arr = []; //需删除的id的集合
+        if(del_num > 0){
+            //ajax 执行删除
+            for (let i = 0; i < del_num; i++) {
+                let del_data = $(':checkbox[name$=_check]:checked').eq(i).parents('tr').attr("data-id");
+                del_arr.push(del_data); 
+            }
+            var r = confirm("确定删除？")
+            if (r == true) {
+                //ajax 删除
+                for (let i = 0; i < del_arr.length; i++) {
+                    $('tr[data-id='+ del_arr[i] +']').remove();
+                }
+            }
+        }else {
+            ErrorBox('请勾选要删除的项');  
+        }
+    }
+        
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,668 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>活动列表</title>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta name="format-detection" content="telephone=no" />
+    <!-- select2 -->
+    <link href="../../plugins/select2/select2.css" rel="stylesheet" />
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- table -->
+    <link href="../../dist/css/ovcss.css" rel="stylesheet" />
+    <!-- 提示框 -->
+    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- layui 分页 -->
+    <link href="../../plugins/layui/css/layui.css" rel="stylesheet" />
+    <!--用户管理-->
+    <link href="../../dist/css/User_Center.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- 主标题 begin -->
+    <div class="ov-tit ov-line rel clearfix">
+        <h1 class="ov-theme">活动列表</h1>
+        <div class="search_ul">
+            <input type="text" name="search_name" class="form-control" id="I_activityName" placeholder="活动名称">
+            <select name="search_userStatus" class="form-control search_userStatus" id="I_activityStatus"></select>
+            <a class="search_ul_a" id="search_button">查询</a>
+        </div>
+        <div class="icon_fun abs bot10">
+            <a class="add_right_btn add_Sale_code" id="I_copy_activity">复制活动</a>
+            <a class="add_right_btn add_Sale_code" id="I_add_activity">添加活动</a>
+        </div>
+    </div>
+    <!-- 主标题 end -->
+    <!-- 内容表格 begin -->
+    <div class="ov-form table-responsive I_department_form">
+        <!-- 按钮组 -->
+        <div class="ov_btn">
+            <div class="fr">
+                <span class="ov-add">总页数<span class="number0" id="I_TotalPage">0</span>，当前条数<span class="number0" id="I_pageSize">0</span>条</span>
+            </div>
+        </div>
+        <!-- 表格数据 -->
+        <table class="table table-striped table-bordered" id="I_department">
+            <thead>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <!-- 分页 begin -->
+        <div class="ov-page">
+            <div id="layui_page"></div>
+        </div>
+        <!-- 分页 end -->
+    </div>
+    <!-- 内容表格 end -->
+    <!-- 新增弹层 -->
+    <div class="ov-add modal fade I_modal" id="Increase_Modal">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_increase_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered I_increase_from">
+                        <!-- 填充表单 -->
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="close_Increase_default" class="btn btn-default">取消</button>
+                    <button type="button" id="Increase_primary" class="btn btn-primary ">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑弹出 -->
+    <div class="ov-edit modal fade I_modal" id="edit_Eject_Modal" tabindex="-1" role="dialog">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_edit_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered I_edit_from">
+
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="edit_Eject_default" class="btn btn-default">取消</button>
+                    <button type="button" id="edit_Eject_primary" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 审核 -->
+    <div class="ov-edit modal fade I_modal" id="Examine_Modal" tabindex="-1" role="dialog">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_Examine_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered I_Examine_from">
+
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="Examine_default" class="btn btn-default">取消</button>
+                    <button type="button" id="Examine_primary" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二维码 -->
+    <div class="ov-edit modal fade I_modal" id="QRCode_Modal" tabindex="-1" role="dialog">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_QRCode_title">销售员注册二维码</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered I_QRCode_from">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jq -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <!-- 时间日期插件 -->
+    <script src="../../plugins/laydate/laydate.js"></script>
+    <!-- bootstrap -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- 提示框js -->
+    <script src="../../plugins/sweetalert/sweetalert.js"></script>
+    <!-- 主标题和筛选 的js -->
+    <script src="../../dist/js/form_bow.js"></script>
+    <!-- layui 分页js -->
+    <script src="../../plugins/layui/layui.js"></script>
+    <!-- 拖动js （给需要可拖动弹出层的div 添加 class（modalDialog）即可 ） -->
+    <script src="../../dist/js/jquery-ui.js"></script>
+    <!-- select2 -->
+    <script src="../../plugins/select2/select2.js"></script>
+    <script src="../../dist/js/loadovos.js"></script>
+    <script src="../../dist/js/loadovos.js"></script>
+    <!-- 公共脚本 -->
+    <script src="../../dist/js/common.js"></script>
+    <script src="../../dist/js/config.js"></script>
+
+    <script>
+        // 表格数据
+        var currentPage = 1; //当前页数
+        var page_first = 0; //第一次获取列表数据
+        var page_count = 0; //总条数
+        var editID = ''; //编辑id
+        // 翻页
+        function GetAppendData() {
+            showLoad();
+            var activityName = $('#I_activityName').val();
+            var activityStatus = $('#I_activityStatus').val();
+            var userStatus = $('#I_search_userStatus').val();
+            var userType = 3;//用户角色 1.中力渠道管理员 2.渠道管理员 3.渠道销售员
+            var pageSize = 10;  //每页显示的条数
+            var pageIndex = currentPage;
+            $.ajax({
+                type: 'GET',
+                url: APIS.GetActivityList,
+                data: {
+                    'activityName': activityName,
+                    'activityStatus': activityStatus,
+                    'pageSize': pageSize,
+                    'pageIndex': pageIndex
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        var data_box = data.AppendData;
+                        var data_thead = []; //表头的数组
+                        var data_head = '';//表头
+                        var data_main = '';//表内容
+                        var items = data_box.ActivityList;
+                        var data_length = items.length; //内容条数
+                        page_count = data.AppendData.TotalCount; //总条数
+                        for (var i = 0; i < data_length; i++) {
+                            if (page_first == 0) {
+                                page_first = 1;
+                                if (i == 0) {
+                                    data_head = `<tr>
+                                                <th class=" width-chk"></th>
+                                                <th class=" width-xs">编号</th>
+                                                <th class ="">活动名称</th>
+                                                <th class =" width-datetime">活动开始时间</th>
+                                                <th class =" width-datetime">活动结束时间</th>
+                                                <th class =" width-datetime">活动主讲老师</th>
+                                                <th class =" width-date">活动负责人</th>
+                                                <th class =" width-date">活动地点</th>
+                                                <th class =" width-sm">活动状态</th>
+                                                <th class ="width-xl">操作</th>
+                                            </tr>`;
+                                    $('#I_department thead').append(data_head);
+                                }
+                            }
+
+                            data_main += `<tr data-id="${items[i].Id}">
+                                            <td class ="width-chk"><input name="ct${items[i].Id}_check" data-id="${items[i].Id}" class ="SOGchk"  type="checkbox"></td>
+                                            <td><a data-id="${items[i].Id}">${items[i].RowNum}</a></td>
+                                            <td>${items[i].ActivityName}</td>
+                                            <td>${items[i].StartTime}</td>
+                                            <td>${items[i].EndTime}</td>
+                                            <td>${items[i].LeadTeacher}</td>
+                                            <td>${items[i].Principal}</td>
+                                            <td>${items[i].Address}</td>
+                                            <td>${items[i].ActivityStatus}</td>
+                                            <td>
+                                                ${items[i].IsDelete == '1' ? '<a class ="btn_channel Reset_remove modal_del" data-id="' + items[i].Id + '" >删除</a>' : '<a class ="btn_channel Reset_remove modal_Nodel" title="' + items[i].DisplayName + '" data-id="' + items[i].Id + '" >删除</a>'}
+                                            </td>
+                                        </tr>`
+                        }
+                        $('#I_department tbody').html(data_main);
+                        $('#I_TotalPage').html(data.AppendData.TotalPage);
+                        $("#I_pageSize").html(data_length);
+                        laypage_up(page_count);
+
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('暂无数据内容');
+                }
+            })
+        }
+
+        $('#search_button').click(function () {
+            GetAppendData();
+        })
+
+
+        //初始数据
+        try {
+            GetAppendData()//获取初始表数据
+        } catch (err) {
+        }
+        //获取活动状态
+        $.ajax({
+            type: "get",
+            url: APIS.GetActivityStatus,
+            dataType: "json",
+            success: function (result) {
+                var data = result;
+                if (data.ResultType == 200) {
+                    var items = data.AppendData;
+                    var staus_html = '<option value="">--活动状态--</option>';
+                    for (var i = 0; i < items.length; i++) {
+                        staus_html += ' <option value="' + items[i].Id + '">' + items[i].Name + '</option>'
+                    }
+                    $("#I_activityStatus").html(staus_html)
+                }
+            }
+        });
+
+        //分页
+        function laypage_up() {
+            layui.use(['laypage', 'layer'], function () {
+                var laypage = layui.laypage
+                , layer = layui.layer;
+                laypage.render({
+                    elem: 'layui_page'
+                    , count: page_count
+                    , limit: 10
+                    , curr: currentPage || 1
+                    , layout: ['count', 'prev', 'page', 'next', 'skip']
+                    , jump: function (obj, first) {
+                        currentPage = obj.curr;
+                        if (!first) {//首次不执行
+                            GetAppendData();
+
+                        }
+
+                    }
+                });
+            })
+        }
+
+        // 打开新增弹窗
+        $('body').on('click', '#open_Increase_Modal', function () {
+            $('.I_increase_title').text('添加渠道管理员');
+            $('.I_increase_from').html(`
+                                        <div class="form-group">
+                                            <label id="add_lbl_DepartmentName" class ="col-md-3 control-label">渠道名称</label>
+                                            <div class ="col-md-8">
+                                                <select class ="form-control" disabled="disabled" id="add_DepartmentName">
+                                                    <option value='${loginInfo.ChannelId}'>${loginInfo.ChannelName}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="add_lbl_TrueName" class="col-md-3 control-label">姓名</label>
+                                            <div class="col-md-8">
+                                                <input name="add_TrueName" type="text" value="" rule="/\\S/" id="add_TrueName" class="form-control Idata" placeholder="中文姓名">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="add_lbl_PhoneNum" class="col-md-3 control-label">手机号码</label>
+                                            <div class="col-md-8">
+                                                <input name="add_PhoneNum" type="tel" value="" id="add_PhoneNum" rule="/^1[3456789]\\d{9}$/" class="form-control Idata" placeholder="手机号码">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_status" class ="col-md-3 control-label">账号状态</label>
+                                            <div class ="col-md-8">
+                                                <label class ="lbl_add_status"><input type="radio" name='I_status' value='1' class='add_status' checked='checked'>可用</label>
+                                                <label class ="lbl_add_status"><input type="radio" name='I_status' value='0' class ='add_status'>停用</label>
+                                            </div>
+                                        </div>
+                                        `);
+            ShowUI('Increase_Modal');
+        })
+
+
+        // 关闭新增弹窗
+        $('body').on('click', '#close_Increase_default', function () {
+            HideUI('Increase_Modal');
+        })
+
+        //新增确认按钮点击
+        $("body").on('click', '#Increase_primary', function () {
+            if (required('Increase_Modal')) { //验证
+                return false;
+            }
+
+            var TrueName = $('#add_TrueName').val();
+            var PhoneNum = $('#add_PhoneNum').val();
+            var UserType = 2;//用户角色 1. 中力渠道管理员 2.渠道管理员 3.渠道销售员
+            var UserStatus = $('.add_status:checked').val();//用户状态 0.取消开通 1 .正常 2.停用 3.删除 4.未审核 ,
+            var IsContacts = 0;// 是否是联系人（0.不是erp联系人 num.是erp联系人id）
+            var HeadImage = '';
+            var ChannelId = $('#add_DepartmentName').val();
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: APIS.AddUser,
+                data: {
+                    'TrueName': TrueName,
+                    'PhoneNum': PhoneNum,
+                    'HeadImage': HeadImage,
+                    'UserType': UserType,
+                    'UserStatus': UserStatus,
+                    'IsContacts': IsContacts,
+                    'ChannelId': ChannelId
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('Increase_Modal');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+        })
+        //编辑按钮点击
+        $('body').on('click', '.modal_edit', function () {
+            var _this = $(this);
+            editID = _this.attr('data-id'); // 解析出data-id
+
+            $.ajax({
+                type: 'GET',
+                url: APIS.GetOneUser + '/' + editID,
+                dataType: "json",
+                success: function (data) {
+                    if (data.ResultType == 200) {
+                        //console.log(data)
+                        $('.I_edit_title').text('编辑资料');
+                        var edit_DepartmentName = data.AppendData.DepartmentName;
+                        $('.I_edit_from').html(`
+                                                <div class ="form-group">
+                                                    <label id="edit_lbl_DepartmentName" class ="col-md-3 control-label">渠道名称</label>
+                                                    <div class ="col-md-8">
+                                                        <select class ="form-control" disabled="disabled" id="edit_DepartmentName">
+                                                            <option value='${loginInfo.ChannelId}'>${loginInfo.ChannelName}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class ="form-group">
+                                                    <label id="edit_lbl_TrueName" class="col-md-3 control-label">用户名</label>
+                                                    <div class="col-md-8">
+                                                        <input name="edit_TrueName" type="text" value="${data.AppendData.TrueName}" rule="/\\S/" id="edit_TrueName" class="form-control Idata" placeholder="用户名">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label id="edit_lbl_PhoneNum" class="col-md-3 control-label">手机号码</label>
+                                                    <div class="col-md-8">
+                                                        <input name="edit_PhoneNum" type="tel" value="${data.AppendData.PhoneNum}" rule="/^1[3456789]\\d{9}$/" id="edit_PhoneNum" class="form-control Idata" placeholder="手机号码">
+                                                    </div>
+                                                </div>
+                                                <div class ="form-group">
+                                                    <label id="edit_lbl_status" class ="col-md-3 control-label">账号状态</label>
+                                                    <div class ="col-md-8">
+                                                        <label class ="lbl_edit_status"><input type="radio" name='I_status' value='1' class ='edit_status' ${data.AppendData.UserStatus == 1 ? 'checked="checked"' : ''} >可用</label>
+                                                        <label class ="lbl_edit_status"><input type="radio" name='I_status' value='2' class ='edit_status' ${data.AppendData.UserStatus == 2 ? 'checked="checked"' : ''}>停用</label>
+                                                    </div>
+                                                </div>
+                                                `);
+                        ShowUI('edit_Eject_Modal');
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }
+            })
+        })
+        //编辑  取消按钮点击
+        $('body').on('click', '#edit_Eject_default', function () {
+            HideUI('edit_Eject_Modal');
+        })
+        //编辑  确认按钮点击
+        $('body').on('click', '#edit_Eject_primary', function () {
+            if (required('edit_Eject_Modal')) { //验证
+                return false;
+            }
+            var TrueName = $('#edit_TrueName').val();
+            var PhoneNum = $('#edit_PhoneNum').val();
+            var UserStatus = $('.edit_status:checked').val();//用户状态 0.取消开通 1 .正常 2.停用 3.删除 4.未审核 ,
+            //ajax提交
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: APIS.UpdateChannelUser,
+                data: {
+                    'Id': editID,
+                    'TrueName': TrueName,
+                    'PhoneNum': PhoneNum,
+                    'UserStatus': UserStatus,
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('edit_Eject_Modal');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        })
+
+
+        //删除按钮点击
+        $('body').on('click', '.modal_del', function () {
+            var _this = $(this);
+            var del_data = _this.attr('data-id');
+            var r = confirm("确定删除？")
+            if (r == true) {
+                //ajax 删除
+                showLoad();
+                $.ajax({
+                    type: 'POST',
+                    url: APIS.DeleteActivity,
+                    dataType: "json",
+                    data: { '': del_data },
+                    success: function (data) {
+                        hideLoad();
+                        if (data.ResultType == 200) {
+                            SuccessBox(data.Message);
+                            GetAppendData();
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideLoad();
+                        ErrorBox('当前网络较差，请刷新重试');
+                    }
+                })
+            }
+        })
+
+
+
+        //  checkbox
+        $('body').on('click', '.SOGchk', function () {
+            if (!$(this).attr('checked')) {
+                $('.allCheck').prop("checked", false);
+            }
+        })
+
+        //复制活动
+        $('#I_copy_activity').on('click', function () {
+
+        })
+
+        // 删除check
+        function del_check() {
+            var del_num = $('.SOGchk:checked').length;
+            var departmentIds = []; //需删除的id的集合
+            $('.SOGchk:checked').each(function () {
+                var del_data = $(this).attr("data-id");
+                departmentIds.push(del_data);
+            })
+            if (del_num > 0) {
+                //ajax 执行删除
+                var r = confirm("确定删除？")
+                if (r == true) {
+                    //ajax 删除
+                    showLoad();
+                    $.ajax({
+                        type: 'POST',
+                        url: APIS.DeleteUser,
+                        dataType: "json",
+                        data: { '': departmentIds },
+                        success: function (data) {
+                            hideLoad();
+                            if (data.ResultType == 200) {
+                                SuccessBox(data.Message);
+                                GetAppendData();
+                            } else {
+                                ErrorBox(data.Message);
+                            }
+                        }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            hideLoad();
+                            ErrorBox('当前网络较差，请刷新重试');
+                        }
+                    })
+                }
+            } else {
+                ErrorBox('请勾选要删除的项');
+            }
+        }
+
+        //重置密码
+        $('body').on('click', '.Reset_passWord', function () {
+            var dataId = $(this).attr('data-id');//用户id
+            var r = confirm("确定重置该用户的密码？")
+            if (r == true) {
+                showLoad();
+                $.ajax({
+                    type: "post",
+                    url: APIS.ResetPassword + "/" + dataId,
+                    dataType: "json",
+                    success: function (result) {
+                        hideLoad();
+                        var data = result;
+                        if (data.ResultType == 200) {
+                            SuccessBox(data.Message);
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideLoad();
+                        ErrorBox('当前网络较差，请刷新重试');
+                    }
+                });
+            }
+        })
+
+        //审核用户
+        $('body').on('click', '.Reset_examine', function () {
+            editID = $(this).attr('data-id');//用户id
+            $('.I_Examine_title').html('审核通过');
+            $('.I_Examine_from').html('<p>销售员账号审核通过，我们将会发送随机密码到账户手机！</p>')
+            ShowUI('Examine_Modal')
+        })
+        $('#Examine_default').click(function () {
+            HideUI('Examine_Modal')
+        })
+        $('#Examine_primary').on('click', function () {
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: APIS.ApprovalUser,
+                dataType: "json",
+                data: {
+                    "Id": editID,
+                    "Status": 1
+                },
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('Examine_Modal')
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+        })
+
+        //切换用户状态
+        $('body').on('click', '.Reset_toggle', function () {
+            var dataId = $(this).attr('data-id');//用户id
+            var UserStatus = 2;
+            if (!$(this).hasClass('Reset_stop')) {
+                UserStatus = 1;
+            }
+
+            //var r = confirm("确定重置该用户的密码？")
+            //if (r == true) {
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: APIS.ToggleChannelUser,
+                dataType: "json",
+                data: {
+                    'Id': dataId,
+                    'UserStatus': UserStatus
+                },
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+            //}
+        })
+
+    </script>
+</body>
+
+</html>

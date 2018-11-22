@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+
+    <script>
+
+        $(function () {
+
+            $("#btn").click(function () {
+
+                $.post("/api/home/getuserInfo", { Age: $("#age").val() }, function (value) {
+
+                    $("textarea").text(JSON.stringify(value));
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <p>hello world</p>
+    <input type="text"  value="3" id="age"/>
+    <input type="button" value="确定" id="btn" />
+    <textarea cols="80" rows="10">
+    </textarea>
+</body>
+</html>

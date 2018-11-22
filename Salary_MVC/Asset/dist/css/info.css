@@ -1,0 +1,93 @@
+html,body {
+    background: #fff;
+}
+
+.Info_main {
+    
+}
+.Info_main_h1 {
+    font-size: 32px;
+    text-align: center;
+    padding: 24px 0 34px;;
+    color: #fff;
+    background: #0f83b5;
+}
+.Info_ul {
+    margin: 24px 24px 40px;
+    background: #fff;
+    box-shadow: 3px 3px 39px 2px rgba(60,114,211,0.3);
+    border-radius: 10px;
+}
+.Info_li {
+
+}
+.Info_li_a {
+    padding: 27px 20px;
+    border-bottom: 1px solid #eee;
+}
+.Info_li_a span {
+    font-size:30px;
+    font-family:MicrosoftYaHei;
+    font-weight:400;
+    color:rgba(96,98,102,1);
+    padding-right: 50px;
+}
+.Info_li_a p {
+    text-align: right;
+    font-size:30px;
+    font-family:MicrosoftYaHei;
+    font-weight:400;
+    color:rgba(48,49,51,1);
+}
+.I_red {
+    color:rgba(236,91,115,1) !important;
+}
+.info_tex {
+    border-color: #eee;
+    width: calc(100% - 70px);
+    margin: 20px auto 40px;
+    display: block;
+    min-height: 150px;
+    font-size: 24px;
+    color: rgba(48,49,51,1);
+    padding: 10px;
+    box-shadow:3px 3px 39px 2px rgba(60,114,211,0.3);
+    border-radius: 5px;
+}
+.Info_btn {
+    margin: 0 auto;
+    text-align: center;
+}
+.Info_btn a {
+    padding: 20px 80px;
+    font-size: 24px;
+    margin: 0 20px 30px;
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    border: 1px solid rgb(59, 185, 239);
+    text-align: center;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-right: 20px;
+    line-height: 30px;
+}
+.Info_btn_agree {
+    color: #fff;
+    background: rgb(59, 185, 239)!important;
+}
+.Info_btn_veto {
+    background: #fff !important;
+    color: rgb(59, 185, 239)!important;
+}
+.Info_input {
+    text-align: right;
+    font-size: 30px;
+    font-family: MicrosoftYaHei;
+    font-weight: 400;
+    color: rgba(48,49,51,1);
+    border: none;
+}
+.Info_li_old {
+    background: #dedede;
+}

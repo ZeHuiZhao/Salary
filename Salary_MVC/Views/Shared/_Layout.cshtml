@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta name="format-detection" content="telephone=no" />
+    <link href="~/Asset/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    @*--------------------------------------------------- *@
+       
+
+        <link href="~/Asset/plugins/select2/select2.css" rel="stylesheet" />
+        <!-- table -->
+        <link href="~/Asset/dist/css/ovcss.css" rel="stylesheet" />
+        <!-- 提示框 -->
+        <link href="~/Asset/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+        <!-- layui 分页 -->
+        <link href="~/Asset/plugins/layui/css/layui.css" rel="stylesheet" />
+        <!--用户管理-->
+        <link href="~/Asset/dist/css/User_Center.css" rel="stylesheet" />
+    <style>
+        .width-department{
+            width:180px;
+        }
+
+        .width-status{
+            width:150px;
+        }
+
+        .btn-hide{
+            display:none;
+        }
+
+        /*table 样式 begin*/
+            .table-auto {
+                width: max-content;
+                max-width: max-content;
+                /*设置相邻单元格的边框间的距离*/
+                 border-spacing: 0;
+                 /*表格设置合并边框模型*/
+                 border-collapse: collapse;
+            }
+             .table-auto thead,
+             .table-auto tbody tr {
+                 display: table;
+                  table-layout: fixed;
+             }
+          .table-auto tbody {
+                display: block;
+                height: 500px;                 
+                overflow-y: scroll;
+             }
+       /*table 样式 end*/
+    </style>
+    @RenderSection("customStyle",false)
+    @*--------------------------------------------------- *@
+
+</head>
+<body>
+    <div class="container-fluid body-content">
+        @RenderBody()
+        <hr />
+        @*<footer>
+            <p>&copy; @DateTime.Now.Year</p>
+        </footer>*@
+    </div>
+
+  
+    <script src="~/Asset/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="~/Asset/bootstrap/js/bootstrap.min.js"></script>
+
+    @*----------------------------------------------------*@
+    <script src="~/Asset/plugins/laydate/laydate.js"></script>
+    <!-- 提示框js -->
+    <script src="~/Asset/plugins/sweetalert/sweetalert.js"></script>
+    <!-- 主标题和筛选 的js -->
+    <script src="~/Asset/dist/js/form_bow.js"></script>
+    <!-- layui 分页js -->
+    <script src="~/Asset/plugins/layui/layui.js"></script>
+    <!-- 拖动js （给需要可拖动弹出层的div 添加 class（modalDialog）即可 ） -->
+    <script src="~/Asset/dist/js/jquery-ui.js"></script>
+    <!-- select2 -->
+    <script src="~/Asset/plugins/select2/select2.js"></script>
+    <script src="~/Asset/dist/js/loadovos.js"></script>
+    <!-- 公共脚本 -->
+    <script src="~/Asset/dist/js/loadovos.js"></script>
+    <script src="~/Asset/dist/js/common.js"></script>
+    <script src="~/Asset/dist/js/config.js"></script>
+    @*-------------------------------------------------*@
+    @RenderSection("customScript",false)
+</body>
+</html>

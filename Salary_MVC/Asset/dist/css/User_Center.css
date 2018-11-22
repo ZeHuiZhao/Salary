@@ -1,0 +1,46 @@
+﻿
+.lbl_add_status,.lbl_edit_status {
+    padding: 0px 14px 0px 0;
+}
+.lbl_add_status input,.lbl_edit_status input {
+    position:relative;
+    top:1px;
+}
+
+.search_userStatus { 
+    display:inline-block; 
+    width: 150px;
+}
+.search_userType {
+    display:inline-block; 
+    width: 150px;
+}
+.add_line {
+        line-height: 45px;
+}
+.search_ul_a {
+    position: relative;
+    top: -1px;
+}
+.add_Sale_code {
+    background: #3BB9EF;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor:pointer;
+    
+}
+.add_right_btn {
+    position: relative;
+    top: -10px;
+}
+.add_right_btn:hover {
+    color:#fff;
+}
+
+.I_QRCode_from img {
+    display:block;
+    margin: 0 auto 20px;
+    max-width:300px;
+    max-height:300px;
+}

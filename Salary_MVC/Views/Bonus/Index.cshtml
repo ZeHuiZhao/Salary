@@ -1,0 +1,807 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "员工津贴";
+}
+
+@section customStyle{
+
+
+}
+<!-- 主标题 begin -->
+<div class="ov-tit ov-line rel clearfix">
+    <h1 class="ov-theme">员工津贴</h1>
+    
+    <div class="search_ul">
+        <input class="layui-input" id="I_search_month" placeholder="" type="text">
+        <select class="form-control search_userType" id="I_search_companyId">
+            <option value="">--所有公司--</option>
+        </select>
+        <select class="form-control search_userType" id="I_search_departmentId">
+            <option value="">--所有部门--</option>
+        </select>
+        <select name="search_status" class="form-control search_userType" id="I_search_status">
+            <option value="-1">--所有状态--</option>
+            <option value="@((int)Salary_MVC.Enum.ApproveStatus.待发起审核)">@(Salary_MVC.Enum.ApproveStatus.待发起审核.ToString())</option>
+            <option value="@((int)Salary_MVC.Enum.ApproveStatus.待财务审核)">@(Salary_MVC.Enum.ApproveStatus.待财务审核.ToString())</option>
+            <option value="@((int)Salary_MVC.Enum.ApproveStatus.财务同意)">@(Salary_MVC.Enum.ApproveStatus.财务同意.ToString())</option>
+            <option value="@((int)Salary_MVC.Enum.ApproveStatus.财务否决)">@(Salary_MVC.Enum.ApproveStatus.财务否决.ToString())</option>
+        </select>
+        <input type="text" name="search_name" class="form-control" id="I_search_name" placeholder="请输入姓名">
+        <a class="search_ul_a" id="search_button">查询</a>
+    </div>
+    <div class="icon_fun abs bot10">
+        <a class="add_right_btn add_Sale_code" id="open_Increase_Modal">新增</a>
+        <a class="add_right_btn add_Sale_code" id="open_Approve_Modal">发起审核</a>
+    </div>
+
+</div>
+<!-- 主标题 end -->
+<!-- 内容表格 begin -->
+<div class="ov-form table-responsive I_department_form">
+    <!-- 表格数据 -->
+    <table class="table table-striped table-bordered table-auto" id="I_department">
+        <thead>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<!-- 内容表格 end -->
+
+    <!-- 新增弹层 -->
+<div class="ov-add modal fade I_modal" id="Increase_Modal">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_increase_title">新增津贴</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_increase_from">
+                    <!-- 填充表单 -->
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" id="close_Increase_default" class="btn btn-default">取消</button>
+                <button type="button" id="Increase_primary" class="btn btn-primary ">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑弹出 -->
+<div class="ov-edit modal fade I_modal" id="Edit_Modal" tabindex="-1" role="dialog">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_edit_title">修改津贴</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_edit_from">
+
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" id="close_Edit_default" class="btn btn-default">取消</button>
+                <button type="button" id="Edit_primary" class="btn btn-primary">确定</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑弹出 -->
+<div class="ov-add modal fade I_modal" id="Approve_Modal">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_increase_title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_Approve_from">
+                    <p>要对选中的津贴记录发起审核吗？</p>
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" id="close_Approve_default" class="btn btn-default">取消</button>
+                <button type="button" id="Approve_primary" class="btn btn-primary ">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*审核进度*@
+<div class="ov-add modal fade I_modal" id="ApproveLog_Modal">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_increase_title"><span></span>审核进度</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_ApproveLog_from">
+
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" id="close_ApproveLog_default" class="btn btn-default">关闭</button>
+                @*<button type="button" id="Import_primary" class="btn btn-primary ">确定</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section customScript{
+    <script>
+        var monthValue = "@(DateTime.Now.ToString("yyyy-MM-dd"))";
+        var searchMonthValue = "@(DateTime.Now.ToString("yyyy-MM"))";
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#I_search_month' //指定元素
+                 , type: 'month'
+                , value: searchMonthValue
+                , showBottom: false
+                , ready: function (date) {
+                    $(".layui-laydate").off('click').on('click', '.laydate-month-list li', function () {
+                        $(".layui-laydate").remove();
+                    });
+                }
+                , change: function (value, dates, edate) {
+                    $('#I_search_month').val(value);
+                    GetAppendData();
+                }
+                // , max:monthValueMax
+            });
+            //初始数据
+            try {
+                zlCombCompanyAndDepartment($("#I_search_companyId"), $("#I_search_departmentId"));
+                GetAppendData()//获取初始表数据
+            } catch (err) {
+            }
+
+        });
+
+
+    </script>
+
+
+    <script>
+        // 表格数据
+        var page_first = 0; //第一次获取列表数据
+        var editID = ''; //编辑id
+        // 翻页
+
+        function GetAppendData() {
+            showLoad();
+            data_head = `<tr>
+                                                    <th class =" width-chk">    <input type="checkbox" onclick="all_check(this);" class ="allCheck"></th>
+                                                    <th class =" width-sm">     姓名</th>
+                                                    <th class =" width-lg">     部门</th>
+                                                    <th class =" width-lg">     财务核算单位</th>
+                                                    <th class =" width-md">     手机号码</th>
+                                                    <th class =" width-xs">     金额</th>
+                                                    <th class =" width-date">开始日期</th>
+                                                    <th class =" width-date">结束日期</th>
+                                                    <th class ="width-md ">             说明</th>
+                                                    <th class =" width-md">     状态</th>
+                                                    <th class =" width-md">     附件</th>
+                                                    <th class =" width-md">     操作</th>
+                                            </tr>`;
+            $('#I_department thead').html(data_head);
+            var I_search_status = $('#I_search_status').val();
+            var I_search_name = $('#I_search_name').val();
+            $.ajax({
+                type: 'POST',
+                url: '../Bonus/GetEntity',
+                data: {
+                    'Status': I_search_status,
+                    'Name': I_search_name,
+                    'CompanyId': $('#I_search_companyId').val(),
+                    'DepartmentId': $('#I_search_departmentId').val(),
+                    'Month': $('#I_search_month').val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        var data_box = data.AppendData;
+                        var data_thead = []; //表头的数组
+                        var data_head = '';//表头
+                        var data_main = '';//表内容
+                        var data_length = data_box.length; //内容条数
+                        for (var i = 0; i < data_length; i++) {
+                            if (page_first == 0) {
+                                page_first = 1;
+                                if (i == 0) {
+
+                                }
+                            }
+                            var element = data_box[i];
+                            data_main += `<tr data-id="${data_box[i].Id}">
+                                            <td class =" width-chk"> <input name="gv_data_ct${data_box[i].Id}_check" data-id="${data_box[i].Id}"  class ="SOGchk"}  type="checkbox"></td>
+                                            <td class =" width-sm">  ${data_box[i].Name}</td>
+                                            <td class =" width-lg">  ${data_box[i].DepartmentName}</td>
+                                            <td class =" width-lg">  ${data_box[i].FinancialUnitName}</td>
+                                            <td class =" width-md">  ${data_box[i].Mobile}</td>
+                                            <td class =" width-xs">  ${data_box[i].Money}</td>
+                                            <td class =" width-date">${data_box[i].StartDate}</td>
+                                            <td class =" width-date">${data_box[i].EndDate}</td>
+                                            <td class ="width-md ">  ${data_box[i].Comment}</td>
+                                            <td class =" width-md">  <a class ="btn_ApproveLog ${"col-display-status"+data_box[i].StatusValue}"  data-id="${data_box[i].Id}" >${data_box[i].Status}</a></td>
+                                            <td class =" width-md">  <a class ="btn-link ${!data_box[i].FilePath?"btn-hide":""}" data-id=""  target="_blank" href="${data_box[i].FilePath}" >预览</a><a class ="btn_download btn-link ${!data_box[i].FilePath?"btn-hide":""}" data-id="${data_box[i].Id}" >下载</a></td>
+                                            <td class =" width-md">  <a class ="btn_channel btn_edit Reset_examine ${"col-handler-status"+data_box[i].StatusValue}"  data-status="${data_box[i].StatusValue}"  data-id="${data_box[i].Id}" >修改</a><a class ="btn_channel btn_delete Reset_examine ${"col-handler-status"+data_box[i].StatusValue}" data-status="${data_box[i].StatusValue}"  data-id="${data_box[i].Id}" data-name="${data_box[i].Name}"  >删除</a></td>
+
+                                        </tr>`
+                        }
+                        $('#I_department tbody').html(data_main);
+                        var clienH = $(window).height() - 250;
+                        $(' .table-auto tbody').css({ 'height': clienH + 'px' });
+                        //$('.info-sum-employee span').text(data.AppendData.totalEmployee);
+                        //$('.info-sum-money span').text(data.AppendData.totalMoney);
+                        //$("#housermoneymaster_id").val(data.AppendData.master.Id);
+
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    ErrorBox('暂无数据内容');
+                    hideLoad();
+                }
+            })
+        }
+
+        function all_check(_this) {
+            $(".SOGchk").each(function () {
+                $(this).prop("checked", _this.checked);
+            })
+
+            num_check()
+        };
+
+        $('body').on('click', '.SOGchk', function () {
+            if (!$(this).attr('checked')) {
+                $('.allCheck').prop("checked", false);
+            }
+            num_check()
+        });
+
+        function num_check() {
+            var check_length = $('.SOGchk:checked').length;
+            $('#I_number').html(check_length);
+        };
+
+        //下载附件
+        $("body").on("click", ".btn_download", function () {
+            var id= $(this).data("id");
+            $("body").append('<iframe src="../File/GetAttachment?sourceId=' + id + '" height="0"></iframe>')
+            return false;
+        });
+        //查看审核进度btn_ApproveLog
+        $("body").on("click", ".btn_ApproveLog", function () {
+            showLoad();
+            var id = $(this).data("id");
+            //$("#ApproveLog_Modal h4 span").text(I_search_month);
+            $.ajax({
+                type: "post",
+                url: '../ApproveLog/GetEntityByTargetId',
+                data: {
+                    "targetId": id
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        //var strdata = JSON.stringify(data.AppendData);
+                        var strdata = data.AppendData;//JSON.stringify(data.AppendData);
+                        //console.log(strdata.lenth);
+                        //console.log(strdata[0]);
+                        //console.log(strdata[0].Name);
+                        var strdata_html = '';
+                        for (var i = 0; i < strdata.length; i++) {
+                            strdata_html += `<div class="approve_li">
+                                                    <h3 class ="approve_h3">${strdata[i].Name}<span class ="approve_span">(${strdata[i].OperatorTime}) </span>  <i class="app_i  app_yes">${strdata[i].TargetStatus}</i></h3>
+                                                    <p class ="approve_p">${strdata[i].Comment}<a class ="Handler_a  ${strdata[i].Handler == '通过' ? 'Handler_yes' : 'Handler_no'}">${strdata[i].Handler}</a></p>
+                                                  </div>`;
+                        }
+                        strdata_html = strdata_html == '' ? "未开始审核" : strdata_html;
+                        $('.I_ApproveLog_from').html(`
+
+                                                    <div class="approve_ul">
+                                                        ${strdata_html}
+                                                    </div>
+                                        `);
+                        ShowUI('ApproveLog_Modal');
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                }
+            });
+            return false;
+        });
+
+        // 查看审核进度-关闭
+        $('body').on('click', '#close_ApproveLog_default', function () {
+            HideUI('ApproveLog_Modal');
+        });
+
+        $('#search_button').click(function () {
+            GetAppendData();
+        })
+
+        // 打开新增弹窗
+        $('body').on('click', '#open_Increase_Modal', function () {
+            $.post("../Department/GetEntityWithKeyValue", {}, function (data) {
+                if (!data.AppendData)
+                    return;
+                var options = data.AppendData.map(function (el) {
+                    return "<option value='"+el.Id+"'>"+el.Name+"</option>";
+                });
+                $('.I_increase_from').html(`
+                                        <div class ="form-group">
+                                            <label id="add_lbl_DepartmentName" class ="col-md-3 control-label">部门</label>
+                                            <div class ="col-md-8">
+                                                <select class ="form-control SOGSearchDropDownList"  id="add_DepartmentName">
+                                                      ${options}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_DepartmentName" class ="col-md-3 control-label">姓名</label>
+                                            <div class ="col-md-8">
+                                                <select class ="form-control SOGSearchDropDownList"  id="add_EmployeeName">
+                                                    <option value='1'>胡蓉</option>
+                                                    <option value='2'>罗思洁</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="add_lbl_PhoneNum" class="col-md-3 control-label">手机号码</label>
+                                            <div class="col-md-8">
+                                                <input name="add_PhoneNum" disabled="disabled" type="tel" value="" id="add_PhoneNum" rule="/^1[3456789]\\d{9}$/" class ="form-control Idata" placeholder="手机号码">
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label">金额</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_Money" type="text" value="" rule="/\\S/" id="add_Money" class ="form-control Idata" placeholder="金额">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label">开始日期</label>
+                                            <div class ="col-md-8">
+                                                <input class ="layui-input" id="I_Start_month" placeholder="" type="text" rule="/\\S/">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label">结束日期</label>
+                                            <div class ="col-md-8">
+                                                <input class ="layui-input" id="I_End_month" placeholder="" type="text" rule="/\\S/">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label">说明</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_Comment" type="text" value=""  id="add_Comment" class ="form-control Idata" placeholder="说明">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label align-right">附件</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_File" type="file" id="I_add_File"  />
+                                                <input name="save_File" class ="hide" type="text" id="I_save_File"   />
+                                            </div>
+                                        </div>
+                                        `);
+                var laydate = layui.laydate;
+                //执行一个laydate实例
+                laydate.render({
+                    elem: '#I_Start_month' //指定元素
+                    ,value: monthValue
+                });
+
+                laydate.render({
+                    elem: '#I_End_month' //指定元素
+               
+                });
+                $('.SOGSearchDropDownList').select2();
+                $('#add_DepartmentName').change(employeeCombHandler);
+                $('#add_EmployeeName').change(employeeInfoHandler);
+                //change
+                //$('#I_SOGsel').change(function () {
+                //    console.log('change=', $('#I_SOGsel').val());
+                //});
+
+                //回填值
+                //$('#I_SOGsel').val(2).trigger("change");
+
+
+                ShowUI('Increase_Modal');
+                //console.log( $("#add_DepartmentName").val());
+                employeeCombHandler();
+            })
+        
+        })
+
+        //$('body').on("click", "#add_DepartmentName", employeeCombHandler);
+
+        //级联更新员工下拉列表的数据
+        function employeeCombHandler() {
+            var id = $("#add_DepartmentName").val();
+            if (!id)
+                return;
+            $.post("../Employee/GetEntityWithKeyValueByDepartmentId", {"id":id}, function (data) {
+                if (!data.AppendData)
+                    return;
+                var options = data.AppendData.map(function (el) {
+                    return "<option value='" + el.Id + "'>" + el.Name + "</option>";
+                });
+                $("#add_EmployeeName").html(options);
+                employeeInfoHandler();
+            });
+        };
+
+        //$('body').on("click", "#add_EmployeeName", employeeInfoHandler);
+
+        function employeeInfoHandler() {
+
+            //console.log($(this));
+            var id = $("#add_EmployeeName").val();
+            if (!id)
+                return;
+            $.get("../Employee/GetEntityById", { "id": id }, function (data) {
+                $("#add_PhoneNum").val(data.AppendData.Mobile);
+            });
+        };
+
+        // 关闭新增弹窗
+        $('body').on('click', '#close_Increase_default', function () {
+            HideUI('Increase_Modal');
+        });
+        var fileGroup = "@((int)Salary_MVC.Enum.FileGroupEnum.津贴)";
+        $("body").on("change", "#I_add_File", function () {
+            
+            var filePath = $(this).val();//读取图片路径
+            if (!filePath)
+                return;
+            showLoad();
+            var imgObj = this.files[0];//获取图片
+            var formData = new FormData();
+            formData.append("file", $('#I_add_File')[0].files[0]);
+            formData.append("name", $('#I_add_File').val());
+            formData.append("Group", fileGroup);
+            var obj = $(this).prev()[0];//
+            if (filePath.indexOf("png") != -1 || filePath.indexOf("bmp") != -1 || filePath.indexOf("jpg") != -1 || filePath.indexOf("jpeg") != -1 || filePath.indexOf("pdf") != -1) {
+                $.ajax({
+                    type: "post",
+                    url: "../File/UploadFile",
+                    data: formData,
+                    contentType: false,// 告诉jQuery不要去设置Content-Type请求头
+                    processData: false,// 告诉jQuery不要去处理发送的数据
+                    success: function (result) {
+                        hideLoad();
+                        if (result.ResultType == 200) {
+                            $('#I_save_File').val(result.Message);
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideLoad();
+                    }
+                });
+
+            } else {
+                hideLoad();
+                ErrorBox('您未上传文件，或者您上传文件类型有误！');
+                $(this).val('');
+                return false
+            }
+        });
+        //新增确认按钮点击
+        $("body").on('click', '#Increase_primary', function () {
+            if (required('Increase_Modal')) { //验证
+                return false;
+            }
+            var EmployeeId = $('#add_EmployeeName').val();
+            var Money = $('#add_Money').val();
+            var StartDate = $('#I_Start_month').val();
+            var EndDate = $('#I_End_month').val();
+            var Comment = $('#add_Comment').val();
+            var Attachment = $('#I_save_File').val();
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: "../Bonus/Add",
+                data: {
+                    'EmployeeId': EmployeeId,
+                    'Money': Money,
+                    'StartDate': StartDate,
+                    'EndDate': EndDate,
+                    'Comment': Comment,
+                    'Attachment': Attachment
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('Increase_Modal');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+        });
+
+        var editableSatus = "@((int)Salary_MVC.Enum.ApproveStatus.待发起审核)";
+        //打开编辑弹窗
+        $('body').on('click', '.btn_edit', function () {
+            var id = $(this).data("id");
+            if (!id)
+                return;
+            var status = $(this).data("status");
+            if (status != editableSatus)
+                return;
+            $.post("../Bonus/GetEntityById", {"id":id}, function (data) {
+                $('.I_edit_from').html(`
+                                        <div class ="form-group">
+                                            <label id="add_lbl_DepartmentName" class ="col-md-3 control-label">部门</label>
+                                            <div class ="col-md-8">
+                                            <input type="hidden" value="${data.AppendData.Id}" id="edit_Id"  class ="form-control Idata" placeholder="">
+                                                <input name="add_DepartmentName" disabled="disabled"  value="${data.AppendData.DepartmentName}" id="edit_DepartmentName"  class ="form-control Idata" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_DepartmentName" class ="col-md-3 control-label">姓名</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_EmployeeName" disabled="disabled" value="${data.AppendData.Name}"  id="edit_EmployeeName"  class ="form-control Idata" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="add_lbl_PhoneNum" class="col-md-3 control-label">手机号码</label>
+                                            <div class="col-md-8">
+                                                <input name="add_PhoneNum" disabled="disabled" type="tel" value="${data.AppendData.Mobile}" id="edit_PhoneNum" rule="/^1[3456789]\\d{9}$/" class ="form-control Idata" placeholder="手机号码">
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label">金额</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_Money" type="text" value="${data.AppendData.Money}" rule="/\\S/" id="edit_Money" class ="form-control Idata" placeholder="金额">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label">开始日期</label>
+                                            <div class ="col-md-8">
+                                                <input class ="layui-input" id="edit_I_Start_month"  placeholder="" type="text" rule="/\\S/">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label">结束日期</label>
+                                            <div class ="col-md-8">
+                                                <input class ="layui-input" id="edit_I_End_month" placeholder="" type="text" rule="/\\S/">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label">说明</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_Comment" value="${data.AppendData.Comment}" type="text" value=""  id="edit_Comment" class ="form-control Idata" placeholder="说明">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label align-right">附件</label>
+                                            <div class ="col-md-8">
+                                                <button class ="btn_download ${!data.AppendData.FileName?"btn-hide":""}" id="attachmentFile" data-id="${data.AppendData.Id}">${data.AppendData.FileName}</button>
+                                                <input name="edit_add_File" type="file" id="edit_I_add_File"     />
+                                                <input name="edit_save_File" class ="hide" type="text" id="edit_I_save_File" value="${data.AppendData.FilePath}"   />
+                                            </div>
+                                        </div>
+                                        `);
+                var laydate = layui.laydate;
+                //执行一个laydate实例
+                laydate.render({
+                    elem: '#edit_I_Start_month' //指定元素
+                    , value: data.AppendData.StartDate
+                });
+
+                laydate.render({
+                    elem: '#edit_I_End_month' //指定元素
+                    , value: data.AppendData.EndDate
+                });
+                ShowUI('Edit_Modal');
+                //console.log( $("#add_DepartmentName").val());
+            })
+
+        });
+
+        // 关闭编辑弹窗
+        $('body').on('click', '#close_Edit_default', function () {
+            HideUI('Edit_Modal');
+        });
+        $("body").on("change", "#edit_I_add_File", function () {
+            
+            var filePath = $(this).val();//读取图片路径
+            if (!filePath)
+                return;
+            showLoad();
+            var imgObj = this.files[0];//获取图片
+            var formData = new FormData();
+            formData.append("file", $('#edit_I_add_File')[0].files[0]);
+            formData.append("name", $('#edit_I_add_File').val());
+            formData.append("Group", fileGroup);
+            var obj = $(this).prev()[0];//
+            if (filePath.indexOf("png") != -1 || filePath.indexOf("bmp") != -1 || filePath.indexOf("jpg") != -1 || filePath.indexOf("jpeg") != -1 || filePath.indexOf("pdf") != -1) {
+                $.ajax({
+                    type: "post",
+                    url: "../File/UploadFile",
+                    data: formData,
+                    contentType: false,// 告诉jQuery不要去设置Content-Type请求头
+                    processData: false,// 告诉jQuery不要去处理发送的数据
+                    success: function (result) {
+                        $("#attachmentFile").hide();
+                        hideLoad();
+                        if (result.ResultType == 200) {
+                            $('#edit_I_save_File').val(result.Message);
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideLoad();
+                    }
+                });
+
+            } else {
+                hideLoad();
+                ErrorBox('您未上传文件，或者您上传文件类型有误！');
+                $(this).val('');
+                return false
+            }
+        });
+        //编辑确认按钮点击
+        $("body").on('click', '#Edit_primary', function () {
+            if (required('Edit_Modal')) { //验证
+                return false;
+            }
+            //var EmployeeId = $('#add_EmployeeName').val();
+            var Id = $('#edit_Id').val();
+            var Money = $('#edit_Money').val();
+            var StartDate = $('#edit_I_Start_month').val();
+            var EndDate = $('#edit_I_End_month').val();
+            var Comment = $('#edit_Comment').val();
+            var FilePath = $('#edit_I_save_File').val();
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: "../Bonus/Edit",
+                data: {
+                    'Id': Id,
+                    'Money': Money,
+                    'StartDate': StartDate,
+                    'EndDate': EndDate,
+                    'Comment': Comment,
+                    'FilePath': FilePath
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('Edit_Modal');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+        });
+
+
+        //删除按钮点击
+        $('body').on('click', '.btn_delete', function () {
+            //var _this = $(this);
+            //var del_data = _this.attr('data-id');
+            //var departmentIds = []; //需删除的id的集合
+            //var I_search_month = $('#I_search_month').val();
+            var status = $(this).data("status");
+            if (status != editableSatus)
+                return;
+            var name = $(this).data("name");
+            var id = $(this).data("id");
+            var r = confirm("确定要删除【" + name + "】的津贴记录吗？")
+            if (!r)
+                return;
+            //departmentIds.push(del_data);
+            //ajax 删除
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                url: "../Bonus/DeleteById",
+                dataType: "json",
+                data: { 'id': id, },
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        })
+
+        //发起审核
+        $('body').on('click', '#open_Approve_Modal', function () {
+            var num = $('.SOGchk:checked').length;
+            if (num<1) {
+                ErrorBox('请勾选要发起审核的津贴记录');
+                return;
+            }
+            ShowUI('Approve_Modal');
+        });
+        // 发起审核-关闭
+        $('body').on('click', '#close_Approve_default', function () {
+            HideUI('Approve_Modal');
+        });
+        //发起审核-确定
+        $("body").on('click', '#Approve_primary', function () {
+            var num = $('.SOGchk:checked').length;
+            if (num < 1) {
+                ErrorBox('请勾选要发起审核的津贴记录');
+                return;
+            }
+            var ids = []; //需删除的id的集合
+            $('.SOGchk:checked').each(function () {
+                var id = $(this).attr("data-id");
+                ids.push(id);
+            });
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: '../Bonus/ApproveByHR',
+                data: JSON.stringify({ "TargetIds": ids }),
+                contentType:"application/json",
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('Approve_Modal');
+                        GetAppendData();
+                        //window.location.reload();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                }
+            });
+        });
+
+        
+
+    </script>
+}

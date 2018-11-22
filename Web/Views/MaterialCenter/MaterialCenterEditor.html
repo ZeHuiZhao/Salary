@@ -1,0 +1,344 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>添加素材</title>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta name="format-detection" content="telephone=no" />
+    <meta charset="utf-8" />
+    <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../dist/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="../../dist/css/ovcss.css" rel="stylesheet" />
+    <link href="../../dist/css/font-awesome.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="Material_form clearfix" id="I_Material_form">
+        <h1 class="Material_h1">新增素材:</h1>
+        <input class="hide" hidden="hidden" placeholder="渠道id" id="I_ChannelId" />
+        <div class="form-group clearfix ">
+            <label class="col-sm-2 control-label control_right control_tit">标题</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control Idata" rule="/\S/" id="inputTitle" placeholder="标题">
+            </div>
+        </div>
+        <div class="form-group clearfix ">
+            <label class="col-sm-2 control-label control_right control_tit">摘要</label>
+            <div class="col-sm-8">
+                <textarea type="text" class="form-control Idata" rule="/\S/" id="inputIntro" placeholder="（分享）摘要"></textarea>
+            </div>
+        </div>
+        <div class="form-group clearfix ">
+            <label class="col-sm-2 control-label control_right control_tit">素材类别</label>
+            <div class="col-sm-8">
+                <select class="form-control form_Type Idata" rule="/\S/" id="inputType">
+                    <option value="">--请选择--</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="form-group clearfix ">
+            <label class="col-sm-2 control-label control_right control_tit">可用状态</label>
+            <div class="col-sm-8">
+                <select class="form-control form_Type Idata" rule="/\S/" id="inputSock">
+                    <option value="">--请选择--</option>
+                    <option value="1">可用</option>
+                    <option value="0">不可用</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="form-group  clearfix " id="form_time">
+            <label class="col-sm-2 control-label control_right control_tit">点击量</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="VirtualTimes" placeholder="点击量">
+            </div>
+        </div>
+        <div class="form-group clearfix ">
+            <label class="col-sm-2 control-label control_right control_tit">封面图片</label>
+            <div class="col-sm-8">
+                <input type="file" class="form_file control_tit" id="inputFile">
+                <input name="save_Img" class="hide" hidden="hidden" type="text" id="I_save_Img">
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label class="col-sm-2 control-label control_right control_tit">正文</label>
+            <div class="col-sm-8">
+                <script id="editor" type="text/plain" style="width:100%;height:400px;">
+                </script>
+            </div>
+        </div>
+        <div class="btn_button col-sm-10 control_right">
+            <a id="close_Material_default" class="btn btn-default">取消</a>
+            <a id="Material_primary" class="btn btn-primary ">发布</a>
+        </div>
+    </div>
+
+    <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../plugins/sweetalert/sweetalert.js"></script>
+
+    <script src="../../plugins/ueditor/ueditor.config.js"></script>
+    <script src="../../plugins/ueditor/ueditor.all.js"></script>
+
+    <script src="/ueditor/ueditor.config.js"></script>
+    <script src="/ueditor/ueditor.all.js"></script>
+    <script src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="../../dist/js/loadovos.js"></script>
+    <script src="../../plugins/laydate/laydate.js"></script>
+    <script src="../../dist/js/common.js"></script>
+    <script src="../../dist/js/config.js"></script>
+    <script type="text/javascript">
+
+
+        Array.prototype.in_array = function (e) {
+            var r = new RegExp(',' + e + ',');
+            return (r.test(',' + this.join(this.S) + ','));
+        };
+
+        //实例化编辑器
+        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+        var ue = UE.getEditor('editor');
+
+        //获取素材类别
+        $.ajax({
+            type: "get",
+            url: APIS.GetMaterialTypeList,
+            dataType: "json",
+            success: function (result) {
+                var data = result;
+                if (data.ResultType == 200) {
+                    var items = data.AppendData;
+                    var type_html = '';
+                    for (var i = 0; i < items.length; i++) {
+                        type_html += '<option value="' + items[i].Id + '">' + items[i].TypeName + '</option>';
+                    }
+                    $('#inputType').append(type_html);
+                }
+            }
+        });
+
+        //获取 edit_id
+        if (getUrlParam('edit_id')) {
+            //编辑状态
+            showLoad();
+            $('.Material_h1').html('编辑素材:');
+            $.ajax({
+                type: "get",
+                url: APIS.GetMaterialById + '/' + getUrlParam('edit_id'),
+                dataType: "json",
+                success: function (result) {
+                    var data = result;
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        var items = data.AppendData;
+                        $('#inputTitle').val(items.MaterialTitle);
+                        $('#inputIntro').val(items.MaterialSummary);
+                        $('#inputType').val(items.MaterialType);
+                        $('#I_save_Img').val(items.CoverImg)
+                        $('#VirtualTimes').val(items.VirtualTimes);
+                        //添加时间控件
+                        var datatime = ` <div class="form-group clearfix ">
+                                            <label  class ="col-sm-2 control-label control_right control_tit ">显示日期</label>
+                                            <div class="col-md-8">
+                                                <input name="add_CB_BUSINESS_SOGDate" type="data" value='${items.DisplayTime}' id="DisplayTime"  class ="form-control SOGDateTime" placeholder="显示日期">
+                                            </div>
+                                        </div>`;
+                        $('#form_time').after(datatime);
+                        laydate.render({
+                            elem: '.SOGDateTime'
+                            , theme: '#3bb9ef'
+                             , type: 'date'
+                             , max: 1
+                        });
+                        if (items.CoverImg != '') {
+                            $('#inputFile').after('<span style="font-size: 12px;color: #a94442; ">（已有图片，如需更换可重新选择上传）</span>')
+                        }
+                        $('#inputSock').val(items.IsActive);
+                        
+                        UE.getEditor('editor').addListener("ready", function () {
+                            // editor准备好之后才可以使用
+                            UE.getEditor('editor').setContent(items.MaterialContent);
+                        });
+                        $('#I_ChannelId').val(items.ChannelId);
+                        $('#Material_primary').attr('id', 'UpdateMaterial_primary');
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                }
+            });
+        } else {
+            $('#I_ChannelId').val(loginInfo.ChannelId);
+        }
+
+        //上传图片
+        $("body").on("change", "#inputFile", function () {
+            showLoad();
+            var filePath = $(this).val();//读取图片路径
+            var imgObj = this.files[0];//获取图片
+            var formData = new FormData();
+            formData.append("file", $('#inputFile')[0].files[0]);
+            formData.append("name", $('#inputFile').val());
+            var obj = $(this).prev()[0];//
+            if (filePath.indexOf("jpg") != -1 || filePath.indexOf("JPG") != -1 || filePath.indexOf("PNG") != -1 || filePath.indexOf("png") != -1) {
+                $.ajax({
+                    type: "post",
+                    url: APIS.UploadFile,
+                    data: formData,
+                    contentType: false,// 告诉jQuery不要去设置Content-Type请求头
+                    processData: false,// 告诉jQuery不要去处理发送的数据
+                    success: function (result) {
+                        hideLoad();
+                        if (result.ResultType == 200) {
+                            $('#I_save_Img').val(result.Message);
+                            $('#inputFile').removeClass('SOGWarming')
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideLoad();
+                    }
+                });
+            } else {
+                hideLoad();
+                ErrorBox('您未上传文件，或者您上传文件类型有误！');
+                $(this).val('');
+                return false
+            }
+        })
+
+        $('body').on('click', '#Material_primary', function () {
+            if (required('I_Material_form')) {
+                return false;
+            }
+            var MaterialTitle = $('#inputTitle').val();     //素材标题
+            var MaterialContent = UE.getEditor('editor').getContent();   //素材内容
+            var MaterialSummary = $('#inputIntro').val();   //素材摘要
+            var CoverImg = $('#I_save_Img').val();          //素材封面
+            var MaterialTips = '';      //素材小提示
+            var MTId = $('#inputType').val();              //素材类别
+            var MaterialType = 2;      //素材来源类型1.中力素材 2. 渠道素材 3活动推广素材
+            var ActivityId = 0;        //活动推广id
+            var IsActive = $('#inputSock').val();          //是否可用 1可用 2不可用
+            var ChannelId = $('#I_ChannelId').val();         //渠道id
+            var VirtualTimes = $('#VirtualTimes').val()     //浏览量
+            if (VirtualTimes == '') {
+                VirtualTimes = 0;
+            }
+            if (CoverImg == '') {
+                $('#inputFile').addClass('SOGWarming');
+                ErrorBox('您未上传封面图片！');
+                return false;
+            }
+            if (UE.getEditor('editor').getContent() == '') {
+                ErrorBox('请完善素材内容！');
+                return false;
+            }
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: APIS.AddMaterialByZL,
+                data: {
+                    'MaterialTitle': MaterialTitle,
+                    'MaterialContent': MaterialContent,
+                    'MaterialSummary': MaterialSummary,
+                    'CoverImg': CoverImg,
+                    'MaterialTips':MaterialTips,
+                    'MTId': MTId,
+                    'MaterialType': MaterialType,
+                    'ActivityId': ActivityId,
+                    'IsActive': IsActive,
+                    'ShareSource': 0,
+                    'ChannelId': ChannelId,
+                    'VirtualTimes': VirtualTimes
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        setTimeout(function () {
+                            closeTabs();
+                        },1500)
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                }
+            });
+        })
+
+        //更新
+        $('body').on('click', '#UpdateMaterial_primary', function () {
+            if (required('I_Material_form')) {
+                return false;
+            }
+            var MaterialTitle = $('#inputTitle').val();     //素材标题
+            var MaterialContent = UE.getEditor('editor').getContent();   //素材内容
+            var MaterialSummary = $('#inputIntro').val();   //素材摘要
+            var CoverImg = $('#I_save_Img').val();          //素材封面
+            var MaterialTips = '';      //素材小提示
+            var MTId = $('#inputType').val();              //素材类别
+            var MaterialType = 2;      //素材来源类型1.中力素材 2. 渠道素材 3活动推广素材
+            var ActivityId = 0;        //活动推广id
+            var IsActive = $('#inputSock').val();          //是否可用 1可用 2不可用
+            var ChannelId = $('#I_ChannelId').val();         //渠道id
+            var Edit_id = getUrlParam('edit_id');
+            var VirtualTimes = $('#VirtualTimes').val();     //浏览量
+            var DisplayTime = $('#DisplayTime').val();
+            if (VirtualTimes == '') {
+                VirtualTimes = 0;
+            }
+            if (CoverImg == '') {
+                $('#inputFile').addClass('SOGWarming');
+            }
+            if (UE.getEditor('editor').getContent() == '') {
+                ErrorBox('请完善素材内容！');
+                return false;
+            }
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: APIS.UpdateMaterialByZL,
+                data: {
+                    'MaterialTitle': MaterialTitle,
+                    'MaterialContent': MaterialContent,
+                    'MaterialSummary': MaterialSummary,
+                    'CoverImg': CoverImg,
+                    'MaterialTips': MaterialTips,
+                    'MTId': MTId,
+                    'MaterialType': MaterialType,
+                    'ActivityId': ActivityId,
+                    'IsActive': IsActive,
+                    'ChannelId': ChannelId,
+                    'ShareSource': 0,
+                    'VirtualTimes':VirtualTimes,
+                    'DisplayTime': DisplayTime,
+                    'Id': Edit_id
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        setTimeout(function () {
+                            closeTabs();
+                        }, 1500)
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                }
+            });
+        })
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>登录</title>
+    <!--必要样式-->
+    <link href="~/Asset/dist/css/component.css" rel="stylesheet" />
+    <link href="~/Asset/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container I_background">
+        <div class="content">
+            <div id="large_header" class="large_header">
+                <div class="logo_box clearfix">
+                    <h3>用户登录</h3>
+                    <div class="input_outer">
+                        <span class="u_user"></span>
+                        <input name="username" class="large_text" id="I_username" autocomplete="off" type="text" placeholder="请输入账户" value="13430380816">
+                    </div>
+                    <div class="input_outer">
+                        <span class="us_uer"></span>
+                        <input name="password" class="large_text" id="I_password" autocomplete="off" value="" type="password" placeholder="请输入密码" oninvalid="111111">
+                    </div>
+                    <div id="drag"></div>
+                    <div class="btn_mb2"><a id="sub_Login" class="act-but large_submit" href="javascript:;">登录</a></div>
+                    <label><input class="SOGchk" id="I_SOGchk" type="checkbox">自动登录</label>
+                    <a class="ForgetPW">忘记密码</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Asset/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="~/Asset/dist/js/canvas-particle.js"></script>
+    <script src="~/Asset/dist/js/drag.js"></script>
+    <script src="~/Asset/plugins/sweetalert/sweetalert.js"></script>
+    <script src="~/Asset/dist/js/loadovos.js"></script>
+    <script src="~/Asset/dist/js/common.js"></script>
+
+    <script>
+        var href_Url = service;
+
+        //自动登录
+
+        function AjaxAutoLogin() {
+            $.ajax({
+                type: 'post',
+                url: '/Login/AutoLogin',
+                datatype: "json",
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        if (data.AppendData == 1) {
+                            window.location.href = '/Home/index';
+                        }
+                    } else {
+
+                    }
+                }
+            })
+        };
+
+        //获取上一次登录的账号
+        function AjaxGetUserID() {
+            $.ajax({
+                type: 'post',
+                url: '/Login/GetLoginInfo',
+                async: false,
+                datatype: "json",
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        $('#I_username').val(data.AppendData)
+                    } else {
+                        $('#I_username').val("");
+                    }
+                }
+            });
+        }
+
+        try {
+            AjaxAutoLogin();
+            AjaxGetUserID();
+        }
+        catch (err) {
+
+        }
+
+
+        //滑动验证
+        var slidertype = "0";
+        $('#drag').drag();
+
+        //登录函数
+        function UserLogin() {
+            var UserName = $('#I_username').val();
+            var Password = $('#I_password').val();
+            var IsAutoLogin = $('#I_SOGchk').prop("checked") == true ? 1 : 0; //自动登录， 0是未勾选、 1是勾选；
+            if (UserName == '') {
+                ErrorBox('用户名不能为空');
+                return false;
+            }
+            if (Password == '') {
+                ErrorBox('密码不能为空');
+                return false;
+            }
+            if (slidertype == 0) {
+                ErrorBox('请拖动完成验证');
+                return false;
+            }
+            showLoad('登陆中，请稍候...');
+            $.ajax({
+                type: 'post',
+                url: '/Login/Login',
+                datatype: "json",
+                data: {
+                    "UserName": UserName,
+                    "Password": Password,
+                    "IsAutoLogin": IsAutoLogin
+                },
+                success: function (result) {
+                    console.log(result);
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        localStorage.setItem('dataArray', JSON.stringify(data.AppendData));
+                        window.location.href = '/Home/index';
+                        hideLoad()
+                    } else {
+                        ErrorBox(data.Message);
+                        hideLoad()
+                    }
+                }
+            });
+        }
+
+        //点击登录按钮时触发的登录事件
+        $("#sub_Login").click(function () {
+            UserLogin();
+        });
+        //点击回车按键触发登录按钮点击事件
+        $(document).keyup(function (event) {
+            switch (event.keyCode) {
+                case 13:
+                    UserLogin();
+            }
+        });
+
+        //忘记密码
+        $('body').on('click', '.ForgetPW', function () {
+            var UserName = $('#I_username').val();
+            if (UserName == '') {
+                ErrorBox('请填写用户名(注:手机号)');
+                return false;
+            }
+            $.ajax({
+                type: 'post',
+                url: '/Home/ForgetPwd',
+                datatype: "json",
+                data: {
+                    "UserName": UserName
+                },
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }
+            });
+        })
+
+        window.onload = function () {
+            var config = {
+                vx: 4,
+                vy: 4,
+                height: 2,
+                width: 2,
+                count: 80,
+                color: "0, 150, 230",
+                stroke: "59, 185, 239",
+                dist: 6000,
+                e_dist: 20000,
+                max_conn: 10
+            }
+            CanvasParticle(config);
+        }
+    </script>
+
+</body>
+</html>

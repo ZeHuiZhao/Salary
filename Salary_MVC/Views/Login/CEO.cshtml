@@ -1,0 +1,114 @@
+﻿@{
+    Layout = null;
+
+    var formdata = this.ViewData["formdata"] as Salary_MVC.Models.CeoLoginInput;
+    formdata = formdata ?? new Salary_MVC.Models.CeoLoginInput();
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=320, user-scalable=no, target-densitydpi=device-dpi">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    @*<meta content="telephone=no" name="format-detection">*@
+    <title>审批登陆</title>
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="~/Asset/dist/js/viewport.js"></script>
+    <link rel="stylesheet" href="~/Asset/dist/css/reset.css">
+    <link rel="stylesheet" href="~/Asset/dist/css/info.css">
+    <link rel="stylesheet" href="~/Asset/dist/css/ov_tip.css">
+    <link href="~/Asset/plugins/layui/css/layui.css" rel="stylesheet" />
+    <style>
+        .inputText {
+            border-radius: 5px;
+            border: 1px solid #eee;
+            padding: 10px;
+        }
+
+        .inputCode {
+            margin: 0 0 0 30px;
+            text-align: center;
+            border-radius: 5px;
+            border: 1px solid #eee;
+            padding: 10px;
+            background: #3bb9ef;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form method="post" action="~/Login/CEOValidate">
+        <input type="hidden" name="TargetId" value="@(formdata.TargetId)" />
+        <input type="hidden" name="Moblie" value="@(formdata.Moblie)" />
+        <div class="Info_main">
+            <h1 class="Info_main_h1">审批登陆</h1>
+            <div class="Info_ul">
+                <div class="Info_li">
+                    <a class="Info_li_a flexbox">
+                        @*<span>密码</span>*@
+                        <input class="flex1 inputText" type="password" value="@(formdata.Pwd)" name="Pwd" placeholder="请输入密码" />
+                        @*<p class="flex1" id="I_Name"></p>*@
+                    </a>
+                    <a class="Info_li_a flexbox">
+                        @*<span>验证码</span>*@
+                        <input class="flex1 inputText" type="text" value="@(formdata.Code)" name="Code" placeholder="请输入验证码" />
+                        <input id="btnCode" data-mobile="@(formdata.Moblie)" class="flex1 inputCode" type="button" value="发送短信验证码" />
+                    </a>
+                </div>
+                <p class="info-msg">@(formdata.Msg)</p>
+            </div>
+
+            @*<textarea class="info_tex" id="opinion" placeholder="审核意见"></textarea>*@
+
+            <div class="Info_btn ">
+                <a id="btn_agree" class="Info_btn_agree" href="javascript:void(0)">登陆</a>
+
+            </div>
+
+        </div>
+    </form>
+
+
+    <script src="~/Asset/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="~/Asset/dist/js/common.js"></script>
+    <script src="~/Asset/dist/js/config.js"></script>
+    <script src="~/Asset/dist/js/loadovo.js"></script>
+    <script src="~/Asset/dist/js/ov_tip.js"></script>
+    <script src="~/Asset/plugins/layui/layui.js"></script>
+    <script>
+        $(function () {
+            layui.use('layer', function () {
+            });
+
+            window.setTimeout(function () {
+                $(".info-msg").hide();
+            }, 2000);
+
+
+            $("#btnCode").click(function () {
+                var mobile = $(this).data("mobile");
+                zlpost("/Login/ValidateCode", { "mobile": mobile }, function () {
+                    var max = 60;
+                    var handler= window.setInterval(function () {
+                        max--;
+                        $("#btnCode").val("验证码已发送，剩余有效时间"+max+"秒");
+                    }, 1000);
+                });
+            });
+
+            $("#btn_agree").click(function () {
+                //表单校验
+                $("form").submit();
+            });
+        });
+
+    </script>
+</body>
+
+</html>

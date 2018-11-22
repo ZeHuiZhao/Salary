@@ -1,0 +1,42 @@
+﻿阿辉批准 考勤表GZ_Attendance  去掉DepartmentName字段，加入公司id，部门id，员工id,考勤表id（用来排序）
+
+
+alter table[GZ_UserRole] drop column RoleId
+go
+alter table[GZ_UserRole] add  RoleId [uniqueidentifier]NOT NULL
+
+
+alter table[GZ_User] drop column Name
+go
+alter table[GZ_User] add  Name nvarchar(50) NULL
+
+2018年10月24日， 深圳社保明细GZ_SocialMoneyDetailSZ  去掉PaymentStandard字段
+alter table[GZ_SocialMoneyDetailSZ] drop column PaymentStandard
+
+广州社保明细GZ_SocialMoneyDetailGZ  去掉PaymentStandard字段
+alter table[GZ_SocialMoneyDetailGZ] drop column PaymentStandard
+
+津贴表GZ_Bonus增加部门id,财务核算单位id
+alter table[GZ_Bonus] add  DepartmentId [uniqueidentifier]NOT NULL
+alter table[GZ_Bonus] add  FinancailUnitId [uniqueidentifier]NOT NULL
+
+奖惩表GZ_ShortSalary增加部门id,财务核算单位id
+alter table[GZ_ShortSalary] add  DepartmentId [uniqueidentifier]NOT NULL
+alter table[GZ_ShortSalary] add  FinancailUnitId [uniqueidentifier]NOT NULL
+
+调薪记录表GZ_EmployeeSalary增加部门id,财务核算单位id
+alter table[GZ_EmployeeSalary] add  DepartmentId [uniqueidentifier]NOT NULL
+alter table[GZ_EmployeeSalary] add  FinancailUnitId [uniqueidentifier]NOT NULL
+
+2018年10月31日 ，合成工资会议讨论后的调整：
+GZ_MonthlySalaryDetail工资明细表 移除列：PayableTotal，TaxAmount，TaxMoney，ReduceTotal，RealPay
+GZ_MonthlySalaryDetail工资明细表 增加列：CompanyId
+津贴表GZ_Bonus增加列：CompanyId
+奖惩表GZ_ShortSalary增加列：CompanyId
+调薪记录表GZ_EmployeeSalary增加列：CompanyId
+
+2018年11月7日，员工表增加标识列,区分是否要对该员工自动计算工资，CalcSalary(1-自动计算，0-非自动计算)
+
+
+
+

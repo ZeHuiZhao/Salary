@@ -1,0 +1,422 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>渠道管理平台</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../dist/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../dist/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../dist/css/AdminLTE.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../dist/css/skins/all-skins.css">
+    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!--http://aimodu.org:7777/admin/index_iframe.html?q=audio&search=#-->
+    <style type="text/css">
+        html {
+            overflow: hidden;
+        }
+    </style>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="../plugins/ie9/html5shiv.min.js"></script>
+    <script src="../plugins/ie9/respond.min.js"></script>
+    <![endif]-->
+    
+</head>
+<body class="hold-transition skin-blue sidebar-mini fixed">
+<div class="wrapper">
+
+    <header class="main-header">
+        <!-- Logo -->
+        <a class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><img src="../dist/img/icon_logo.png"></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><img src="../dist/img/icon_logo.png"><i id="I_ChannelName">中力知识科技</i></span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top clearfix">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" title="收缩导航栏" data-toggle="offcanvas" role="button">
+                <span class="sr-only">栏目收缩</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <!-- search form -->
+            <!--<div class="col-md-2 col-sm-4 g_form">
+                <div class="sidebar-form">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                    <button type="button" name="search" id="search-btn" class="btn btn-flat"><i
+                            class="fa fa-search"></i>
+                    </button>
+                  </span>
+                    </div>
+                </div>
+            </div>-->
+            <!-- /.search form -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="http://usercenter.zhongliko.com/headimage/4b438076d26a4bcb965420f4c14e47f7.png" class="img-circle" id="I_userImg" alt="User Image">
+                </div>
+                <div class="pull-left info I_userInfo">
+                    <p id="I_userName"></p>
+                    <a ><i class="fa fa-circle text-success"></i> <span id="I_userType"></span></a>
+                </div>
+                <div class="clear"></div>
+                <div class="I_userfun">
+                    <a class="I_userfun_a I_ToggleRole"><i class="fa fa-refresh"></i>切换角色</a>
+                    <a class="I_userfun_a I_Update"><i class="fa fa-unlock-alt"></i>修改密码</a>
+                    <a class="I_userfun_a I_Logout"><i class="fa fa-power-off"></i>注销</a>
+                </div>
+            </div>
+            
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" id="content-wrapper" style="min-height: 421px;">
+        <!--bootstrap tab风格 多标签页-->
+        <div class="content-tabs">
+            <!-- <button class="roll-nav roll-left tabLeft" onclick="scrollTabLeft()">
+                <i class="fa fa-backward"></i>
+            </button> -->
+            <nav class="page-tabs menuTabs tab-ui-menu" id="tab-menu">
+                <div class="page-tabs-content" style="margin-left: 0px;">
+
+                </div>
+            </nav>
+            <!-- <button class="roll-nav roll-right tabRight" onclick="scrollTabRight()">
+                <i class="fa fa-forward" style="margin-left: 3px;"></i>
+            </button> -->
+            <div class="btn-group roll-nav roll-right">
+                <button class="dropdown tabClose" data-toggle="dropdown">
+                    页签操作<i class="fa fa-caret-down" style="padding-left: 3px;"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" style="min-width: 128px;">
+                    <li><a class="tabReload" href="javascript:refreshTab();">刷新当前</a></li>
+                    <li><a class="tabCloseCurrent" href="javascript:closeCurrentTab();">关闭当前</a></li>
+                    <li><a class="tabCloseAll" href="javascript:closeOtherTabs(true);">全部关闭</a></li>
+                    <li><a class="tabCloseOther" href="javascript:closeOtherTabs();">除此之外全部关闭</a></li>
+                </ul>
+            </div>
+            <button class="roll-nav roll-right fullscreen" title="全屏浏览" onclick="App.handleFullScreen()"><i
+                    class="fa fa-arrows-alt"></i></button>
+        </div>
+        <div class="content-iframe " style="background-color: #ffffff; ">
+            <div class="tab-content " id="tab-content">
+
+            </div>
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- 尾部代码 没必要 -->
+    <!-- <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.3.8
+        </div>
+        <strong>Copyright &copy; 2014-2018 中力知识科技.</strong> All rights reserved.
+    </footer> -->
+
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <!-- <div class="control-sidebar-bg"></div> -->
+</div>
+    <!-- 角色列表 -->
+    <div class="Rolelist modal fade I_modal" id="Rolelist_Modal">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_Rolelist_title">更换角色</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="I_Rolelist_from">
+
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="Rolelist_default" class="btn btn-default">取消</button>
+                    <button type="button" id="Rolelist_primary" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--修改密码-->
+    <div class="Rolelist modal fade I_modal" id="CustomPwd_Modal">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_CustomPwd_title">修改密码</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="I_CustomPwd_from ">
+                        <div class="form-group clearfix">
+                            <label id="add_lbl_passwd" class="col-md-3 control-label control_right">旧密码</label>
+                            <div class="col-md-8">
+                                <input name="add_passwd" type="password" value="" rule="/\S/"  id="add_passwd" class="form-control Idata" placeholder="旧密码">
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label id="add_lbl_new_passwd" class="col-md-3 control-label control_right">新密码</label>
+                            <div class="col-md-8">
+                                <input name="add_new_passwd" type="password" value="" rule="/\S/" id="add_new_passwd" class="form-control Idata" placeholder="新密码">
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label id="add_lbl_renew_passwd" class="col-md-3 control-label control_right">确认新密码</label>
+                            <div class="col-md-8">
+                                <input name="add_renew_passwd" type="password" value="" rule="/\S/" id="add_renew_passwd" class="form-control Idata" placeholder="确认新密码">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="CustomPwd_default" class="btn btn-default">取消</button>
+                    <button type="button" id="CustomPwd_primary" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- ./wrapper -->
+
+<!-- jQuery 2.2.3 -->
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+
+<!-- Bootstrap 3.3.6 -->
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+<!-- Slimscroll -->
+<script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../dist/js/app.js"></script>
+
+<!--tabs-->
+<script src="../dist/js/app_iframe.js"></script>
+    <script src="../dist/js/loadovos.js"></script>
+    <script src="../dist/js/common.js"></script>
+    <script src="../dist/js/config.js"></script>
+    <script src="../plugins/sweetalert/sweetalert.js"></script>
+
+    <script type="text/javascript">
+    /**
+     * 本地搜索菜单
+     */
+    function search_menu() {
+        //要搜索的值
+        var text = $('input[name=q]').val();
+
+        var $ul = $('.sidebar-menu');
+        $ul.find("a.nav-link").each(function () {
+            var $a = $(this).css("border", "");
+
+            //判断是否含有要搜索的字符串
+            if ($a.children("span.menu-text").text().indexOf(text) >= 0) {
+
+                //如果a标签的父级是隐藏的就展开
+                $ul = $a.parents("ul");
+
+                if ($ul.is(":hidden")) {
+                    $a.parents("ul").prev().click();
+                }
+
+                //点击该菜单
+                $a.click().css("border", "1px solid");
+
+//                return false;
+            }
+        });
+    }
+
+    $(function () {
+
+        App.setbasePath("../");
+        App.setGlobalImgPath("dist/img/");
+
+        addTabs({
+            id: '10008',
+            title: '首页',
+            close: false,
+            url: 'index_iframe.html',
+            urlType: "relative"
+        });
+
+        App.fixIframeCotent();
+        var menus = [
+            {
+                id: "9000",
+                text: "导航栏",
+                icon: "",
+                isHeader: true
+            },
+            {
+                id: "9003",
+                text: "表单数据",
+                icon: "fa fa-table",
+                children: [
+                    {
+                        id: "90031",
+                        text: "测试表",
+                        url: "forms/test.html",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-file-excel-o"
+                    },
+                    {
+                        id: "90032",
+                        text: "部门数据",
+                        url: "forms/department.html",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-users"
+                    },
+                    {
+                        id: "90033",
+                        text: "用户列表",
+                        url: "forms/Manager.html",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-users"
+                    }
+                ]
+            },
+            {
+                id: "9001",
+                text: "UI库",
+                icon: "fa fa-laptop",
+                children: [
+                    {
+                        id: "90011",
+                        text: "按钮组UI",
+                        // icon: "fa fa-circle-o",
+                        url: "UI/buttons_iframe.html",
+                        targetType: "iframe-tab"
+                    },
+                    {
+                        id: "90012",
+                        text: "图标组",
+                        url: "UI/icons_iframe.html",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-circle-o"
+                    },
+                    {
+                        id: "90013",
+                        text: "配色UI",
+                        url: "UI/general_iframe.html",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-circle-o"
+                    },
+                    {
+                        id: "90014",
+                        text: "模态框",
+                        url: "UI/modals_iframe.html",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-circle-o"
+                    },
+                    {
+                        id: "90015",
+                        text: "滑动组",
+                        url: "UI/sliders_iframe.html",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-circle-o"
+                    },
+                    {
+                        id: "90016",
+                        text: "时间线",
+                        url: "UI/timeline_iframe.html",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-circle-o"
+                    }
+                ]
+            },
+            {
+                id: "9002",
+                text: "表单库",
+                icon: "fa fa-edit",
+                children: [
+                    {
+                        id: "90021",
+                        text: "advanced",
+                        url: "forms/advanced_iframe.html",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-circle-o"
+                    },
+                    {
+                        id: "90022",
+                        text: "general",
+                        url: "forms/general_iframe.html",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-circle-o"
+                    },
+                    {
+                        id: "90023",
+                        text: "editors",
+                        url: "forms/editors_iframe.html",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-circle-o"
+                    },
+                    {
+                        id: "90024",
+                        text: "百度",
+                        url: "https://www.baidu.com",
+                        targetType: "iframe-tab",
+                        // icon: "fa fa-circle-o",
+                        urlType: 'abosulte'
+                    }
+                ]
+            }
+        ];
+        $('.sidebar-menu').sidebarMenu({data: menus});
+
+        // 动态创建菜单后，可以重新计算 SlimScroll
+        // $.AdminLTE.layout.fixSidebar();
+
+        /*if ($.AdminLTE.options.sidebarSlimScroll) {
+            if (typeof $.fn.slimScroll != 'undefined') {
+                //Destroy if it exists
+                var $sidebar = $(".sidebar");
+                $sidebar.slimScroll({destroy: true}).height("auto");
+                //Add slimscroll
+                $sidebar.slimscroll({
+                    height: ($(window).height() - $(".main-header").height()) + "px",
+                    color: "rgba(0,0,0,0.2)",
+                    size: "3px"
+                });
+            }
+        }*/
+
+    });
+    </script>
+
+</body>
+</html>

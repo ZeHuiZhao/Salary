@@ -1,0 +1,410 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>二级菜单</title>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta name="format-detection" content="telephone=no" />
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- table -->
+    <link href="../../dist/css/ovcss.css" rel="stylesheet" />
+    <!-- 提示框 -->
+    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- layui 分页 -->
+    <link href="../../plugins/layui/css/layui.css" rel="stylesheet" />
+    <!--select2-->
+    <link href="../../plugins/select2/select2.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- 主标题 begin -->
+    <div class="ov-tit ov-line rel clearfix">
+        <h1 class="ov-theme">二级菜单</h1>
+        <div class="icon_fun abs bot10">
+            <span class="glyphicon glyphicon-plus iconfont icon_add " id="open_Increase_Modal" title="新增二级菜单"></span>
+        </div>
+
+    </div>
+    <!-- 主标题 end -->
+    <!-- 内容表格 begin -->
+    <div class="ov-form table-responsive I_department_form">
+        <!-- 表格数据 -->
+        <table class="table table-striped table-bordered" id="I_department">
+            <thead>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- 内容表格 end -->
+    <!-- 新增弹层 -->
+    <div class="ov-add modal fade I_modal" id="Increase_Modal">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_increase_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered I_increase_from">
+                        <!-- 填充表单 -->
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="close_Increase_default" class="btn btn-default">取消</button>
+                    <button type="button" id="Increase_primary" class="btn btn-primary ">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 编辑弹出 -->
+    <div class="ov-edit modal fade I_modal" id="edit_Eject_Modal" tabindex="-1" role="dialog">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_edit_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered I_edit_from">
+
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="edit_Eject_default" class="btn btn-default">取消</button>
+                    <button type="button" id="edit_Eject_primary" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jq -->
+    <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- 时间日期插件 -->
+    <script src="../../plugins/laydate/laydate.js"></script>
+    <!-- bootstrap -->
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <!-- 提示框js -->
+    <script src="../../plugins/sweetalert/sweetalert.js"></script>
+    <!-- 主标题和筛选 的js -->
+    <script src="../../dist/js/form_bow.js"></script>
+    <!-- layui 分页js -->
+    <script src="../../plugins/layui/layui.js"></script>
+    <!-- 拖动js （给需要可拖动弹出层的div 添加 class（modalDialog）即可 ） -->
+    <script src="../../dist/js/jquery-ui.js"></script>
+    <!-- select2 -->
+    <script src="../../plugins/select2/select2.js"></script>
+    <!-- 公共脚本 -->
+    <script src="../../dist/js/common.js"></script>
+    <script src="../../dist/js/config.js"></script>
+
+    <script src="../../dist/js/loadovos.js"></script>
+    <script>
+        // 表格数据
+        var page_first = 0; //第一次获取列表数据
+        var editID = ''; //编辑id
+        
+
+        // 翻页
+        function GetAppendData() {
+            showLoad();
+            $.ajax({
+                type: 'GET',
+                url: APIS.GetFunctionList,
+                data: {
+                    'funcType': 2   //菜单级别 1.父级菜单 2.子菜单
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (page_first == 0) {
+                        var data_thead = []; //表头的数组
+                        page_first = 1;
+                        data_head = `<tr>
+                                        <th class="width-xs">编号</th>
+                                        <th class="">菜单名称</th>
+                                        <th class ="width-sm">排序</th>
+                                        <th class ="width-xlg">链接地址</th>
+                                        <th class ="width-sm">状态</th>
+                                        <th class ="width-sm">管理操作</th>
+                                    </tr>`;
+                        $('#I_department thead').append(data_head);
+
+                    }
+                    if(data.ResultType == 200){
+                        var data_box = data.AppendData;
+                        var data_head = '';//表头
+                        var data_main = '';//表内容
+                        var data_length = data_box.length; //内容条数
+                        for (var i = 0; i < data_length; i++) {
+                            var element = data_box[i];
+                            var enable = '<span class="color_tree">可用</span>';
+                            if (data_box[i].Enable == '1') {
+                                enable = '<span class="color_tree">可用</span>';
+                            } else {
+                                enable = '<span class="color_red">不可用</span>';
+                            }
+                            data_main +=`<tr data-id="${data_box[i].Id}">
+                                            <td>${data_box[i].Id}</td>
+                                            <td>${data_box[i].Name}</td>
+                                            <td>${data_box[i].DisOrder}</td>
+                                            <td>${data_box[i].Url}</td>
+                                            <td>${enable}</td>
+                                            <td>
+                                                <a class="glyphicon glyphicon-edit icon_biue margin-auto modal_edit" title="编辑" data-id="${data_box[i].Id}"></a>
+                                            </td>
+                                        </tr>`
+                        }
+                        $('#I_department tbody').html(data_main);
+                    }else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('暂无数据内容');
+                }
+            })
+        }
+        //初始数据
+        try {
+            GetAppendData()//获取初始表数据
+        } catch (err) {
+        }
+        /* form_table begin */
+
+        var Department_data = [];
+        //获取父级列表数据
+        $.ajax({
+            type: 'GET',
+            url: APIS.GetParentFunc,
+            dataType: "json",
+            success: function (data) {
+                if (data.ResultType == 200) {
+                    var items = data.AppendData;
+                    for (var i = 0; i < items.length; i++) {
+                        var element = items[i];
+                        Department_data.push({ "id": element.Id, "text": element.Name });
+                    }
+                }
+            }
+        })
+
+        // 打开新增弹窗
+        $('body').on('click','#open_Increase_Modal',function(){
+            $('.I_increase_title').text('添加一级菜单');
+            $('.I_increase_from').html(`<div class="form-group">
+                                            <label id="add_lbl_DepartmentName" class ="col-md-3 control-label">菜单名称</label>
+                                            <div class="col-md-8">
+                                                <input name="add_DepartmentName" type="text" value="" id="add_DepartmentName" rule="/\\S/" class ="form-control Idata" placeholder="菜单名称">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_menu" class ="col-md-3 control-label">父级菜单</label>
+                                            <div class ="col-md-8">
+                                                 <select class ="form-control select2" id="add_menu"></select>
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_sort" class ="col-md-3 control-label">排序</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_sort" type="text" value="" id="add_sort" rule="/\\S/" class ="form-control Idata" placeholder="排序">
+                                            </div>
+                                        </div>
+                                       <div class ="form-group">
+                                            <label id="add_lbl_Url" class ="col-md-3 control-label">链接</label>
+                                            <div class ="col-md-8">
+                                                 <input name="add_url" type="text" value="" id="add_url" rule="/\\S/" class ="form-control Idata" placeholder="链接">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_state" class ="col-md-3 control-label">可用状态</label>
+                                            <div class ="col-md-8">
+                                                <select class ="form-control " id="add_state">
+                                                    <option value="1">可用</option>
+                                                    <option value="0">不可用</option>
+                                                </select>
+                                            </div>
+                                        </div>`);
+            selectUI('add_menu', Department_data)
+            ShowUI('Increase_Modal');
+        })
+        // 关闭新增弹窗
+        $('body').on('click','#close_Increase_default',function(){
+            HideUI('Increase_Modal');
+        })
+
+        //新增确认按钮点击
+        $("body").on('click', '#Increase_primary', function () {
+            if(required('Increase_Modal')){ //验证
+                return false;
+            }
+            var _this =$(this);
+            var Name = $("#add_DepartmentName").val();
+            var ParentId = $("#add_menu").val();
+            var DisOrder = $("#add_sort").val();
+            var Icon = '';
+            var Enable = $("#add_state").val();
+            var Url = $("#add_url").val();
+            showLoad();
+            //ajax提交
+            $.ajax({
+                type: 'POST',
+                url: APIS.AddFunction,
+                data:{
+                    'Name': Name,
+                    'ParentId': ParentId,
+                    'DisOrder': DisOrder,
+                    'Icon': Icon,
+                    'Enable': Enable,
+                    'Url': Url
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if(data.ResultType==200){
+                        if (data.AppendData == 1) {
+                            HideUI('Increase_Modal');
+                            GetAppendData();
+                        }
+                    }else{
+                        ErrorBox(data.Message);
+                    }
+
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+
+        })
+        //编辑按钮点击
+        $('body').on('click','.modal_edit',function(){
+            var _this = $(this);
+            editID = _this.attr('data-id'); // 解析出data-id
+            $.ajax({
+                type: 'GET',
+                url: APIS.GetFunctionById + '/' + editID,
+                dataType: "json",
+                success: function (data) {
+                    if (data.ResultType == 200) {
+                        var items = data.AppendData;
+                        var edit_sel_id = data.AppendData.ParentId;
+                        $('.I_edit_title').text('编辑一级菜单')
+                        if (items.Enable == 1) {
+                            var sel_html = `<option value="1" selected="selected">可用</option><option value="0">不可用</option>`
+                        } else {
+                            var sel_html = `<option value="1">可用</option><option value="0" selected="selected">不可用</option>`
+                        }
+                        $('.I_edit_from').html(`<div class="form-group">
+                                            <label id="edit_lbl_DepartmentName" class ="col-md-3 control-label">菜单名称</label>
+                                            <div class="col-md-8">
+                                                <input name="edit_DepartmentName" type="text" value="${items.Name}" id="edit_DepartmentName" rule="/\\S/" class ="form-control Idata" placeholder="菜单名称">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="edit_lbl_menu" class ="col-md-3 control-label">父级菜单</label>
+                                            <div class ="col-md-8">
+                                                 <select class ="form-control select2" id="edit_menu"></select>
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="edit_lbl_sort" class ="col-md-3 control-label">排序</label>
+                                            <div class ="col-md-8">
+                                                <input name="edit_sort" type="text" value="${items.DisOrder}" id="edit_sort" rule="/\\S/" class ="form-control Idata" placeholder="排序">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="edit_lbl_Url" class ="col-md-3 control-label">链接</label>
+                                            <div class ="col-md-8">
+                                                 <input name="edit_url" type="text" value="${items.Url}" id="edit_url" rule="/\\S/" class ="form-control Idata" placeholder="链接">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="edit_lbl_state" class ="col-md-3 control-label">可用状态</label>
+                                            <div class ="col-md-8">
+                                                <select class ="form-control " id="edit_state">
+                                                    ${sel_html}
+                                                </select>
+                                            </div>
+                                        </div>`);
+                        var Department_length = Department_data.length;
+                        var select_edit = '';
+                        for (var i = 0; i < Department_length; i++) {
+                            if (Department_data[i].id == edit_sel_id) {
+                                select_edit = Department_data[i].id;
+                            }
+                        }
+                        selectUI('edit_menu', Department_data);
+                        $('#edit_menu').val(select_edit).trigger("change");
+                        ShowUI('edit_Eject_Modal');
+                    }else {
+                        ErrorBox(data.Message);
+                    }
+                }
+            })
+        })
+        //编辑  取消按钮点击
+        $('body').on('click','#edit_Eject_default',function(){
+            HideUI('edit_Eject_Modal');
+        })
+        //编辑  确认按钮点击
+        $('body').on('click','#edit_Eject_primary',function(){
+            if(required('edit_Eject_Modal')){ //验证
+                return false;
+            }
+            var _this = $(this);
+            //var Updata_Id = $("#edit_DepartmentName").val();
+            var Name = $("#edit_DepartmentName").val();
+            var ParentId = $("#edit_menu").val();
+            var DisOrder = $("#edit_sort").val();
+            var Icon = '';
+            var Enable = $("#edit_state").val();
+            var Url = $('#edit_url').val();
+            //ajax提交
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                url: APIS.UpdateFunc,
+                data: {
+                    'id': editID,
+                    'Name': Name,
+                    'ParentId': ParentId,
+                    'DisOrder': DisOrder,
+                    'Icon': Icon,
+                    'Enable': Enable,
+                    'Url': Url
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if(data.ResultType==200){
+                        HideUI('edit_Eject_Modal');
+                        GetAppendData();
+                    }else{
+                        ErrorBox(data.Message);
+                    }
+
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        })
+
+
+    </script>
+</body>
+
+</html>

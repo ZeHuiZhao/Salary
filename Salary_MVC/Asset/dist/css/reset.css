@@ -1,0 +1,89 @@
+/* css reset */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video { margin:0; padding:0; border:0; outline:0; font-size:100%;vertical-align:baseline; background:transparent; font-family: "Microsoft Yahei";}
+html { background: #F5F6F8;}
+body { line-height:1; background: #F5F6F8;}
+ol, ul { list-style: none;}
+:focus {outline: 1;}
+article,aside,canvas,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section,summary {  display:block;}
+nav ul { list-style:none;}
+blockquote, q { quotes:none;}
+blockquote:before, blockquote:after,
+q:before, q:after { content:'';content:none;}
+h1, h2, h3, h4, h5, h6 { font-weight: normal;}
+a { margin:0; padding:0; border:0; font-size:100%; vertical-align:baseline; background:transparent; color: #303030; cursor: pointer;outline: 0; text-decoration: none}
+a:link,a:visited ,a:hover {  text-decoration: none; } 
+ins { background-color:#ff9; color:#000; text-decoration:none;}
+/* css reset end */
+/* clear */
+.clear { clear: both; }
+.ofh {  white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow: hidden; }
+.ofhs { text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;  }
+
+/* float */
+.fl { float: left; }
+.fr { float: right; }
+/* position */
+.rel { position: relative; }
+.abs { position: absolute; }
+/* 块状元素水平居中 */
+.auto { margin-left: auto; margin-right: auto; }
+/* 清除浮动*/
+.clearfix { *zoom: 1; }
+.clearfix:after { clear: both; content: ''; display: table; height: 0; overflow: hidden; }
+.iconfont { display: inline-block; }
+#inputCopy { position: absolute; opacity: 0; cursor: default; }
+/* flex */
+.flexbox { display: box; /* OLD - Android 4.4- */ display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */ display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */ display: -ms-flexbox; /* TWEENER - IE 10 */ display: -webkit-flex; /* NEW - Chrome */ display: flex; }
+.flex1 { flex: 1; }
+
+/*表格大小 开始*/
+.text-left {
+text-align: left!important;
+}
+.text-right {
+text-align: right!important;
+}
+.text-center {
+text-align: center!important;
+}
+.valign-middle {
+vertical-align:middle!important;
+}
+
+input,button,select,textarea{outline:none}
+
+.transition {
+    transition: all 1s;
+    -moz-transition: all 1s;	/* Firefox 4 */
+    -webkit-transition: all 1s;	/* Safari 和 Chrome */
+    -o-transition: all 1s;	/* Opera */
+}
+.hide {
+    display: none;
+    opacity: 0;
+}
+/*修改输入框placeholder文字默认颜色*/
+input::-webkit-input-placeholder{
+color:#aaa;
+}
+input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+color:#aaa;
+}
+input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+color:#aaa;
+}
+input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+color:#aaa;
+}

@@ -1,0 +1,8 @@
+﻿腾讯云账号
+地址：https://graph.qq.com/oauth2.0/show?which=Login&display=pc&client_id=101488968&response_type=code&redirect_uri=https%3A%2F%2Fcloud.tencent.com%2Flogin%2FqqAccessCallback%3Fs_url%3Dhttps%253A%252F%252Fconsole.cloud.tencent.com%252F%26fwd_flag%3D7&state=c040e093cd0d5e6a2c80520c3b1b4be4
+QQ：2322945461
+密码：zljsp2018
+
+磨刀账号
+1344206656@qq.com
+zl@123456

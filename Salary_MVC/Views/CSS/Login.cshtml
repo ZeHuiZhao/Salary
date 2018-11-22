@@ -1,0 +1,162 @@
+﻿
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>审批登陆</title>
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="/Asset/dist/js/viewport.js"></script>
+
+    <link rel="stylesheet" href="/Asset/dist/css/reset.css">
+    <link rel="stylesheet" href="/Asset/dist/css/info.css">
+    <link rel="stylesheet" href="/Asset/dist/css/ov_tip.css">
+    <link href="/Asset/plugins/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Asset/dist/css/login.css" rel="stylesheet" />
+    <style>
+        .inputText {
+            border-radius: 5px;
+            border: 1px solid #eee;
+            padding: 10px;
+        }
+
+        .inputCode {
+            margin: 0 0 0 30px;
+            text-align: center;
+            border-radius: 5px;
+            border: 1px solid #eee;
+            padding: 10px;
+            background: #3bb9ef;
+            color: #fff;
+        }
+        /* 新增 样式 begin */
+        .Info_li input, .Info_li select {
+            border: 1px solid #ababab;
+        }
+        .container-fluid {
+            padding:0 !important;
+        }
+        /*.l_Info_ul .Info_li {
+            width: 100%;
+        }
+         .l_Info_ul  .Info_li_a  {
+             padding: 20px;
+        }
+         .l_Info_ul  .Info_li_a .inputText {
+             padding: 20px 15px;
+            font-size: 24px;
+        }
+          .l_Info_ul  .inputCode {
+              font-size: 24px;
+         }
+          .Info_btn a.Info_btn_agree {
+                width: auto;
+                font-size: 24px;
+                line-height: 30px;
+                height: auto;
+          }*/
+           /* 新增 样式 end */
+    </style>
+</head>
+
+<body>
+    
+
+    <form method="post" action="/Login/CEOValidate">
+        <input type="hidden" name="TargetId" value="00000000-0000-0000-0000-000000000000" />
+        <input type="hidden" name="Moblie" />
+        <div class="login_main">
+            <div class="login_bg">
+                <div class="bg1"></div>
+                <div class="bg2"></div>
+                <img src="~/Asset/dist/img/money.png" class="bg3" />
+                @*<img src="~/Asset/dist/img/nav_menu4.png"  class="bg3"/>*@
+                <p>审批登陆</p>
+            </div>
+            <div class="login_box">
+                <label class="login_pw">
+                    <span></span>
+                    <input class="flex1 inputText" type="password" name="Pwd" placeholder="请输入密码" />
+                </label>
+                <label class="login_code">
+                    <span></span>
+                    <input class="flex1 inputText" type="text" name="Code" placeholder="请输入验证码" />
+                </label>
+                <a class="Msg_code" id="btnCode"  data-mobile="">获取短信验证码</a>
+
+                <a id="btn_agree" class="login_btn" href="javascript:void(0)">登陆</a>
+            </div>
+        </div>
+
+        @*<div class="Info_main">
+            <h1 class="Info_main_h1">审批登陆</h1>
+            <div class="Info_ul l_Info_ul clearfix">
+                <div class="Info_li ">
+                    <a class="Info_li_a flexbox">
+
+                        <input class="flex1 inputText" type="password" name="Pwd" placeholder="请输入密码" />
+
+                    </a>
+                    <a class="Info_li_a flexbox">
+
+                        <input class="flex1 inputText" type="text" name="Code" placeholder="请输入验证码" />
+                        <input id="btnCode" data-mobile="" class="flex1 inputCode" type="button" value="发送短信验证码" />
+                    </a>
+                </div>
+                <p class="info-msg"></p>
+            </div>
+
+
+
+            <div class="Info_btn ">
+                <a id="btn_agree" class="Info_btn_agree" href="javascript:void(0)">登陆</a>
+
+            </div>
+
+        </div>*@
+    </form>
+
+
+    <script src="/Asset/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="/Asset/dist/js/common.js"></script>
+    <script src="/Asset/dist/js/config.js"></script>
+    <script src="/Asset/dist/js/loadovo.js"></script>
+    <script src="/Asset/dist/js/ov_tip.js"></script>
+    <script src="/Asset/plugins/layui/layui.js"></script>
+    <script>
+        $(function () {
+            layui.use('layer', function () {
+            });
+
+            window.setTimeout(function () {
+                $(".info-msg").hide();
+            }, 2000);
+
+
+            $("#btnCode").click(function () {
+
+                var mobile = $(this).data("mobile");
+                zlpost("/Login/ValidateCode", { "mobile": mobile }, function () {
+                    var max = 60;
+                    var handler= window.setInterval(function () {
+                        max--;
+                        $("#btnCode").val("验证码已发送，剩余有效时间"+max+"秒");
+                    }, 1000);
+                });
+
+            });
+
+            $("#btn_agree").click(function () {
+                //表单校验
+                $("form").submit();
+            });
+        });
+
+    </script>
+</body>
+
+</html>

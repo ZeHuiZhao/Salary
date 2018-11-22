@@ -1,0 +1,656 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>添加素材</title>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta name="format-detection" content="telephone=no" />
+	<meta charset="utf-8" />
+    <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../dist/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="../../dist/css/ovcss.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="Material_form clearfix" id="I_Material_form">
+        <h1 class="Material_h1">新增素材:</h1>
+        <div class="form-group clearfix ">
+            <label class="col-sm-2 control-label control_right control_tit">标题</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control Idata" rule="/\S/" id="inputTitle" placeholder="标题">
+            </div>
+        </div>
+        <div class="form-group clearfix ">
+            <label class="col-sm-2 control-label control_right control_tit">摘要</label>
+            <div class="col-sm-8">
+                <textarea type="text" class="form-control Idata" rule="/\S/" id="inputIntro" placeholder="（分享）摘要"></textarea>
+            </div>
+        </div>
+        <div class="form-group clearfix ">
+            <label class="col-sm-2 control-label control_right control_tit">素材类别</label>
+            <div class="col-sm-8">
+                <select class="form-control form_Type Idata" rule="/\S/" id="inputType" >
+                    <option value="">--请选择--</option>
+                </select>
+                
+            </div>
+        </div>
+        <div class="form-group clearfix ">
+            <label class="col-sm-2 control-label control_right control_tit">可用状态</label>
+            <div class="col-sm-8">
+                <select class="form-control form_Type Idata" rule="/\S/" id="inputSock">
+                    <option value="">--请选择--</option>
+                    <option value="1">可用</option>
+                    <option value="0">不可用</option>
+                </select>
+
+            </div>
+        </div>
+
+        <div class="form-group  clearfix " id="form_time">
+            <label class="col-sm-2 control-label control_right control_tit">点击量</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="VirtualTimes" placeholder="点击量">
+            </div>
+        </div>
+
+        <div class="form-group clearfix ">
+            <label class="col-sm-2 control-label control_right control_tit">封面图片</label>
+            <div class="col-sm-8">
+                <input type="file" class="form_file control_tit" id="inputFile" >
+                <input name="save_Img" class="hide" hidden="hidden" type="text" id="I_save_Img">
+                <div class="form_share control_tit">
+                    <span>分享给：</span>
+                    <label><input type="radio" name="share" class="SOGradio" value="1" checked/>全部</label>
+                    <label><input type="radio" name="share" class="SOGradio" value="2" />中力</label>
+                    <label><input type="radio" name="share" class="SOGradio" value="3" />特定渠道</label>
+                    <input id="svae_share" value="" hidden="hidden" />
+                        <a class="look_share">查看具体渠道</a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label class="col-sm-2 control-label control_right control_tit">正文</label>
+            <div class="col-sm-8">
+                <script id="editor" type="text/plain" style="width:100%;height:400px;">
+                </script>
+            </div>
+        </div>
+        <div class="btn_button col-sm-10 control_right">
+            <a id="close_Material_default" class="btn btn-default">取消</a>
+            <a id="Material_primary" class="btn btn-primary ">发布</a>
+        </div>
+    </div>
+
+    <!-- 分享给 -->
+    <div class="ov-edit modal fade I_modal" id="share_Modal" tabindex="-1" role="dialog">
+        <div class="modalDialog modal-dialog modal_lg_max" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close QRCode_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_QRCode_title">特定渠道列表</h4>
+                </div>
+                <div class="modal-body">
+                    <input class="hide" hidden="hidden"  placeholder="渠道id" id="I_ChannelId" />
+
+                    <div class="form-horizontal form-bordered I_share_from clearfix">
+                        <div class="fl channel_table">
+                            <h3>可选择渠道列表</h3>
+                            <div class="share_sel">
+                                <select class="share_height" id="I_share_sel">
+                                    <option value="">--请选择--</option>
+                                </select>
+                                <input placeholder="渠道名称" class="share_input" id="I_share_input" />
+                                <a class="share_sea">查询</a>
+                            </div>
+
+                            <div class="sel_main sel_Unselected">
+                                <table class="table table-striped table-bordered" id="I_Unselected">
+                                    <thead>
+                                        <tr>
+                                            <th class="sel_cke"></th>
+                                            <th class="sel_Name">渠道名称</th>
+                                            <th class="sel_CZ">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <div class="sel_btn">
+                                    <a class="btn_a btn_blue SOGall">全选</a>
+                                    <a class="btn_a btn_blue SOGNotall">全不选</a>
+                                    <a class="btn_a btn_blue SOGRight">移到右侧</a>
+                                    <!--<a class="btn_a btn_blue SOGsure">确定</a>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fl channel_table ">
+                            <h3>已选择渠道列表</h3>
+                            <div class="sel_main sel_Choice mt27">
+                                <table class="table table-striped table-bordered" id="I_Choice">
+                                    <thead>
+                                        <tr>
+                                            <th class="sel_Name">渠道名称</th>
+                                            <th class="sel_CZ">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../plugins/sweetalert/sweetalert.js"></script>
+
+    <script src="/ueditor/ueditor.config.js"></script>
+    <script src="/ueditor/ueditor.all.js"></script>
+    <script src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+    <script src="../../plugins/laydate/laydate.js"></script>
+    <script src="../../dist/js/common.js"></script>
+    <script src="../../dist/js/config.js"></script>
+    <script src="../../dist/js/loadovos.js"></script>
+    <script type="text/javascript">
+        
+
+        Array.prototype.in_array = function (e) {
+            var r = new RegExp(',' + e + ',');
+            return (r.test(',' + this.join(this.S) + ','));
+        };
+   
+        //实例化编辑器
+        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+        var ue = UE.getEditor('editor');
+
+        //获取素材类别
+        $.ajax({
+            type: "get",
+            url: APIS.GetMaterialTypeList,
+            dataType: "json",
+            success: function (result) {
+                var data = result;
+                if (data.ResultType == 200) {
+                    var items = data.AppendData;
+                    var type_html = '';
+                    for (var i = 0; i < items.length; i++) {
+                        type_html += '<option value="' + items[i].Id + '">' + items[i].TypeName + '</option>';
+                    }
+                    $('#inputType').append(type_html);
+                }
+            }
+        });
+
+        //获取 edit_id
+        var edit_Status = 0;
+        if (getUrlParam('edit_id')) {
+            //编辑状态
+            showLoad();
+            edit_Status = 1;
+            $('.Material_h1').html('编辑素材:');
+            $.ajax({
+                type: "get",
+                url: APIS.GetMaterialById + '/' + getUrlParam('edit_id'),
+                dataType: "json",
+                success: function (result) {
+                    var data = result;
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        var items = data.AppendData;
+                        $('#inputTitle').val(items.MaterialTitle);
+                        $('#inputIntro').val(items.MaterialSummary);
+                        $('#inputType').val(items.MaterialType);
+                        $('#I_save_Img').val(items.CoverImg)
+                        $('#VirtualTimes').val(items.VirtualTimes);
+                        //添加时间控件
+                        var datatime = ` <div class="form-group clearfix ">
+                                            <label  class ="col-sm-2 control-label control_right control_tit ">显示日期</label>
+                                            <div class="col-md-8">
+                                                <input name="add_CB_BUSINESS_SOGDate" type="data" value='${items.DisplayTime}' id="DisplayTime"  class ="form-control SOGDateTime" placeholder="显示日期">
+                                            </div>
+                                        </div>`;
+                        $('#form_time').after(datatime);
+                        laydate.render({
+                            elem: '.SOGDateTime'
+                            , theme: '#3bb9ef'
+                             , type: 'date'
+                             , max: 1
+                        });
+                        if (items.CoverImg != '') {
+                            $('#inputFile').after('<span style="font-size: 12px;color: #a94442; ">（已有图片，如需更换可重新选择上传）</span>')
+                        }
+                        $('#inputSock').val(items.IsActive);
+                        $('.SOGradio').each(function () {
+                            if ($(this).val() == items.ShareSource) {
+                                $(this).attr("checked", true);
+                            }
+                        })
+                        if (items.ShareSource == 3) {
+                            $('#svae_share').val(items.ChannelIds);
+                            getDOGradio()
+                        }
+                        UE.getEditor('editor').addListener("ready", function () {
+                            // editor准备好之后才可以使用
+                            UE.getEditor('editor').setContent(items.MaterialContent);
+                        });
+                        $('#I_ChannelId').val(items.ChannelId);
+                        $('#Material_primary').attr('id', 'UpdateMaterial_primary');
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                }
+            });
+        } else {
+            $('#I_ChannelId').val(loginInfo.ChannelId);
+        }
+
+
+        function getDOGradio() {
+
+            //已选条件
+            if (edit_Status == 1) {
+                var list_team = $('#svae_share').val();
+                var team = list_team.split(",");
+                $('.look_share').show()
+            } else {
+                var team = [];
+                if ($('#I_Choice tr').length > 0) {
+                    $('#I_Choice tr').each(function () {
+                        team.push($(this).attr('data-id'));
+                    })
+                    var ChannelIds = team.join(',');
+                    ChannelIds = ChannelIds.substring(1, ChannelIds.length);
+                    $('#svae_share').val(ChannelIds);
+                }
+                team.shift();
+            }
+            
+            
+            //筛选条件
+            var type = $('#I_share_sel').val();
+            var channelName = $('#I_share_input').val();
+            //左边表格
+            $.ajax({
+                type: "get",
+                url: APIS.GetChannelList,
+                dataType: "json",
+                data:{
+                    'type':type,
+                    'channelName':channelName
+                },
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        var items = data.AppendData;
+                        var type_html = '';
+                        var tbody_html = '';
+                        if (items != null) {
+                            for (var i = 0; i < items.length; i++) {
+                                if ($('#I_Choice tr').length > 0) {
+                                    if (!team.in_array(items[i].Id)) {
+                                        type_html += `<tr data-id="${items[i].Id}" data-name="${items[i].Name}">
+                                                <td><input class ='SOG_unsel' type="checkbox" data-id="${items[i].Id}" data-name="${items[i].Name}"></td>
+                                                <td>${items[i].Name}</td>
+                                                <td><a class ="sel_CZ_right" data-id="${items[i].Id}" data-name="${items[i].Name}" ><span class ="fa fa-arrow-circle-right"></span></a></td>
+                                              </tr>`;
+                                    } else {
+                                        tbody_html += `<tr data-id="${items[i].Id}" data-name="${items[i].Name}">
+                                                            <td>${items[i].Name}</td>
+                                                            <td><a class ="sel_CZ_left" data-id="${items[i].Id}" data-name="${items[i].Name}"><span class ="fa fa-arrow-circle-left"></span></a></td>
+                                                        </tr>`;
+                                    }
+                                } else {
+                                    type_html += `<tr data-id="${items[i].Id}">
+                                                <td><input class ='SOG_unsel' type="checkbox" data-id="${items[i].Id}" data-name="${items[i].Name}"></td>
+                                                <td>${items[i].Name}</td>
+                                                <td><a class ="sel_CZ_right" data-id="${items[i].Id}" data-name="${items[i].Name}" ><span class ="fa fa-arrow-circle-right"></span></a></td>
+                                              </tr>`;
+                                }
+                            }
+                            $('#I_Unselected tbody').html(type_html);
+                            $('#I_Choice tbody').html(tbody_html);
+                            
+                        } else {
+                            $('#I_Unselected tbody').html('');
+                        }
+                    }
+                }
+            });
+
+            //右边的列表
+            $.ajax({
+                type: "get",
+                url: APIS.GetChannelList,
+                dataType: "json",
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        var items = data.AppendData;
+                        var type_html = '';
+                        var tbody_html = '';
+                        if (items.length > 0) {
+                            for (var i = 0; i < items.length; i++) {
+                                if ($('#I_Choice tr').length > 0) {
+                                    if (team.in_array(items[i].Id)) {
+                                        tbody_html += `<tr data-id="${items[i].Id}" data-name="${items[i].Name}">
+                                                            <td>${items[i].Name}</td>
+                                                            <td><a class ="sel_CZ_left" data-id="${items[i].Id}" data-name="${items[i].Name}"><span class ="fa fa-arrow-circle-left"></span></a></td>
+                                                        </tr>`;
+                                    } else {
+                                        
+                                    }
+                                }
+                            }
+                            $('#I_Choice tbody').html(tbody_html);
+                            edit_Status = 0;
+                        } 
+                    }
+                }
+            });
+
+        }
+        
+        $('.SOGradio').click(function () {
+            if ($(this).val() == 3) {
+                getDOGradio();
+                //获取筛选条件
+                $.ajax({
+                    type: "get",
+                    url: APIS.GetChannelTypeList,
+                    dataType: "json",
+                    success: function (result) {
+                        var data = result;
+                        if (data.ResultType == 200) {
+                            var items = data.AppendData;
+                            var type_html = '<option value="">--请选择--</option>';
+                            for (var i = 0; i < items.length; i++) {
+                                type_html += '<option value="' + items[i].Id + '">' + items[i].Name + '</option>';
+                            }
+                            $('#I_share_sel').html(type_html);
+                        }
+                    }
+                });
+                ShowUI('share_Modal')
+            } else {
+                $('.look_share').hide();
+            }
+            
+        })
+        $('.look_share').click(function () {
+            getDOGradio();
+            ShowUI('share_Modal')
+        })
+
+        $('body').on('click', '.share_sea', function () {
+            getDOGradio();
+
+        })
+
+        $('.modal_close_i', '#share_Modal').click(function () {
+            $('.look_share').show()
+            $('#I_share_sel').val('');
+            $('#I_share_input').val('');
+        })
+
+        $('body').on('click', '.sel_CZ_right', function () {
+            var CZ_id = $(this).attr('data-id');
+            var CZ_name = $(this).attr('data-name');
+            $(this).parents('tr').remove();
+            $('#I_Choice tbody').append(`<tr data-id="${CZ_id}" data-name="${CZ_name}">
+                                    <td>${CZ_name}</td>
+                                    <td><a class ="sel_CZ_left" data-id="${CZ_id}" data-name="${CZ_name}"><span class ="fa fa-arrow-circle-left"></span></a></td>
+                                </tr>`);
+        })
+
+        $('body').on('click', '.sel_CZ_left', function () {
+            var CZ_id = $(this).attr('data-id');
+            var CZ_name = $(this).attr('data-name');
+            $(this).parents('tr').remove();
+            $('#I_Unselected tbody').append(`<tr data-id="${CZ_id}" data-name="${CZ_name}">
+                                <td><input type="checkbox" data-id="${CZ_id}" data-name="${CZ_name}"></td>
+                                <td>${CZ_name}</td>
+                                <td><a class ="sel_CZ_right" data-id="${CZ_id}" data-name="${CZ_name}" ><span class ="fa fa-arrow-circle-right"></span></a></td>
+                                </tr>`);
+
+        })
+
+        $('body').on('click', '.SOGall', function () {
+            $('.SOG_unsel').attr("checked", true);
+        })
+        $('body').on('click', '.SOGNotall', function () {
+            $('.SOG_unsel').attr("checked", false);
+        })
+        $('body').on('click', '.SOGRight', function () {
+            $('.SOG_unsel:checked').each(function () {
+                var CZ_id = $(this).attr('data-id');
+                var CZ_name = $(this).attr('data-name');
+                $(this).parents('tr').remove();
+                $('#I_Choice tbody').append(`<tr data-id="${CZ_id}" data-name="${CZ_name}">
+                                    <td>${CZ_name}</td>
+                                    <td><a class ="sel_CZ_left" data-id="${CZ_id}" data-name="${CZ_name}"><span class ="fa fa-arrow-circle-left"></span></a></td>
+                                </tr>`);
+            })
+        })
+        
+        //上传图片
+        $("body").on("change", "#inputFile", function () {
+            showLoad('上传图片中...');
+            var filePath = $(this).val();//读取图片路径
+            var imgObj = this.files[0];//获取图片
+            var formData = new FormData();
+            formData.append("file", $('#inputFile')[0].files[0]);
+            formData.append("name", $('#inputFile').val());
+            var obj = $(this).prev()[0];//
+            if (filePath.indexOf("jpg") != -1 || filePath.indexOf("JPG") != -1 || filePath.indexOf("PNG") != -1 || filePath.indexOf("png") != -1) {
+                $.ajax({
+                    type: "post",
+                    url: APIS.UploadFile,
+                    data: formData,
+                    contentType: false,// 告诉jQuery不要去设置Content-Type请求头
+                    processData: false,// 告诉jQuery不要去处理发送的数据
+                    success: function (result) {
+                        hideLoad();
+                        if (result.ResultType == 200) {
+                            $('#I_save_Img').val(result.Message);
+                            $('#inputFile').removeClass('SOGWarming')
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideLoad();
+                    }
+                });
+            } else {
+                hideLoad();
+                ErrorBox('您未上传文件，或者您上传文件类型有误！');
+                $(this).val('');
+                return false
+            }
+        })
+
+        
+        
+
+        $('body').on('click', '#Material_primary', function () {
+          
+            if (required('I_Material_form')) {
+                return false;
+            }
+
+            var MaterialTitle = $('#inputTitle').val();     //素材标题
+            var MaterialContent = UE.getEditor('editor').getContent();   //素材内容 
+            var MaterialSummary = $('#inputIntro').val();   //素材摘要 
+            var CoverImg = $('#I_save_Img').val();          //素材封面 
+            var MaterialTips = '';      //素材小提示 
+            var MTId = $('#inputType').val();              //素材类别
+            var MaterialType = 1;      //素材来源类型1.中力素材 2. 渠道素材 3活动推广素材 
+            var ActivityId = 0;        //活动推广id 
+            var IsActive = $('#inputSock').val();          //是否可用 1可用 2不可用
+            var ChannelId = 0;         //渠道id
+            var ShareSource = $('.SOGradio:checked ').val();       //分享来源 1全部，2.中力 3.渠道 
+            var ChannelIds = '';        //当分享来源为3时，记录的渠道id 用,号隔开
+            var VirtualTimes = $('#VirtualTimes').val()     //浏览量
+            if (ShareSource == 3) {
+                var team = [];
+                if ($('#I_Choice tbody tr').length > 0) {
+                    $('#I_Choice tbody tr').each(function () {
+                        team.push($(this).attr('data-id'));
+                    })
+                    var ChannelIds = team.join(',');
+                    //ChannelIds = ChannelIds.substring(1, ChannelIds.length);
+                    $('#svae_share').val(ChannelIds);
+                } else {
+                    ErrorBox('请指定特定渠道！');
+                    return false;
+                }
+                ChannelIds = $('#svae_share').val()
+            }
+            if (VirtualTimes == '') {
+                VirtualTimes = 0;
+            }
+            if (CoverImg == '') {
+                $('#inputFile').addClass('SOGWarming');
+                ErrorBox('您未上传封面图片！');
+                return false;
+            }
+            if (UE.getEditor('editor').getContent() == '') {
+                ErrorBox('请完善素材内容！');
+                return false;
+            }
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: APIS.AddMaterialByZL,
+                data: {
+                    'MaterialTitle': MaterialTitle,
+                    'MaterialContent': MaterialContent,
+                    'MaterialSummary': MaterialSummary,
+                    'CoverImg': CoverImg,
+                    'MaterialTips':MaterialTips,
+                    'MTId': MTId,
+                    'MaterialType': MaterialType,
+                    'ActivityId': ActivityId,
+                    'IsActive': IsActive,
+                    'ChannelId': 0,
+                    'ShareSource': ShareSource,
+                    'ChannelIds': ChannelIds,
+                    'VirtualTimes': VirtualTimes
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        setTimeout(function () {
+                            closeTabs();
+                        },1500)
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                }
+            });
+        })
+
+        //更新
+        $('body').on('click', '#UpdateMaterial_primary', function () {
+            if (required('I_Material_form')) {
+                return false;
+            }
+            var MaterialTitle = $('#inputTitle').val();     //素材标题
+            var MaterialContent = UE.getEditor('editor').getContent();   //素材内容 
+            var MaterialSummary = $('#inputIntro').val();   //素材摘要 
+            var CoverImg = $('#I_save_Img').val();          //素材封面 
+            var MaterialTips = '';      //素材小提示 
+            var MTId = $('#inputType').val();              //素材类别
+            var MaterialType = 1;      //素材来源类型1.中力素材 2. 渠道素材 3活动推广素材 
+            var ActivityId = 0;        //活动推广id 
+            var IsActive = $('#inputSock').val();          //是否可用 1可用 2不可用
+            var ChannelId = 0;         //渠道id
+            var ShareSource = $('.SOGradio:checked ').val();       //分享来源 1全部，2.中力 3.渠道 
+            var ChannelIds = '';        //当分享来源为3时，记录的渠道id 用,号隔开
+            var Edit_id = getUrlParam('edit_id'); //
+            var VirtualTimes = $('#VirtualTimes').val();     //浏览量
+            var DisplayTime = $('#DisplayTime').val();
+            if (ShareSource == 3) {
+                var team = [];
+                if ($('#I_Choice tbody tr').length > 0) {
+                    $('#I_Choice tbody tr').each(function () {
+                        team.push($(this).attr('data-id'));
+                    })
+                    var ChannelIds = team.join(',');
+                    $('#svae_share').val(ChannelIds);
+                } else {
+                    ErrorBox('请指定特定渠道！');
+                    return false;
+                }
+                ChannelIds = $('#svae_share').val()
+            }
+           
+            if (VirtualTimes == '') {
+                VirtualTimes = 0;
+            }
+            if (CoverImg == '') {
+                $('#inputFile').addClass('SOGWarming');
+            }
+            if (UE.getEditor('editor').getContent() == '') {
+                ErrorBox('请完善素材内容！');
+                return false;
+            }
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: APIS.UpdateMaterialByZL,
+                data: {
+                    'MaterialTitle': MaterialTitle,
+                    'MaterialContent': MaterialContent,
+                    'MaterialSummary': MaterialSummary,
+                    'CoverImg': CoverImg,
+                    'MaterialTips': MaterialTips,
+                    'MTId': MTId,
+                    'MaterialType': MaterialType,
+                    'ActivityId': ActivityId,
+                    'IsActive': IsActive,
+                    'ChannelId': ChannelId,
+                    'ShareSource': ShareSource,
+                    'ChannelIds': ChannelIds,
+                    'VirtualTimes': VirtualTimes,
+                    'DisplayTime': DisplayTime,
+                    'Id': Edit_id
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        setTimeout(function () {
+                            closeTabs();
+                        }, 1500)
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                }
+            });
+        })
+
+
+
+    </script>
+</body>
+</html>

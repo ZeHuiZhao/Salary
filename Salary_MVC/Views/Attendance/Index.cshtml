@@ -1,0 +1,885 @@
+﻿
+@{
+    ViewBag.Title = "考勤列表";
+}
+@section customStyle{}
+<!-- 主标题 begin -->
+<div class="ov-tit ov-line rel clearfix ov-abs">
+    <h1 class="ov-theme">考勤</h1>
+    <div class="search_ul">
+        <div class="search_ul">
+            <input class="form-control search_userType" type="text" id="I_search_time" />
+            <select class="form-control search_userType" id="I_search_companyId">
+                <option value="">--所有公司--</option>
+            </select>
+            <select class="form-control search_userType" id="I_search_departmentId">
+                <option value="">--所有部门--</option>
+            </select>
+            <input type="text" class="form-control" id="I_search_name" placeholder="请输入姓名">
+            <a class="search_ul_a" id="search_button">查询</a>
+        </div>
+        <div class="search_ul nowrap">
+            <a class="search_ul_a" id="btn_approve">发起审核</a>
+            <a class="search_ul_a" id="btn_import">导入考勤</a>
+            <a class="search_ul_a" id="btn_generate">生成考勤</a>
+            <a class="search_ul_a" id="btn_reload" style="display:none">重新生成考勤</a>
+            <a class="search_ul_a" id="btn_delete">删除</a>
+            <a class="search_ul_a" id="btn_reload_msg">补发通知</a>
+            <a class="search_ul_a" id="btn_link">获取链接</a>
+            <a class="search_ul_a" id="btn_export">导出考勤</a>
+        </div>
+    </div>
+</div>
+<!-- 主标题 end -->
+<!-- 内容表格 begin -->
+<div class="ov-form table-responsive I_department_form">
+    <!-- 按钮组 -->
+    <div class="ov_btn">
+        <div class="fr">
+            @*<span class="ov-add">总页数<span class="number0" id="I_TotalPage">0</span>，当前条数<span class="number0" id="I_pageSize">0</span>条</span>*@
+        </div>
+    </div>
+    <!-- 表格数据 -->
+    <table class="table table-striped table-bordered table-auto" id="I_department">
+        <thead>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <!-- 分页 begin -->
+    <div class="ov-page">
+        <div id="layui_page"></div>
+    </div>
+    <!-- 分页 end -->
+</div>
+<!-- 内容表格 end -->
+<!--修改 begin-->
+<div class="ov-edit modal fade I_modal" id="edit_attendance" tabindex="-1" role="dialog">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_attendance_title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_attendance_from">
+
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-default">取消</button>
+                <button type="button" id="btn_save_attendance" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--修改 end-->
+<!--获取链接 begin-->
+<div class="ov-edit modal fade I_modal" id="edit_link" tabindex="-1" role="dialog">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_link_title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_link_from">
+
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-default">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--获取链接 end-->
+<!--导入考勤 begin-->
+<div class="ov-edit modal fade I_modal" id="edit_import" tabindex="-1" role="dialog">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_import_title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_import_from">
+
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-default">取消</button>
+                <button type="button" id="btn_save_import" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--导入考勤 end-->
+@* 查看审核 *@
+<div class="ov-add modal fade I_modal" id="ApproveLog_Modal">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_increase_title"><span></span>审核进度</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_ApproveLog_from">
+
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" id="close_ApproveLog_default" class="btn btn-default">关闭</button>
+                @*<button type="button" id="Import_primary" class="btn btn-primary ">确定</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section customScript{
+    <script>
+        // 表格数据
+        var currentPage = 1; //当前页数
+        var page_first = 0; //第一次获取列表数据
+        var page_count = 0; //总条数
+        var editID = ''; //编辑id
+
+
+        // 翻页
+        function GetAppendData() {
+            showLoad();
+            var trueName = $('#I_search_name').val();
+            var phoneNum = $('#I_search_Phone').val();
+            var pageSize = 10;  //每页显示的条数
+            var pageIndex = currentPage;
+            $.ajax({
+                type: 'GET',
+                url: '/Attendance/GetAttendanceList',
+                data: {
+                    'Month': $('#I_search_time').val(),
+                    //'pageSize': pageSize,
+                    //'pageIndex': pageIndex,
+                    'CompanyId': $('#I_search_companyId').val(),
+                    'DepartmentId': $('#I_search_departmentId').val(),
+                    'TrueName': trueName
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        var data_box = data.AppendData.List;
+                        if (data.AppendData.ExistsGenerateAttendance == 1) {
+                            $('#btn_reload').show();
+                            $('#btn_generate').hide();
+                        } else {
+                            $('#btn_reload').hide();
+                            $('#btn_generate').show();
+                        }
+                        var data_thead = []; //表头的数组
+                        var data_head = '';//表头
+                        var data_main = '';//表内容
+                        var data_length = data_box.length; //内容条数
+                        page_count = data.AppendData.TotalCount; //总条数
+                        if (page_first == 0) {
+                            page_first = 1;
+                            data_head = `<tr>
+                                            <th class =" width-chk">            <input type="checkbox" onclick="all_check(this);" class="allCheck"></th>
+                                            <th class =" width-sm">         姓名</th>
+                                            <th class ="width-department">  部门</th>
+                                            <th class=" width-md">           手机号码</th>
+                                            <th class =" width-date">        考勤月份</th>
+                                            <th class =" width-sm">          应出勤</th>
+                                            <th class =" width-sm">         实际出勤</th>
+                                            <th class =" width-sm">            缺勤天数</th>
+                                            <th class =" width-sm">         病假/时</th>
+                                            <th class =" width-sm">             事假/时</th>
+                                            <th class =" width-sm">         调休/时</th>
+                                            <th class =" width-sm">             年假/时</th>
+                                            <th class =" width-date">           其它假/时</th>
+                                            <th class =" width-xs">                     备注</th>
+                                            <th class =" width-status">                 状态</th>
+                                            <th class =" width-sm">                             确认天数</th>
+                                            <th class ="width-sm">                                      操作</th>
+                                        </tr>`;
+                            $('#I_department thead').append(data_head);
+                        }
+                        for (var i = 0; i < data_length; i++) {
+
+                            /*o.Name,o.Mobile,o.IDCard,o.Id,o.BankCard,o.BankArea,o.StatusJob,o.Status,o.SalaryGroup*/
+                            data_main += `<tr data-id="${data_box[i].Id}">
+                                            <td class =" width-chk">      <input name="gv_data_ct${data_box[i].Id}_check" data-id="${data_box[i].Id}"  class ="SOGchk"  ${data_box[i].IsDelete == 0 ? 'data-nodel="0"': 'data-nodel="1"'}  type="checkbox"></td>
+                                            <td class =" width-sm">       ${data_box[i].Name}</td>
+                                            <td class ="width-department">${data_box[i].DepartmentName}</td>
+                                            <td class =" width-md">        ${data_box[i].Mobile}</td>
+                                            <td class =" width-date">     ${data_box[i].Month}</td>
+                                            <td class =" width-sm">       ${data_box[i].TotalDays}</td>
+                                            <td class =" width-sm">       ${data_box[i].RealDays}</td>
+                                            <td class =" width-sm">       ${data_box[i].AbsenteeismDays}</td>
+                                            <td class =" width-sm">       ${data_box[i].SickLeave}</td>
+                                            <td class =" width-sm">       ${data_box[i].CompassionateLeave}</td>
+                                            <td class =" width-sm">       ${data_box[i].BreakDown}</td>
+                                            <td class =" width-sm">       ${data_box[i].AnnualLeave}</td>
+                                            <td class =" width-date">     ${data_box[i].OtherLeave}</td>
+                                            <td class =" width-xs">       ${data_box[i].Remark}</td>
+                                            <td class =" width-status"><a class ="btn_ApproveLog ${"col-display-status"+data_box[i].Status}" data-id="${data_box[i].Id}" >${data_box[i].StatusName}</a></td>
+                                            <td class =" width-sm">       ${data_box[i].FinalDays}</td>
+                                            <td class ="width-sm">
+                                            ${((data_box[i].Status == 30 || data_box[i].Status == 23 || data_box[i].Status == 25) && data_box[i].DataSourceType == 0) ? '<a class ="btn_channel btn_edit_attendance Reset_examine" data-id=' + data_box[i].Id + '  >修改</a>' : '<a class ="btn_channel Reset_examine modal_Nodel" >修改</a>'}
+
+                                            </td>
+                                        </tr>`
+                        }
+                        $('#I_department tbody').html(data_main);
+                        var clienH = $(window).height() - 250;
+                        $(' .table-auto tbody').css({ 'height': clienH + 'px' });
+                        // $('#I_TotalPage').html(data.AppendData.TotalPage);
+                        // $("#I_pageSize").html(data_length);
+                        // laypage_up(page_count);
+
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('暂无数据内容');
+                }
+            })
+        }
+
+        $('#search_button').click(function () {
+            GetAppendData();
+        })
+        // all checkbox  num_check选择了多少条数SOGchk
+        function all_check(_this) {
+            $(".SOGchk").each(function () {
+                var nodel = $(this).attr('data-nodel');
+                if (nodel == 1) {
+                    $(this).prop("checked", _this.checked);
+                } else {
+                    if (nodel == 0 || _this.checked == true) {
+                        $(this).prop("checked", false);
+                    }
+                }
+            })
+
+            num_check()
+        };
+        $('body').on('click', '.SOGchk', function () {
+            if (!$(this).attr('checked')) {
+                $('.allCheck').prop("checked", false);
+            }
+            num_check()
+        })
+        function num_check() {
+            var check_length = $('.SOGchk:checked').length;
+            $('#I_number').html(check_length);
+        }
+
+        function InitCompany() {
+            $.ajax({
+                type: 'GET',
+                url: '/Common/GetCompanyList',
+                dataType: "json",
+                success: function (data) {
+                    if (data.ResultType == 200) {
+                        var companyList = data.AppendData;
+                        $('#I_search_companyId').append(companyList.map(o=> { return `<option value="${o.Id}">${o.Name}</option>` }));
+                    }
+                }
+            })
+        }
+
+        $('#I_search_companyId').on('change', function () {
+            $('#I_search_departmentId').html('<option value="">--所有部门--</option>');
+            $('#I_search_departmentId').val('');
+            InitDepartment();
+        });
+
+        function InitDepartment() {
+            $.ajax({
+                type: 'GET',
+                url: '/Common/GetDepartmentList',
+                data: {
+                    'companyId': $('#I_search_companyId').val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.ResultType == 200) {
+                        var departmentList = data.AppendData;
+                        $('#I_search_departmentId').append(departmentList.map(o=> { return `<option value="${o.Id}">${o.Name}</option>` }));
+                    }
+                }
+            })
+        }
+
+
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#I_search_time', type: 'month', value: '@(DateTime.Now.AddMonths(-1).ToString("yyyy-MM"))'
+                , showBottom: false
+                    , ready: function (date) {
+                        $(".layui-laydate").off('click').on('click', '.laydate-month-list li', function () {
+                            $(".layui-laydate").remove();
+                        });
+                    }
+                    , change: function (value, dates, edate) {
+                        $('#I_search_time').val(value);
+                        GetAppendData();
+                    }
+            });
+            //初始数据
+            try {
+                GetAppendData()//获取初始表数据
+                InitCompany();
+                InitDepartment();
+
+            } catch (err) {
+            }
+
+        });
+
+        //初始数据
+
+
+        //分页
+        //function laypage_up() {
+        //    layui.use(['laypage', 'layer'], function () {
+        //        var laypage = layui.laypage
+        //        , layer = layui.layer;
+        //        laypage.render({
+        //            elem: 'layui_page'
+        //            , count: page_count
+        //            , limit: 10
+        //            , curr: currentPage || 1
+        //            , layout: ['count', 'prev', 'page', 'next', 'skip']
+        //            , jump: function (obj, first) {
+        //                currentPage = obj.curr;
+        //                if (!first) {//首次不执行
+        //                    GetAppendData();
+
+        //                }
+
+        //            }
+        //        });
+        //    })
+        //}
+        $('#btn_reload').click(function () {
+            var select_num = $('.SOGchk:checked').length;
+            var Ids = [];
+            $('.SOGchk:checked').each(function () {
+                Ids.push($(this).attr("data-id"));
+            })
+            if (Ids && Ids.length == 0) {
+                ErrorBox('请勾选考勤，在操作');
+                return false;
+            }
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                url: '/Attendance/GenerateById',
+                dataType: "json",
+                data: {
+                    Ids: Ids
+                },
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200 && data.AppendData&&data.AppendData>0) {
+                        SuccessBox('重新获取考勤成功');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        });
+
+        $('#btn_generate').click(function () {
+            if (!confirm('确定生成' + $('#I_search_time').val() + '考勤吗？')) {
+                return false;
+            }
+            //ajax提交
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                //async: false,
+                url: '/Attendance/Generate',
+                data: {
+                    'Month': $('#I_search_time').val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        SuccessBox('');
+                        HideUI('edit_holiday');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        });
+
+        //修改
+        $('body').on('click', '#btn_save_attendance', function () {
+            if (required('edit_attendance')) { //验证
+                return false;
+            }
+            //ajax提交
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Attendance/Update',
+                data: {
+                    'Id': editID,
+                    'FinalDays': $('#edit_FinalDays').val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('edit_attendance');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        })
+        $('body').on('click', '.btn_edit_attendance', function () {
+            var _this = $(this);
+            editID = _this.attr('data-id'); // 解析出data-id
+
+            $.ajax({
+                type: 'GET',
+                url: '/Attendance/GetEntityById/' + editID,
+                dataType: "json",
+                success: function (data) {
+                    if (data.ResultType == 200) {
+                        $('.I_attendance_title').text('修改考勤');
+                        var edit = data.AppendData;
+                        $('.I_attendance_from').html(`
+                            <div class ="form-group">
+                                                    <label class ="col-md-3 control-label">姓名</label>
+                                                    <div class ="col-md-8">
+                                                    <input class ="form-control"  disabled="disabled"  value="${edit.Name}" />
+                                                    </div>
+                                                </div>
+
+                                                <div class ="form-group">
+                                                    <label class ="col-md-3 control-label">部门</label>
+                                                    <div class ="col-md-8">
+                                                    <input class ="form-control"  disabled="disabled"  value="${edit.DepartmentName}" />
+                                                    </div>
+                                                </div>
+
+                                                <div class ="form-group">
+                                                    <label class ="col-md-3 control-label">手机号码</label>
+                                                    <div class ="col-md-8">
+                                                    <input class ="form-control"  disabled="disabled"  value="${edit.Mobile}" />
+
+                                                    </div>
+                                                </div>
+
+                                                <div class ="form-group">
+                                                    <label class ="col-md-3 control-label">考勤月份</label>
+                                                    <div class ="col-md-8">
+                                                    <input class ="form-control"  disabled="disabled"  value="${edit.Month}" />
+
+                                                    </div>
+                                                </div>
+
+                                                <div class ="form-group">
+                                                    <label class ="col-md-3 control-label">应出勤天数</label>
+                                                    <div class ="col-md-8">
+                                                    <input class ="form-control"  disabled="disabled"  value="${edit.TotalDays}" />
+
+                                                    </div>
+                                                </div>
+
+
+                                                <div class ="form-group">
+                                                    <label class ="col-md-3 control-label">实际出勤天数</label>
+                                                    <div class ="col-md-8">
+                                                    <input class ="form-control"  disabled="disabled"  value="${edit.RealDays}" />
+
+                                                    </div>
+                                                </div>
+
+                                                <div class ="form-group">
+                                                    <label class ="col-md-3 control-label">确认出勤天数</label>
+                                                    <div class ="col-md-8">
+                                                    <input class ="form-control" id="edit_FinalDays"  value="${edit.FinalDays}" />
+
+                                                    </div>
+                                                </div>
+                                                `);
+                        ShowUI('edit_attendance');
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }
+            })
+        })
+        //修改
+
+        $('#btn_approve').click(function () {
+            var select_num = $('.SOGchk:checked').length;
+            var Ids = []; //需删除的id的集合
+            $('.SOGchk:checked').each(function () {
+                Ids.push($(this).attr("data-id"));
+            })
+            if (select_num > 0) {
+                if (confirm('确定要对选中的考勤记录发起审核吗？')) {
+                    showLoad();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Attendance/ApporveByHR',
+                        dataType: "json",
+                        data: {
+                            'Ids': Ids
+                        },
+                        success: function (data) {
+                            hideLoad();
+                            if (data.ResultType == 200) {
+                                SuccessBox(data.Message);
+                                GetAppendData();
+                            } else {
+                                ErrorBox(data.Message);
+                            }
+                        }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            hideLoad();
+                            ErrorBox('当前网络较差，请刷新重试');
+                        }
+
+                    })
+                }
+            } else {
+                ErrorBox('请勾选要审核的考勤');
+            }
+        });
+
+        $('#btn_delete').click(function () {
+            var select_num = $('.SOGchk:checked').length;
+            var Ids = []; //需删除的id的集合
+            $('.SOGchk:checked').each(function () {
+                Ids.push($(this).attr("data-id"));
+            })
+            if (Ids && Ids.length == 0) {
+                ErrorBox('请最少勾选一个考勤');
+                return false;
+            }
+            if (confirm('确定删除选中的考勤？')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Attendance/DeleteImportedData',
+                    dataType: "json",
+                    data: {
+                        Ids: Ids
+                    },
+                    success: function (data) {
+                        if (data.ResultType == 200 && data.AppendData > 0) {
+                            SuccessBox('删除成功');
+                            GetAppendData();
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        ErrorBox('当前网络较差，请刷新重试');
+                    }
+                })
+            }
+        });
+
+        $('#btn_link').click(function () {
+            var select_num = $('.SOGchk:checked').length;
+            var Ids = []; //需删除的id的集合
+            $('.SOGchk:checked').each(function () {
+                Ids.push($(this).attr("data-id"));
+            })
+            if (Ids && Ids.length != 1) {
+                ErrorBox('请勾选一个考勤');
+                return false;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/Attendance/GetEmployeeApproveAddress',
+                dataType: "json",
+                data: {
+                    Id: Ids[0]
+                },
+                success: function (data) {
+                    if (data.ResultType == 200 && data.AppendData) {
+                        //SuccessBox(data.AppendData);
+                        $('.I_link_from').html(`<p>${data.AppendData}</p>`);
+                        ShowUI('edit_link');
+                    } else {
+                        ErrorBox('获取失败');
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        });
+
+        //补发通知
+        $('#btn_reload_msg').click(function () {
+            var select_num = $('.SOGchk:checked').length;
+            var Ids = []; //需删除的id的集合
+            $('.SOGchk:checked').each(function () {
+                Ids.push($(this).attr("data-id"));
+            })
+            if (select_num > 0) {
+                showLoad();
+                $.ajax({
+                    type: 'POST',
+                    url: '/Attendance/SendApproveMessageToEmployee',
+                    dataType: "json",
+                    data: {
+                        'Ids': Ids
+                    },
+                    success: function (data) {
+                        hideLoad();
+                        if (data.ResultType == 200) {
+                            SuccessBox(data.Message);
+                            GetAppendData();
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideLoad();
+                        ErrorBox('当前网络较差，请刷新重试');
+                    }
+                })
+            } else {
+                ErrorBox('请勾选要补发链接的考勤');
+            }
+        });
+
+        //导出考勤
+        $('#btn_export').click(function () {
+            showLoad();
+            var trueName = $('#I_search_name').val();
+            var phoneNum = $('#I_search_Phone').val();
+            var pageSize = 10;  //每页显示的条数
+            var pageIndex = currentPage;
+            $.ajax({
+                type: 'post',
+                url: '/Attendance/Export',
+                data: {
+                    'Month': $('#I_search_time').val(),
+                    'TrueName': trueName
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        $("body").append('<iframe src="' + data.AppendData + '" height="0"></iframe>')
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('暂无数据内容');
+                }
+            })
+        });
+
+        //导入考勤
+        $('#btn_import').click(function () {
+            $('.I_import_from').html(`
+                                                    <p>提示信息</p>
+                                                    <p>1、请先选择考勤月份</p>
+                                                    <p>1、Excel格式请参照<button id="import_down_template">下载考勤模板</button></p>
+                                                    <div class ="form-group">
+                                                        <label class ="col-md-3 control-label">考勤月份 </label>
+                                                        <div class ="col-md-8">
+                                                            <input class="layui-input" id="I_import_month" placeholder="" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class ="form-group clearfix">
+                                                        <label class ="col-md-3 control-label align-right">选择文件</label>
+                                                        <div class ="col-md-8">
+                                                            <input name="add_File" type="file" id="I_add_File" />
+                                                            <input name="save_File" class ="hide" type="text" id="I_save_File" />
+                                                        </div>
+                                                    </div>
+                                        `);
+            @*laydate.render({
+                elem: '#I_import_month', type: 'month', value: '@(DateTime.Now.AddMonths(-1).ToString("yyyy-MM"))'/*new Date()*/
+            });*@
+            laydate.render({
+                elem: '#I_import_month' //指定元素
+                        , type: 'month'
+                       , value: '@(DateTime.Now.AddMonths(-1).ToString("yyyy-MM"))'
+                       , max: '@(DateTime.Now.ToString("yyyy-MM"))'
+                       , showBottom: false
+               , ready: function (date) {
+                   $(".layui-laydate").off('click').on('click', '.laydate-month-list li', function () {
+                       $(".layui-laydate").remove();
+                   });
+               }
+               , change: function (value, dates, edate) {
+                   $('#I_import_month').val(value);
+               }
+            });
+            ShowUI('edit_import');
+        });
+
+        $("body").on("change", "#I_add_File", function () {
+            
+            var filePath = $(this).val();//读取图片路径
+            if (!filePath)
+                return;
+            showLoad();
+            var imgObj = this.files[0];//获取图片
+            var formData = new FormData();
+            formData.append("file", $('#I_add_File')[0].files[0]);
+            formData.append("name", $('#I_add_File').val());
+            formData.append("Group", '@((int)Salary_MVC.Enum.FileGroupEnum.考勤)');
+            var obj = $(this).prev()[0];//
+            if (filePath.indexOf("xlsx") != -1 || filePath.indexOf("xls") != -1) {
+                $.ajax({
+                    type: "post",
+                    url: "/File/UploadFile",
+                    data: formData,
+                    contentType: false,// 告诉jQuery不要去设置Content-Type请求头
+                    processData: false,// 告诉jQuery不要去处理发送的数据
+                    success: function (result) {
+                        hideLoad();
+                        if (result.ResultType == 200) {
+                            $('#I_save_File').val(result.Message);
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideLoad();
+                    }
+                });
+
+            } else {
+                hideLoad();
+                ErrorBox('您未上传文件，或者您上传文件类型有误！');
+                $(this).val('');
+                return false
+            }
+        })
+
+        // 导入-确定
+        $('body').on('click', '#btn_save_import', function () {
+            if (required('edit_import')) { //验证
+                return false;
+            }
+            showLoad();
+            var I_import_month = $('#I_import_month').val();
+            var I_save_File = $('#I_save_File').val();
+            $.ajax({
+                type: "post",
+                url: "/Attendance/Import",
+                data: {
+                    'Month': I_import_month,
+                    'FilePath': I_save_File,
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        if (data.AppendData.Result == 1) {
+                            SuccessBox(data.AppendData.Message);
+                            HideUI('edit_import');
+                            GetAppendData();
+                        } else {
+                            $("body").append('<iframe src="' + "/Attendance/DownloadLogFile?fileName=" + data.AppendData.Message + '" height="0"></iframe>');
+                        }
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                }
+            });
+        });
+
+        $("body").on("click", "#import_down_template", function () {
+            $("body").append('<iframe src="/Attendance/Template" height="0"></iframe>');
+        });
+
+        //查看审核进度btn_ApproveLog
+        $("body").on("click", ".btn_ApproveLog", function () {
+            showLoad();
+            var id = $(this).data("id");
+            //$("#ApproveLog_Modal h4 span").text(I_search_month);
+            $.ajax({
+                type: "post",
+                url: '../ApproveLog/GetAttendanceLogByTargetId',
+                data: {
+                    "targetId": id
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        //var strdata = JSON.stringify(data.AppendData);
+                        var strdata = data.AppendData;//JSON.stringify(data.AppendData);
+                        //console.log(strdata.lenth);
+                        //console.log(strdata[0]);
+                        //console.log(strdata[0].Name);
+                        var strdata_html = '';
+                        for (var i = 0; i < strdata.length; i++) {
+                            strdata_html += `<div class="approve_li">
+                                                    <h3 class ="approve_h3">${strdata[i].Name}<span class ="approve_span">(${strdata[i].OperatorTime}) </span>  <i class="app_i  app_yes">${strdata[i].TargetStatus}</i></h3>
+                                                    <p class ="approve_p">${strdata[i].Comment}<a class ="Handler_a  ${strdata[i].Handler == '通过' ? 'Handler_yes' : 'Handler_no'}">${strdata[i].Handler}</a></p>
+                                                  </div>`;
+                        }
+                        strdata_html = strdata_html == '' ? "未开始审核" : strdata_html;
+                        $('.I_ApproveLog_from').html(`
+
+                                                    <div class="approve_ul">
+                                                        ${strdata_html}
+                                                    </div>
+                                        `);
+                        ShowUI('ApproveLog_Modal');
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                }
+            });
+            return false;
+        });
+
+        // 查看审核进度-关闭
+        $('body').on('click', '#close_ApproveLog_default', function () {
+            HideUI('ApproveLog_Modal');
+        });
+
+    </script>
+}
+
+

@@ -1,0 +1,52 @@
+﻿
+.RoleAuto {
+    padding: 20px;
+}
+
+.sidebar_role {
+
+}
+.role_span {
+    line-height: 28px;
+    display: inline-block;
+}
+.role_sel {
+    display: inline-block;
+    width: 260px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0;
+}
+.Role_save {
+    display:inline-block;
+    color: #fff;
+    background-color: #3BB9EF;
+    border-color: #3BB9EF;
+    line-height:28px;
+    text-align:center;
+    padding:0 20px;
+    border-radius:5px;
+    position:relative;
+    top:-1px;
+}
+.Role_save:hover {
+    color:#fff;
+}
+.role_main {
+    margin-top: 20px;
+}
+.role_tit {
+    font-size:16px;
+    border-bottom: 1px solid #eee;
+    line-height:28px;
+    padding-bottom: 5px;
+}
+.role_list {
+    margin-top:20px;
+}
+.role_width {
+    width:80px;
+}
+.role_td {
+    width:150px;
+}

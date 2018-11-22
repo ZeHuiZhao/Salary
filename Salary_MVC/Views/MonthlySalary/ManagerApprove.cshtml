@@ -1,0 +1,359 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "工资审核";
+}
+
+@section customStyle{
+
+    <style>
+        .search_ul {
+            display: none;
+        }
+
+        #open_Approve_Modal {
+            display: none;
+        }
+
+        .ov-line > .ov_btn {
+            margin-top: 5px;
+            padding-bottom: 0;
+        }
+
+        .ov-line > p {
+            padding-bottom: 5px;
+        }
+
+            .ov-line > p > span {
+                margin-left: 6px;
+                margin-right: 30px;
+            }
+
+    </style>
+
+}
+<!-- 主标题 begin -->
+<div class="ov-tit ov-line rel clearfix">
+    <h1 class="ov-theme"><span></span>工资审核</h1>
+    <div class="search_ul">
+        <input class="layui-input" id="I_search_month" placeholder="" type="text">
+        <input type="text" name="search_name" class="form-control" id="I_search_name" placeholder="请输入姓名">
+        <a class="search_ul_a" id="search_button">查询</a>
+    </div>
+    <div class="icon_fun abs bot10">
+        <a class="add_right_btn add_Sale_code" id="open_Approve_Modal">审核</a>
+        <a class="add_right_btn add_Sale_code" id="open_ApproveLog_Modal">查看审核进度</a>
+        <a class="add_right_btn add_Sale_code" id="open_Export_List">导出列表数据</a>
+    </div>
+</div>
+<!-- 主标题 end -->
+<!-- 内容表格 begin -->
+<div class="ov-line">
+    <div class="ov_btn">
+        <div class="btn_tab clearfix">
+            <a class="btn_channel fl btn_switch  btn_active" data-tabindex="@((int)Salary_MVC.Models.TabEnum.待审核)">待审核</a>
+            <a class="btn_channel fl btn_switch" data-tabindex="@((int)Salary_MVC.Models.TabEnum.已审核)">已审核</a>
+        </div>
+    </div>
+</div>
+<div class="ov-form table-responsive I_department_form">
+    <!-- 表格数据 -->
+    <table class="table table-striped table-bordered table-auto" id="I_department">
+        <thead>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+<!-- 内容表格 end -->
+
+<div class="ov-add modal fade I_modal" id="Approve_Modal">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_increase_title"><span></span>工资审核</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_Approve_from">
+
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" id="close_Approve_default" class="btn btn-default">取消</button>
+                <button type="button" id="Approve_primary" class="btn btn-primary ">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ov-add modal fade I_modal" id="ApproveLog_Modal">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_increase_title"><span></span>工资审核进度</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_ApproveLog_from">
+
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" id="close_ApproveLog_default" class="btn btn-default">关闭</button>
+                @*<button type="button" id="Import_primary" class="btn btn-primary ">确定</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section customScript{
+    <script>
+        var monthValue = "@(DateTime.Now.AddMonths(-1).ToString("yyyy-MM"))";
+        var monthValueMax = "@(DateTime.Now.ToString("yyyy-MM"))";
+        var daishenhe = "@((int)Salary_MVC.Models.TabEnum.待审核)";
+        var yishenhe =  "@((int)Salary_MVC.Models.TabEnum.已审核)";
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#I_search_month' //指定元素
+                 , type: 'month'
+                , value: monthValue
+                , max: monthValueMax
+                 , showBottom: false
+                        , ready: function (date) {
+                            $(".layui-laydate").off('click').on('click', '.laydate-month-list li', function () {
+                                $(".layui-laydate").remove();
+                            });
+                        }
+                        , change: function (value, dates, edate) {
+                            $('#I_search_month').val(value);
+                            GetAppendData();
+                        }
+            });
+
+            //初始数据
+            try {
+                GetAppendData()//获取初始表数据
+            } catch (err) {
+            }
+
+        });
+    </script>
+    <script>
+        // 表格数据
+        var page_first = 0; //第一次获取列表数据
+        var editID = ''; //编辑id
+        var master = {};
+        // 翻页
+        function GetAppendData() {
+           
+            var tabindex = $(".btn_active").data("tabindex");
+            data_head = `<tr>
+ <th  rowspan="2" class =" width-sm">姓名</th>
+ <th  rowspan="2" class =" width-lg">部门</th>
+ <th  rowspan="2" class =" width-lg">财务核算单位</th>
+ <th  rowspan="2" class =" width-sm">基本工资</th>
+ <th  rowspan="2" class =" width-sm">津贴</th>
+ <th  rowspan="2" class =" width-sm">工资总额</th>
+ <th  rowspan="2" class =" width-sm">记薪天数</th>
+ <th colspan="6" class ="">应发</th>
+ <th colspan="8" class ="">应扣</th>
+ <th  rowspan="2"  class =" width-sm">实发金额</th>
+ <th  rowspan="2"  class =" width-md">状态</th>
+                                            </tr>
+                                            <tr>
+ <th class =" width-sm">基本工资</th>
+ <th class =" width-xs">奖金</th>
+ <th class =" width-xs">提成</th>
+ <th class =" width-xs">补发</th>
+ <th class =" width-xs">其它</th>
+ <th class =" width-sm">合计</th>
+ <th class =" width-sm">社保</th>
+ <th class =" width-sm">公积金</th>
+ <th class =" width-sm">纳税额</th>
+ <th class =" width-sm">个税</th>
+ <th class =" width-xs">赔偿</th>
+ <th class =" width-xs">挂账</th>
+ <th class =" width-xs">其它</th>
+ <th class =" width-sm">合计</th>
+                                            </tr>`;
+            $('#I_department thead').html(data_head);
+            var patameter = {
+                'Month': $('#I_search_month').val(),
+                'Name': $('#I_search_name').val(),
+                "TabIndex": tabindex
+            };
+            zlpost("../MonthlySalary/GetEntityByFinanceManager", patameter, function (data) {
+                master = data.AppendData.master;
+                var data_box = data.AppendData.data_box;
+                var data_thead = []; //表头的数组
+                var data_head = '';//表头
+                var data_main = '';//表内容
+                var data_length = data_box.length; //内容条数
+                for (var i = 0; i < data_length; i++) {
+                    if (page_first == 0) {
+                        page_first = 1;
+                        if (i == 0) {
+
+                        }
+                    }
+                    var element = data_box[i];
+                    data_main += `<tr data-id="${data_box[i].Id}">
+<td class =" width-sm">${data_box[i].Name}</td>
+<td class =" width-lg">${data_box[i].DepartmentName}</td>
+<td class =" width-lg">${data_box[i].FinancailUnitName}</td>
+<td class =" width-sm">${data_box[i].BaseSalary}</td>
+<td class =" width-sm">${data_box[i].BonusSalary}</td>
+<td class =" width-sm">${data_box[i].TotalSalary}</td>
+<td class =" width-sm">${data_box[i].SalaryDays}</td>
+<td class =" width-sm">${data_box[i].PayableSalary}</td>
+<td class =" width-xs">${data_box[i].AwardMoney}</td>
+<td class =" width-xs">${data_box[i].PercentageMoney}</td>
+<td class =" width-xs">${data_box[i].MakeupMoney}</td>
+<td class =" width-xs">${data_box[i].PayableOther}</td>
+<td class =" width-sm">${data_box[i].PayableTotal}</td>
+<td class =" width-sm">${data_box[i].SocialMoney}</td>
+<td class =" width-sm">${data_box[i].HouseMoney}</td>
+<td class =" width-sm">${data_box[i].TaxAmount}</td>
+<td class =" width-sm">${data_box[i].TaxMoney}</td>
+<td class =" width-xs">${data_box[i].PunishMoney}</td>
+<td class =" width-xs">${data_box[i].CreditMoney}</td>
+<td class =" width-xs">${data_box[i].ReduceOther}</td>
+<td class =" width-sm">${data_box[i].ReduceTotal}</td>
+<td class ="width-sm">${data_box[i].RealPay}</td>
+    <td class ="width-md"><span class ="${"col-display-status"+data.AppendData.master.StatusValue}">${data.AppendData.master.Status}</span></td>
+                                        </tr>`
+                }
+                $('#I_department tbody').html(data_main);
+                var clienH = $(window).height() - 290;
+                $(' .table-auto tbody').css({ 'height': clienH + 'px' });
+                if (!data.AppendData.master.Month) {
+                    $("#open_Approve_Modal").hide();
+                    $("#open_ApproveLog_Modal").hide();
+                    $("#open_Export_List").hide();
+                } else {
+                    $("#open_Approve_Modal").show();
+                    $("#open_ApproveLog_Modal").show();
+                    $("#open_Export_List").show();
+                }
+
+                if ($(".btn_active").data("tabindex") == daishenhe) {
+                    $(".ov-tit .ov-theme span").text(data.AppendData.master.Month);
+                    $("#open_ApproveLog_Modal").hide();
+                } else {
+                    $("#open_Approve_Modal").hide();
+                    $(".ov-tit .ov-theme span").text("");
+                }
+            });
+        }
+
+
+        $('#search_button').click(function () {
+            GetAppendData();
+        })
+
+        //发起审核
+        $('body').on('click', '#open_Approve_Modal', function () {
+            var I_search_month = $('#I_search_month').val();
+            $(".I_Approve_from").html(`
+                                        <div class ="form-group">
+                                            <label id="add_lbl_status" class ="col-md-3 control-label">审核</label>
+                                            <div class ="col-md-8">
+                                                <label class ="lbl_add_status"><input type="radio" name='approve_Handler' value='0' class ='add_status' checked='checked'>通过</label>
+                                                <label class ="lbl_add_status"><input type="radio" name='approve_Handler' value='1' class ='add_status'>不通过</label>
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_TrueName" class ="col-md-3 control-label">审核意见</label>
+                                            <div class ="col-md-8">
+                                                <input name="approve_Comment" type="text" value="" rule="/\\S/" id="approve_Comment" class ="form-control Idata" placeholder="审核意见">
+                                            </div>
+                                        </div>
+                                        `);
+            ShowUI('Approve_Modal');
+        });
+        // 发起审核-关闭
+        $('body').on('click', '#close_Approve_default', function () {
+            HideUI('Approve_Modal');
+        });
+        //发起审核-确定
+        $("body").on('click', '#Approve_primary', function () {
+            zlpost("../MonthlySalary/ApproveByFinanceManager", {
+                "Id": master.Id,
+                "Handler": $('.add_status:checked').val(),
+                "Comment": $("#approve_Comment").val()
+            }, function () {
+                HideUI('Approve_Modal');
+                GetAppendData();
+            },true);
+        });
+
+        //查看审核进度
+        $('body').on('click', '#open_ApproveLog_Modal', function () {
+            var I_search_month = $('#I_search_month').val();
+            $("#ApproveLog_Modal h4 span").text(I_search_month);
+            zlpost("../MonthlySalary/GetApproveLog", { "Month": I_search_month }, function (data) {
+                var strdata = data.AppendData;//JSON.stringify(data.AppendData);
+                //console.log(strdata.lenth);
+                //console.log(strdata[0]);
+                //console.log(strdata[0].Name);
+                var strdata_html = '';
+                for (var i = 0; i < strdata.length; i++) {
+                    strdata_html += `<div class="approve_li">
+                                                    <h3 class ="approve_h3">${strdata[i].Name}<span class ="approve_span">(${strdata[i].OperatorTime}) </span>  <i class="app_i  app_yes">${strdata[i].TargetStatus}</i></h3>
+                                                    <p class ="approve_p">${strdata[i].Comment}<a class ="Handler_a  ${strdata[i].Handler == '通过' ? 'Handler_yes' : 'Handler_no'}">${strdata[i].Handler}</a></p>
+                                                  </div>`;
+                }
+                strdata_html = !strdata_html ? "未开始审核" : strdata_html;
+                $('.I_ApproveLog_from').html(`
+
+                                                    <div class="approve_ul">
+                                                        ${strdata_html}
+                                                    </div>
+                                        `);
+                ShowUI('ApproveLog_Modal');
+            });
+        });
+        // 查看审核进度-关闭
+        $('body').on('click', '#close_ApproveLog_default', function () {
+            HideUI('ApproveLog_Modal');
+        });
+
+        //导出列表
+        $("body").on("click", "#open_Export_List", function () {
+            var I_search_month = $('#I_search_month').val();
+            var tabindex = $(".btn_tab .btn_active").data("tabindex");
+            if (tabindex == daishenhe) {
+                I_search_month = $(".ov-tit .ov-theme span").text();
+            }
+            var url = "../MonthlySalary/ExportList?month=" + I_search_month
+            zlpost(url, {}, function () {
+                $("body").append('<iframe src="' + url + '" height="0"></iframe>')
+            });
+            return false;
+        });
+
+        $('.btn_switch').click(function () {
+            $(this).addClass('btn_active').siblings().removeClass('btn_active');
+            var tabindex = $(this).data('tabindex');
+            //page_first = 0;
+            //currentPage = 1;
+            if (tabindex == daishenhe) {
+                $('.search_ul').hide();
+                $("#open_Approve_Modal").show();
+                $("#open_ApproveLog_Modal").hide();
+            } else {
+                $('.search_ul').show();
+                $("#open_Approve_Modal").hide();
+                $("#open_ApproveLog_Modal").show();
+            }
+            GetAppendData();//获取初始表数据
+        })
+    </script>
+}

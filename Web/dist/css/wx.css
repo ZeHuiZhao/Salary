@@ -1,0 +1,93 @@
+﻿body,html {
+    width: 100%;
+    height: 100%;
+    font-size: 1em;
+    font-family: 'Microsoft YaHei';
+}
+ul,li{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.content{
+    height:100%;max-height: 1136px;margin:0 auto;
+    padding: 20px 6px;
+    padding-bottom: 100px;
+}
+.my_content{
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}
+.header>h4{
+    font-size: 1.2em;
+    color: #000;
+    font-family: "黑体";
+    padding-bottom: 15px;
+}
+.header>div{
+    padding-bottom: 20px;
+}
+.my_date{
+    color: #999999;
+}
+.my_compay{
+    color: #fb5757;
+    font-size:1em;
+    margin-left:5px;
+}
+.my_tabs{
+    float: right;
+    display: inline-block;
+    padding:1px;
+    min-width:80px;
+    border: 1px solid  #fb4747;
+    color: #fb4747;
+    text-align: center;
+    font-size: 0.8em;
+}
+.my_img{
+    width: 100%;
+    height: auto;
+}
+.my_img>img{
+    width: 100%;
+    height: auto;
+}
+.my_section{
+    text-align: center;
+    color: #324a5e;
+    font-weight: 800;
+    line-height: 40px;
+}
+.footer{
+    height: 70px;margin:0 auto;
+    position: relative;    
+    width:95%;
+    position:fixed;
+    bottom: 0;
+    text-align: center;
+    padding-top: 20px;
+}
+.footerbutton{
+    display: inline-block;
+    height: 40px;
+    width: 80%;
+    left: 50%;
+    text-align: center;
+    line-height: 40px;
+    color: #ffffff;
+    font-size:1em;
+    border-radius: 5px;
+}
+.share{
+    background:#fb4747 ;
+}
+.attend{
+    /*background: #ffb74e;*/
+    background-image:url(../img/btnbg.png);
+    /*background:#fb4747;*/
+    margin: 0 auto;
+}
+.readnum {background:#fb4747 ;border-radius: 10px;color: #ffffff;padding:1px;padding-top:2px;  padding-left:10px;padding-right:10px;  margin-left:5px;font-size:0.8em; width:100px; margin-bottom:5px;text-align:center; }
+.detail { margin-bottom:100px;  }

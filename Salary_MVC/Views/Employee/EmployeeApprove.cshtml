@@ -1,0 +1,453 @@
+﻿
+@{
+    ViewBag.Title = "员工信息审核";
+}
+
+@section customStyle{}
+<!-- 主标题 begin -->
+<div class="ov-tit ov-line rel clearfix">
+    <h1 class="ov-theme">员工信息</h1>
+    <div class="search_ul" id="Audited">
+        <div class="search_ul">
+            <a class="search_ul_a" id="btn_lock">锁定</a>
+        </div>
+    </div>
+    <div class="search_ul" id="Unreviewed" style="display:none">
+        <div class="search_ul">
+            <a class="search_ul_a" id="btn_unlock">解锁</a>
+        </div>
+    </div>
+</div>
+<!-- 主标题 end -->
+<!-- 内容表格 begin -->
+<div class="ov-form table-responsive I_department_form">
+    <!-- 按钮组 -->
+    <div class="ov_btn">
+        <div class="btn_tab clearfix">
+            <a class="btn_channel fl btn_switch  btn_active" data-tabindex="1">锁定中</a>
+            <a class="btn_channel fl btn_switch" data-tabindex="2">解锁中</a>
+            <a class="btn_channel fl btn_switch" data-tabindex="3">未锁定</a>
+            <a class="btn_channel fl btn_switch" data-tabindex="4">已锁定</a>
+        </div>
+        <div class="fr">
+            <span class="ov-add">总页数<span class="number0" id="I_TotalPage">0</span>，当前条数<span class="number0" id="I_pageSize">0</span>条</span>
+        </div>
+    </div>
+    <!-- 表格数据 -->
+    <table class="table table-striped table-bordered table_auto" id="I_department">
+        <thead>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <!-- 分页 begin -->
+    <div class="ov-page">
+        <div id="layui_page"></div>
+    </div>
+    <!-- 分页 end -->
+</div>
+<!-- 内容表格 end -->
+<!--审核锁定 begin-->
+<div class="ov-edit modal fade I_modal" id="edit_approve_lock" tabindex="-1" role="dialog">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_approve_title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_approve_from">
+
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-default">取消</button>
+                <button type="button" id="btn_save_approve" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--审核锁定 end-->
+<!--审核解锁 begin-->
+<div class="ov-edit modal fade I_modal" id="edit_approve_unlock" tabindex="-1" role="dialog">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_approve_all_title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_unlock_from">
+
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-default">取消</button>
+                <button type="button" id="btn_save_unlock" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--审核解锁 end-->
+
+@section customScript{
+    <script>
+        // 表格数据
+        var currentPage = 1; //当前页数
+        var page_first = 0; //第一次获取列表数据
+        var page_count = 0; //总条数
+        var editID = ''; //编辑id
+        var _tabIndex = 1;
+        laydate.render({
+            elem: '#I_search_time', type: 'month', value: '@(DateTime.Now.AddMonths(-1).ToString("yyyy-MM"))'
+        });
+        // 翻页
+        function GetAppendData() {
+            showLoad();
+            var trueName = $('#I_search_name').val();
+            var phoneNum = $('#I_search_Phone').val();
+            var pageSize = 10;  //每页显示的条数
+            var pageIndex = currentPage;
+            $.ajax({
+                type: 'GET',
+                url: '/Employee/GetEntity',
+                data: {
+                    'pageSize': pageSize,
+                    'pageIndex': pageIndex,
+                    'LockStatus':_tabIndex
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        var data_box = data.AppendData.List;
+                        var data_thead = []; //表头的数组
+                        var data_head = '';//表头
+                        var data_main = '';//表内容
+                        var data_length = data_box.length; //内容条数
+                        page_count = data.AppendData.TotalCount; //总条数
+                        if (page_first == 0) {
+                            page_first = 1;
+                            data_head = `<tr>
+                                            <th class=" width-chk">          <input type="checkbox" onclick="all_check(this);" class="allCheck"></th>
+                                            <th class =" width-sm">        姓名</th>
+                                            <th class =" width-lg">         部门</th>
+                                            <th class =" width-lg">         财务核算单位</th>
+                                            <th class =" width-md">         手机号码</th>
+                                            <th class =" width-datetime">身份证号码</th>
+                                            <th class =" width-datetime">银行卡号码</th>
+                                            <th class =" width-date">       银行卡省份</th>
+                                            <th class =" width-datetime">       发薪公司</th>
+                                            <th class =" width-sm">         基本工资</th>
+                                            <th class =" width-date">       入职时间</th>
+                                            <th class =" width-date">       离职日期</th>
+                                            <th class =" width-xs">         免打卡</th>
+                                            <th class =" width-sm">         带薪假期</th>
+                                            <th class =" width-sm">         状态</th>
+                                        </tr>`;
+                            $('#I_department thead').append(data_head);
+                        }
+                        for (var i = 0; i < data_length; i++) {
+
+                            /*o.Name,o.Mobile,o.IDCard,o.Id,o.BankCard,o.BankArea,o.StatusJob,o.Status,o.SalaryGroup*/
+                            data_main += `<tr data-id="${data_box[i].Id}">
+                                            <td class =" width-chk">      <input name="gv_data_ct${data_box[i].Id}_check" data-id="${data_box[i].Id}"  class ="SOGchk"  ${data_box[i].IsDelete == 0 ? 'data-nodel="0"': 'data-nodel="1"'}  type="checkbox"></td>
+                                            <td class =" width-sm">      ${data_box[i].Name}</td>
+                                            <td class =" width-lg">      ${data_box[i].DepartmentName}</td>
+                                            <td class =" width-lg">      ${data_box[i].FinacialUnitName}</td>
+                                            <td class =" width-md">      ${data_box[i].Mobile}</td>
+                                            <td class =" width-datetime">${data_box[i].IDCard}</td>
+                                            <td class =" width-datetime">${data_box[i].BankCard}</td>
+                                            <td class =" width-date">    ${data_box[i].BankArea}</td>
+                                            <td class =" width-datetime">${data_box[i].SalaryGroup}</td>
+                                            <td class =" width-sm">      ***</td>
+                                            <td class =" width-date">    ${data_box[i].JoinDate}</td>
+                                            <td class =" width-date">    ${data_box[i].QuitDate}</td>
+                                            <td class =" width-xs">      ${data_box[i].IsLeader}</td>
+                                            <td class =" width-sm">      ${data_box[i].PaidHoliday}</td>
+                                            <td class =" width-sm">      ${data_box[i].Status}</td>
+                                        </tr>`
+                        }
+                        $('#I_department tbody').html(data_main);
+                        var clienH = $(window).height() - 250;
+                        $(' .table-auto tbody').css({ 'height': clienH + 'px' });
+                        $('#I_TotalPage').html(data.AppendData.TotalPage);
+                        $("#I_pageSize").html(data_length);
+                        laypage_up(page_count);
+
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('暂无数据内容');
+                }
+            })
+        }
+
+        $('.btn_switch').click(function () {
+            $(this).addClass('btn_active').siblings().removeClass('btn_active');
+            var tabindex = $(this).data('tabindex');
+            _tabIndex = tabindex;
+            //page_first = 0;
+            //currentPage = 1;
+            if (tabindex == 1) {
+                $('#Audited').show();
+                $('#Unreviewed').hide();
+            } else if (tabindex == 2) {
+                $('#Audited').hide();
+                $('#Unreviewed').show();
+            } else {
+                $('#Audited').hide();
+                $('#Unreviewed').hide();
+            }
+            GetAppendData();//获取初始表数据
+            //setTimeout(function () {
+            //    laypage_up(page_count);
+            //}, 200)
+        })
+
+        $('#search_button').click(function () {
+            GetAppendData();
+        })
+        // all checkbox  num_check选择了多少条数SOGchk
+        function all_check(_this) {
+            $(".SOGchk").each(function () {
+                var nodel = $(this).attr('data-nodel');
+                if (nodel == 1) {
+                    $(this).prop("checked", _this.checked);
+                } else {
+                    if (nodel == 0 || _this.checked == true) {
+                        $(this).prop("checked", false);
+                    }
+                }
+            })
+
+            num_check()
+        };
+        $('body').on('click', '.SOGchk', function () {
+            if (!$(this).attr('checked')) {
+                $('.allCheck').prop("checked", false);
+            }
+            num_check()
+        })
+        function num_check() {
+            var check_length = $('.SOGchk:checked').length;
+            $('#I_number').html(check_length);
+        }
+
+        function InitCompany() {
+            $.ajax({
+                type: 'GET',
+                url: '/Common/GetCompanyList',
+                dataType: "json",
+                success: function (data) {
+                    if (data.ResultType == 200) {
+                        var companyList = data.AppendData;
+                        $('#I_search_companyId').append(companyList.map(o=> { return `<option value="${o.Id}">${o.Name}</option>` }));
+                    }
+                }
+            })
+        }
+
+        $('#I_search_companyId').on('change', function () {
+            $('#I_search_departmentId').html('<option value="">--所有部门--</option>');
+            $('#I_search_departmentId').val('');
+            InitDepartment();
+        });
+
+        function InitDepartment() {
+            $.ajax({
+                type: 'GET',
+                url: '/Common/GetDepartmentList',
+                data: {
+                    'companyId': $('#I_search_companyId').val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.ResultType == 200) {
+                        var departmentList = data.AppendData;
+                        $('#I_search_departmentId').append(departmentList.map(o=> { return `<option value="${o.Id}">${o.Name}</option>` }));
+                    }
+                }
+            })
+        }
+
+        //初始数据
+        try {
+            GetAppendData()//获取初始表数据
+            InitCompany();
+            InitDepartment();
+        } catch (err) {
+        }
+
+        //分页
+        function laypage_up() {
+            layui.use(['laypage', 'layer'], function () {
+                var laypage = layui.laypage
+                , layer = layui.layer;
+                laypage.render({
+                    elem: 'layui_page'
+                    , count: page_count
+                    , limit: 10
+                    , curr: currentPage || 1
+                    , layout: ['count', 'prev', 'page', 'next', 'skip']
+                    , jump: function (obj, first) {
+                        currentPage = obj.curr;
+                        if (!first) {//首次不执行
+                            GetAppendData();
+
+                        }
+
+                    }
+                });
+            })
+        }
+        
+        //锁定
+        $('body').on('click', '#btn_save_approve', function () {
+            if (required('edit_approve_lock')) { //验证
+                return false;
+            }
+            var select_num = $('.SOGchk:checked').length;
+            var Ids = []; //需删除的id的集合
+            $('.SOGchk:checked').each(function () {
+                Ids.push($(this).attr("data-id"));
+            })
+            //ajax提交
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Employee/ApproveLockMultiByFinance',
+                data: {
+                    'Ids': Ids,
+                    'Opinion': $('#edit_Opinion').val(),
+                    'UserOperation': $('input[name=UserOperation]:checked').val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('edit_approve_lock');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        })
+        $('body').on('click', '#btn_lock', function () {
+            var select_num = $('.SOGchk:checked').length;
+            var Ids = []; //需删除的id的集合
+            $('.SOGchk:checked').each(function () {
+                Ids.push($(this).attr("data-id"));
+            })
+            if (select_num > 0) {
+                $('.I_unlock_from').html('');
+                $('.I_approve_from').html(`
+                            <div class ="form-group">
+                                                    <label class ="col-md-3 control-label">用户操作</label>
+                                                    <div class ="col-md-8">
+                                                    <label><input  type='radio' checked='checked' name='UserOperation' value="0" />通过</label>
+                                                    <label><input  type='radio' name='UserOperation' value="1" />不通过</label>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class ="form-group">
+                                                    <label class ="col-md-3 control-label">审核意见</label>
+                                                    <div class ="col-md-8">
+                                                    <input class ="form-control" id="edit_Opinion" />
+
+                                                    </div>
+                                                </div>
+                                                `);
+                ShowUI('edit_approve_lock');
+            } else {
+                ErrorBox('请勾选要审核的员工');
+            }
+        })
+        
+
+        //解锁
+        $('body').on('click', '#btn_save_unlock', function () {
+            if (required('edit_approve_unlock')) { //验证
+                return false;
+            }
+            var select_num = $('.SOGchk:checked').length;
+            var Ids = []; 
+            $('.SOGchk:checked').each(function () {
+                Ids.push($(this).attr("data-id"));
+            })
+            //ajax提交
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Employee/ApproveUnlockMultiByFinance',
+                data: {
+                    'Ids': Ids,
+                    'Opinion': $('#edit_Opinion').val(),
+                    'UserOperation': $('input[name=UserOperation]:checked').val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('edit_approve_unlock');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        })
+        $('body').on('click', '#btn_unlock', function () {
+            var select_num = $('.SOGchk:checked').length;
+            var Ids = []; //需删除的id的集合
+            $('.SOGchk:checked').each(function () {
+                Ids.push($(this).attr("data-id"));
+            })
+            if (select_num > 0) {
+                $('.I_approve_from').html('');
+                $('.I_unlock_from').html(`
+                            <div class ="form-group">
+                                                    <label class ="col-md-3 control-label">用户操作</label>
+                                                    <div class ="col-md-8">
+                                                   <label><input  type='radio' checked='checked'  name='UserOperation' value="0" />通过</label>
+                                                    <label><input  type='radio' name='UserOperation' value="1" />不通过</label>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class ="form-group">
+                                                    <label class ="col-md-3 control-label">审核意见</label>
+                                                    <div class ="col-md-8">
+                                                    <input class ="form-control" id="edit_Opinion" />
+
+                                                    </div>
+                                                </div>
+                                                `);
+                ShowUI('edit_approve_unlock');
+            } else {
+                ErrorBox('请勾选要审核的员工');
+            }
+        })
+        
+
+    </script>
+}
+
+

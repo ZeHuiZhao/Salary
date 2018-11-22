@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta content="telephone=no" name="format-detection">
+    <title>员工基本信息锁定</title>
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="/Asset/dist/js/viewport.js"></script>
+    <link rel="stylesheet" href="/Asset/dist/css/reset.css">
+    <link rel="stylesheet" href="/Asset/dist/css/info.css">
+    <link rel="stylesheet" href="/Asset/dist/css/ov_tip.css">
+    <link href="../../Asset/plugins/layui/css/layui.css" rel="stylesheet" />
+</head>
+
+<body>
+
+
+    <div class="Info_main">
+        <h1 class="Info_main_h1">员工基本信息锁定</h1>
+        <div class="Info_ul">
+            <div class="Info_li">
+                <a class="Info_li_a flexbox">
+                    <span>姓名</span>
+                    <p class="flex1" id="I_Name"></p>
+                </a>
+                <a class="Info_li_a flexbox">
+                    <span>部门</span>
+                    <p class="flex1" id="I_DepartmentName"></p>
+                </a>
+                <a class="Info_li_a flexbox">
+                    <span>手机号码</span>
+                    <p class="flex1" id="I_Mobile"></p>
+                </a>
+            </div>
+        </div>
+
+        <div class="Info_ul">
+            <div class="Info_li">
+                <a class="Info_li_a  flexbox" id="I_phone_href">
+                    <span>银行卡号</span>
+                    <p id="edit_BankCard" class="flex1"></p>
+                </a>
+                <a class="Info_li_a  flexbox">
+                    <span>身份证号</span>
+                    <p id="edit_IDCard" class="flex1"></p>
+                </a>
+                <a class="Info_li_a  flexbox">
+                    <span>银行省份</span>
+                    <p id="edit_BankArea" class="flex1"></p>
+                </a>
+            </div>
+        </div>
+        <textarea id="opinion" class="info_tex" placeholder="审核意见"></textarea>
+
+        <div class="Info_btn ">
+            <a id="btn_agree" class="Info_btn_agree" href="javascript:void(0)">同意</a>
+            <a id="btn_veto" class="Info_btn_veto" href="javascript:void(0)">否决</a>
+        </div>
+
+    </div>
+    <script src="../../Asset/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../../Asset/dist/js/common.js"></script>
+    <script src="../../Asset/dist/js/config.js"></script>
+    <script src="../../Asset/dist/js/loadovo.js"></script>
+    <script src="../../Asset/dist/js/ov_tip.js"></script>
+    <script src="../../Asset/plugins/layui/layui.js"></script>
+    <script>
+        $(function () {
+            layui.use('layer', function () {
+            });
+            var guid = getUrlParam('id');
+            var phone = getUrlParam('phone');
+            if (guid && guid != null) {
+                $.get('/Employee/GetEntityById/' + guid, function (data) {
+                    var edit = data.AppendData;
+                    $('#I_Name').text(edit.Name);
+                    $('#I_DepartmentName').text(edit.DepartmentName);
+                    $('#I_Mobile').text(edit.Mobile);
+
+                    $("#edit_BankCard").text(edit.BankCard);
+                    
+                    $("#edit_BankArea").text(edit.BankArea);
+                    
+                    $("#edit_IDCard").text(edit.IDCard);
+                    
+                })
+            } 
+
+
+            $("#btn_agree").click(function () {
+                $.post('/Employee/ApproveLockByFinance', { UserOperation: 0, Id: guid, Opinion: $("#opinion").val(), Phone: phone }, function (data) {
+                    if (data.ResultType == 200 && data.AppendData > 0) {
+                        SuccessBox('操作成功')
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                })
+            });
+
+            $("#btn_veto").click(function () {
+                $.post('/Employee/ApproveLockByFinance', { UserOperation: 1, Id: guid, Opinion: $("#opinion").val(), Phone: phone }, function (data) {
+                    if (data.ResultType == 200 && data.AppendData > 0) {
+                        SuccessBox('操作成功')
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                })
+            });
+            
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>权限管理</title>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta name="format-detection" content="telephone=no" />
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- table -->
+    <link href="../../dist/css/ovcss.css" rel="stylesheet" />
+    <!-- 提示框 -->
+    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- layui 分页 -->
+    <link href="../../plugins/layui/css/layui.css" rel="stylesheet" />
+    <!--role_list-->
+    <link href="../../dist/css/role_list.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="RoleAuto">
+        <div class="sidebar_role">
+            <span class="role_span">角色</span>
+            <select class="form-control role_sel" name="role" id="role_sel"></select>
+            <a class="Role_save " id="I_Role_save">保存</a>
+        </div>
+       
+        <div class="role_main" id="">
+            <h2 class="role_tit">角色权限 | 管理</h2>
+            <div class="role_list" id="I_role_list">
+
+            </div>
+            
+        </div>
+    </div>
+    <!-- jq -->
+    <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- 时间日期插件 -->
+    <script src="../../plugins/laydate/laydate.js"></script>
+    <!-- bootstrap -->
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <!-- 提示框js -->
+    <script src="../../plugins/sweetalert/sweetalert.js"></script>
+    <!-- 主标题和筛选 的js -->
+    <script src="../../dist/js/form_bow.js"></script>
+    <!-- layui 分页js -->
+    <script src="../../plugins/layui/layui.js"></script>
+    <!-- 拖动js （给需要可拖动弹出层的div 添加 class（modalDialog）即可 ） -->
+    <script src="../../dist/js/jquery-ui.js"></script>
+    <!-- 公共脚本 -->
+    <script src="../../dist/js/loadovos.js"></script>
+    <script src="../../dist/js/common.js"></script>
+    <script src="../../dist/js/config.js"></script>
+    <script>
+        $(function () {
+
+            //获取全部权限列表
+            function GetPrivilegeList() {
+                $.ajax({
+                    type: "GET",
+                    url: APIS.GetPrivilegeList,
+                    dataType: "json",
+                    success: function (result) {
+                        var data = result;
+                        if (data.ResultType == 200) {
+                            var items = data.AppendData;
+                            var role_ul_html = '';
+                            var role_li_html = '';
+                            var conct_html = '';
+                            for (var i = 0; i < items.length; i++) {
+                                var role_next = items[i].children;
+                                for (var j = 0; j < role_next.length; j++) {
+                                    if (j == 0) {
+                                        role_li_html += `<table class="table table-striped table-bordered  table-striped" id="table_${items[i].id}"><thead>
+                                                    <td class ="role_td">权限名称</td>
+                                                    <td class ="center role_width">分配</td>
+                                                    <td class ="role_td">权限名称</td>
+                                                    <td class ="center role_width">分配</td>
+                                                    <td class ="role_td">权限名称</td>
+                                                    <td class ="center role_width">分配</td>
+                                                    <td class ="role_td">权限名称</td>
+                                                    <td class ="center role_width">分配</td>
+                                                </tr>
+                                            </thead><tbody><tr>`
+                                    }
+                                    if ((j % 4) == 0) {
+                                        role_li_html+=`</tr><tr>`
+                                    }
+                                    role_li_html += `<td>${role_next[j].text}</td><td class="center"><input type="checkbox" name="privilege" value="${role_next[j].id}"></td>`
+                                    if (j == (role_next.length - 1)) {
+                                        if ((role_next.length % 4) != 0) {
+                                            var td_li = role_next.length % 4;
+                                            var td_lis = 4- (j+1) % 4;
+                                            for (var f = 0; f < td_lis; f++) {
+                                                role_li_html += `<td></td><td class="center"></td>`
+                                            }
+                                        }
+                                        role_li_html += `</tr></tbody></table>`
+                                    }
+                                }
+                                role_ul_html += `<div class="role_li"><label><input type="checkbox" id="parent_${items[i].id}" name="parent" value="${items[i].id}">${items[i].text}</label>` + role_li_html + `</div>`
+                                conct_html += role_ul_html;
+                                role_ul_html = '';
+                                role_li_html = '';
+                            }
+                            $("#I_role_list").html(conct_html);
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    },
+                    error: function b(ms) {
+                        ErrorBox("请求失败，请按F5刷新！");
+                        return;
+                    }
+                });
+            }
+            GetPrivilegeList();
+
+            //角色选项
+            function GetRolesel() {
+                $.ajax({
+                    type: "GET",
+                    url: APIS.GetAllRole,
+                    dataType: "json",
+                    success: function (result) {
+                        var data = result;
+                        if (data.ResultType == 200) {
+                            var uHtml = "<option value=''>--请选择--</option>";
+                            var items = data.AppendData;
+                            for (var i = 0; i < items.length; i++) {
+                                uHtml += "<option value='" + items[i].Id + "'>" + items[i].Name + "</option>";
+                            }
+                            $("#role_sel").html(uHtml);
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    },
+                    error: function b(ms) {
+                        ErrorBox("请求失败，请按F5刷新！");
+                        return;
+                    }
+                });
+            }
+            GetRolesel();
+
+            //选择角色后：
+            $("#role_sel").change(function () {
+                var sel_id = $("#role_sel").val();
+                //先取消勾选
+                $("input[name='privilege']").each(function () {
+                    $(this).prop("checked", false);
+                });
+                //获取选中用户的权限
+                $.ajax({
+                    type: "GET",
+                    url: APIS.GetAllRole,
+                    dataType: "json",
+                    success: function (result) {
+                        var data = result;
+                        if (data.ResultType == 200) {
+                            var res = data.AppendData;
+                            var Nav_list = '';
+                            for (var i = 0; i < res.length; i++) {
+                                if (res[i].Id == sel_id) {
+                                    Nav_list = res[i].NavigateId;
+                                }
+                            }
+                            var str = Nav_list.split(',');
+                            for (var j = 0; j < str.length; j++) {
+                                $("input[name='privilege'][value='" + str[j] + "']").prop("checked", true);
+                            }
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    },
+                    error: function b(ms) {
+                        ErrorBox("请求失败，请按F5刷新！");
+                        return;
+                    }
+                });
+            });
+
+            //保存
+            $("#I_Role_save").click(function () {
+                var sel_id = $("#role_sel").val();
+                if (sel_id == '') {
+                    ErrorBox('请选择角色'); 
+                    return false;
+                }
+                var privilegeIds = "";
+                $("input[name='privilege']:checked").each(function (i) {
+                    privilegeIds = privilegeIds + ',' + $(this).val();
+                });
+                privilegeIds = privilegeIds.substr(1, privilegeIds.length - 1);
+                showLoad();
+                $.ajax({
+                    type: "POST",
+                    url: APIS.UpdateRolePrivilege,
+                    dataType: "json",
+                    data: {
+                        "Id": sel_id,
+                        "Privilege": privilegeIds
+                    },
+                    success: function (rs) {
+                        hideLoad();
+                        var data = rs;
+                        if (data.ResultType == 200)//成功
+                        {
+                            SuccessBox(data.Message)
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1500)
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    },
+                    error: function b(ms) {
+                        hideLoad();
+                        alert("请求失败，请按F5刷新！");
+                        return;
+                    }
+                });
+            });
+        });
+
+        $('body').on('click', 'input[name="parent"]', function () {
+            var sel_id = $("#role_sel").val();
+            if (sel_id == '') {
+                ErrorBox('请选择角色');
+                return false;
+            }
+            var _this = this;
+            var f = $(_this).prop("checked");
+            var id = $(_this).val();
+            var table = "#table_" + id;
+            if (f == true) {
+                $(table + " input[name='privilege']").each(function () {
+                    $(this).prop("checked", true);
+                });
+            }
+            else {
+                $(table + " input[name='privilege']").each(function () {
+                    $(this).prop("checked", false);
+                });
+            }
+        })
+       
+    </script>
+</body>
+
+</html>

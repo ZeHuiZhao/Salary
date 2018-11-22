@@ -1,0 +1,502 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>联系人列表</title>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta name="format-detection" content="telephone=no" />
+    <!-- select2 -->
+    <link href="../../plugins/select2/select2.css" rel="stylesheet" />
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- table -->
+    <link href="../../dist/css/ovcss.css" rel="stylesheet" />
+    <!-- 提示框 -->
+    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- layui 分页 -->
+    <link href="../../plugins/layui/css/layui.css" rel="stylesheet" />
+    <!--用户管理-->
+    <link href="../../dist/css/User_Center.css" rel="stylesheet" />
+    <link href="../../dist/css/font-awesome.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- 主标题 begin -->
+    <div class="ov-tit ov-line rel clearfix">
+        <h1 class="ov-theme">联系人列表</h1>
+        <div class="search_ul">
+            <input type="tel" name="search_companyName" class="form-control" id="I_search_companyName" placeholder="公司名称">
+            <input type="tel" name="search_contactName" class="form-control" id="I_search_contactName" placeholder="联系人姓名">
+            <input type="tel" name="search_contactPhone" class="form-control" id="I_search_contactPhone" placeholder="联系人电话">
+            <select name="search_Type" class="form-control search_Type" id="I_search_Type">
+                <option value="">--所有销售员--</option>
+            </select>
+            <a class="search_ul_a" id="search_button">查询</a>
+        </div>
+    </div>
+    <!-- 主标题 end -->
+    <!-- 内容表格 begin -->
+    <div class="ov-form table-responsive I_department_form">
+        <!-- 按钮组 -->
+        <div class="ov_btn">
+            <div class="fr">
+                <span class="ov-add">总页数<span class="number0" id="I_TotalPage">0</span>，当前条数<span class="number0" id="I_pageSize">0</span>条</span>
+            </div>
+        </div>
+        <!-- 表格数据 -->
+        <table class="table table-striped table-bordered" id="I_department">
+            <thead>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <!-- 分页 begin -->
+        <div class="ov-page">
+            <div id="layui_page"></div>
+        </div>
+        <!-- 分页 end -->
+    </div>
+    <!-- 内容表格 end -->
+   
+    <!--编辑-->
+    <div class="ov-edit modal fade I_modal" id="edit_Contacts_Modal" tabindex="-1" role="dialog">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_edit_title">编辑联系人</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered I_edit_from">
+
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="editContacts_default" class="btn btn-default">取消</button>
+                    <button type="button" id="editContacts_primary" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加的弹出 -->
+    <div class="ov-edit modal fade I_modal" id="Added_Modal" tabindex="-1" role="dialog">
+        <div class="modalDialog modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                        <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                    </button>
+                    <h4 class="modal-title I_Added_title">添加联系记录</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal form-bordered I_Added_from">
+
+                    </div>
+                </div>
+                <div class="modal-footer modal_btn">
+                    <button type="button" id="Added_default" class="btn btn-default">取消</button>
+                    <button type="button" id="Added_primary" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- jq -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <!-- 时间日期插件 -->
+    <script src="../../plugins/laydate/laydate.js"></script>
+    <!-- bootstrap -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- 提示框js -->
+    <script src="../../plugins/sweetalert/sweetalert.js"></script>
+    <!-- 主标题和筛选 的js -->
+    <script src="../../dist/js/form_bow.js"></script>
+    <!-- layui 分页js -->
+    <script src="../../plugins/layui/layui.js"></script>
+    <!-- 拖动js （给需要可拖动弹出层的div 添加 class（modalDialog）即可 ） -->
+    <script src="../../dist/js/jquery-ui.js"></script>
+    <!-- select2 -->
+    <script src="../../plugins/select2/select2.js"></script>
+    <script src="../../dist/js/loadovos.js"></script>
+    <!-- 公共脚本 -->
+    <script src="../../dist/js/common.js"></script>
+    <script src="../../dist/js/config.js"></script>
+    <script>
+        // 表格数据
+        var currentPage = 1; //当前页数
+        var page_first = 0; //第一次获取列表数据
+        var page_count = 0; //总条数
+        var editID = ''; //编辑id
+        var Jurisdiction = loginInfo.UserType;
+        //获取销售员
+        $.ajax({
+            type: "GET",
+            url: APIS.GetSaleList + '/' + loginInfo.ChannelId,
+            dataType: "json",
+            success: function (result) {
+                var data = result;
+                if (data.ResultType == 200) {
+                    var items = data.AppendData;
+                    var sale_html = '<option value="">--销售员--</option>';
+                    for (var i = 0; i < items.length; i++) {
+                        sale_html += '<option value="' + items[i].Id + '">' + items[i].TrueName + '</option>'
+                    }
+                    $('#I_search_Type').html(sale_html);
+                    if (Jurisdiction == 3) {
+                        $('#I_search_Type').val(loginInfo.Id).hide();
+                    }
+                   
+                }
+            }
+        })
+
+        // 翻页
+        function GetAppendData() {
+            showLoad();
+            var companyName = $('#I_search_companyName').val();
+            var contactName = $('#I_search_contactName').val();
+            var contactPhone = $('#I_search_contactPhone').val();
+            var salesId = $('#I_search_Type').val();
+            var pageSize = 10;  //每页显示的条数
+            var pageIndex = currentPage;//当前页数
+            if (Jurisdiction == 3) {
+                salesId = loginInfo.Id;
+            }
+            $.ajax({
+                type: 'GET',
+                url: APIS.GetCompanyContactList,
+                data:{
+                    'companyName': companyName,
+                    'contactName': contactName,
+                    'contactPhone': contactPhone,
+                    'salesId': salesId,
+                    'pageSize': pageSize,
+                    'pageIndex': pageIndex
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if(data.ResultType == 200){
+                        var data_box = data.AppendData.CompanyContactList;
+                        var data_thead = []; //表头的数组
+                        var data_head = '';//表头
+                        var data_main = '';//表内容
+                        var data_length = data_box.length; //内容条数
+                        page_count = data.AppendData.TotalCount; //总条数
+                        for (var i = 0; i < data_length; i++) {
+                            if(page_first==0){
+                                page_first =1;
+                                if(i==0){
+                                    data_head =`<tr>
+                                                <th class ="width-date">联系人姓名</th>
+                                                <th class =" width-lg">职位</th>
+                                                <th class ="width-datetime">联系人电话</th>
+                                                <th class ="" >公司名称</th>
+                                                <th class =" width-datetime">微信号</th>
+                                                <th class =" width-datetime">最后一次联系时间</th>
+                                                <th class =" width-lg">是否为客户第一联系人</th>
+                                                <th class ="width-lg">操作</th>
+                                            </tr>`;
+                                    $('#I_department thead').append(data_head);
+                                }
+                            }
+                            var element = data_box[i];
+                         
+                            data_main +=`<tr data-id="${data_box[i].Id}">
+                                            <td><a class ="cursor" data-id="${data_box[i].CId}">${data_box[i].ContactName}</a></td>
+                                            <td>${data_box[i].ContactJob}</td>
+                                            <td>${data_box[i].ContactPhone}</td>
+                                            <td>${data_box[i].CompanyName}</td>
+                                            <td>${data_box[i].WechatNum}</td>
+                                            <td>${data_box[i].LastTime}</td>
+                                            <td>${data_box[i].IsFirst == 1 ? '<input type="checkbox" id="I_IsFirst" disabled="disabled" checked="checked">': ''}</td>
+                                            <td>
+                                                <a class ="btn_channel  btn_blue con_edit" data-id="${data_box[i].Id}" data-edid="${data_box[i].CId}" >编辑</a>
+                                                <a class ="btn_channel  btn_blue con_add" data-id="${data_box[i].Id}" data-edid="${data_box[i].CId}" data-name="${data_box[i].CompanyName}" data-SalesId="${data_box[i].SalesId}" >添加联系记录</a>
+                                            </td>
+                                        </tr>`
+                        }
+                        $('#I_department tbody').html(data_main);
+                        $('#I_TotalPage').html(data.AppendData.TotalPage);
+                        $("#I_pageSize").html(data_length);
+                        laypage_up(page_count);
+
+                    }else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('暂无数据内容');
+                }
+            })
+
+        }
+
+        $('#search_button').click(function () {
+            GetAppendData();
+        })
+
+        //初始数据
+        try {
+            GetAppendData()//获取初始表数据
+        } catch (err) {
+        }
+
+        //分页
+        function laypage_up(){
+            layui.use(['laypage', 'layer'], function(){
+                var laypage = layui.laypage
+                ,layer = layui.layer;
+                laypage.render({
+                    elem: 'layui_page'
+                    ,count: page_count
+                    ,limit: 10
+                    , curr: currentPage || 1
+                    ,layout: ['count', 'prev', 'page', 'next', 'skip']
+                    ,jump: function(obj, first){
+                        currentPage = obj.curr;
+                        if(!first){//首次不执行
+                            GetAppendData();
+
+                        }
+
+                        }
+                });
+            })
+        }
+
+        if (Jurisdiction != 3) {
+            $('body').on('dblclick', '.cursor', function () {
+                var edit_id = $(this).attr('data-id');
+                var ChannelId = loginInfo.ChannelId;
+                UrlAddTabs('2304', '客户详情', 'CustomerManagement/CustomerDetails.html?edit_id=' + edit_id + '&ChannelId=' + ChannelId);
+            })
+        }
+        
+        $('body').on('click', '.con_edit', function () {
+            ShowUI('edit_Contacts_Modal')
+            var C_id = $(this).attr('data-id');
+            var C_cid = $(this).attr('data-edid');
+            $.ajax({
+                type: "get",
+                url: APIS.GetCompanyContactById + '/' + C_id,
+                dataType: "json",
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        var items = data.AppendData;
+                        $('.I_edit_from').html(`
+                            <input class ="hide" hidden="hidden" id="edit_id" value="${items.Id}">
+                            <input class ="hide" hidden="hidden" id="edit_cid" value="${C_cid}">
+                                        <div class ="form-group">
+                                            <label id="edit_lbl_ContactName" class ="col-md-3 control-label">联系人姓名：</label>
+                                            <div class ="col-md-8">
+                                                <input name="edit_ContactName" type="text" value="${items.ContactName}" rule="/\\S/" id="edit_ContactName" class ="form-control Idata" placeholder="联系人姓名">
+                                                <label><input type="checkbox" id="edit_IsFirst" class ="Contacts_che" ${items.IsFirst == 1 ? 'checked="checked"' : ''} >企业第一联系人</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="edit_lbl_ContactPhone" class ="col-md-3 control-label">联系人号码：</label>
+                                            <div class="col-md-8">
+                                                <input name="edit_ContactPhone" type="text" value="${items.ContactPhone}" rule="/^1[3456789]\\d{9}$/" id="edit_ContactPhone" class ="form-control Idata" placeholder="联系人号码">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="edit_lbl_ContactJob" class ="col-md-3 control-label">联系人职位：</label>
+                                            <div class="col-md-8">
+                                                <input name="edit_ContactJobe"  value="${items.ContactJob}" id="edit_ContactJob"  class ="form-control " placeholder="联系人职位">
+                                            </div>
+                                        </div>
+
+                                        <div class ="form-group">
+                                            <label id="edit_lbl_WechatNum" class ="col-md-3 control-label">微信号：</label>
+                                            <div class ="col-md-8">
+                                                <input name="edit_WechatNum" " value="${items.WechatNum}" id="edit_WechatNum"  class ="form-control " placeholder="微信号">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="edit_lbl_QQNum" class ="col-md-3 control-label">QQ号：</label>
+                                            <div class ="col-md-8">
+                                                <input name="edit_QQNum" value="${items.QQNum}" id="edit_QQNum"  class ="form-control " placeholder="QQ号">
+                                            </div>
+                                        </div>
+                                         <div class ="form-group">
+                                            <label id="edit_lbl_Email" class ="col-md-3 control-label">邮箱：</label>
+                                            <div class ="col-md-8">
+                                                <input name="edit_Email" value="${items.Email}" id="edit_Email"  class ="form-control " placeholder="邮箱">
+                                            </div>
+                                        </div>
+                                         <div class ="form-group">
+                                            <label id="edit_lbl_IdCard" class ="col-md-3 control-label">身份证：</label>
+                                            <div class ="col-md-8">
+                                                <input name="edit_IdCard" value="${items.IdCard}" id="edit_IdCard"  class ="form-control " placeholder="身份证">
+                                            </div>
+                                        </div>
+                                        `);
+
+                        ShowUI('edit_Contacts_Modal');
+
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+
+        })
+        $('#editContacts_default').on('click', function () {
+            HideUI('edit_Contacts_Modal');
+        })
+        $('#editContacts_primary').on('click', function () {
+            if (required('edit_Contacts_Modal')) { //验证
+                return false;
+            }
+            var ContactName = $('#edit_ContactName').val();//联系人姓名
+            var ContactPhone = $('#edit_ContactPhone').val();//联系人电话
+            var ContactJob = $('#edit_ContactJob').val();//联系人职位
+            var WechatNum = $('#edit_WechatNum').val();//微信号
+            var QQNum = $('#edit_QQNum').val();//qq号
+            var Email = $('#edit_Email').val()//邮箱
+            var IdCard = $('#edit_IdCard').val();//身份证 
+            var CId = $("#edit_cid").val();//客户表id（公司Id） 
+            var IsFirst = $('#edit_IsFirst').prop("checked") == true ? '1' : '0';//是否第一联系人
+            var Id = $('#edit_id').val();
+            $.ajax({
+                type: "POST",
+                url: APIS.UpdateCompanyContact,
+                dataType: "json",
+                data: {
+                    "ContactName": ContactName,
+                    "ContactPhone": ContactPhone,
+                    "ContactJob": ContactJob,
+                    "WechatNum": WechatNum,
+                    "QQNum": QQNum,
+                    "Email": Email,
+                    "IdCard": IdCard,
+                    "CId": CId,
+                    "IsFirst": IsFirst,
+                    "Id": Id
+                },
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        GetAppendData();
+                        SuccessBox(data.Message);
+                        HideUI('edit_Contacts_Modal');
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+
+        })
+        $('body').on('click', '.con_add', function () {
+            var Id = $(this).attr('data-id');
+            var edid = $(this).attr('data-edid');
+            var SalesId = $(this).attr('data-SalesId');
+            var CompanyName = $(this).attr('data-name');
+            $('.I_Added_from').html(`
+                                        <div class ="form-group">
+                                            <label id="add_lbl_CompanyName" class ="col-md-3 control-label">公司名称：</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_CompanyName" disabled="disabled"  value="" id="add_CompanyName" class ="form-control Idata" placeholder="公司名称">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_ContactId" class ="col-md-3 control-label">联系人姓名：</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_ContactId"  disabled="disabled"  value="" id="add_ContactId" class ="form-control Idata" placeholder="联系人姓名">
+                                            </div>
+                                        </div>
+                                        <div class ="form-group">
+                                            <label id="add_lbl_ContactPhone" class ="col-md-3 control-label">联系人电话：</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_ContactPhone"  disabled="disabled"  value="" id="add_ContactPhone" class ="form-control Idata" placeholder="联系人电话">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="add_lbl_ContactTime" class ="col-md-3 control-label">联系时间：</label>
+                                            <div class="col-md-8">
+                                                <input name="add_ContactTime"  value="" id="add_ContactTime" class ="form-control Idata" placeholder="联系时间">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="add_lbl_ContactSummary" class ="col-md-3 control-label">联系摘要：</label>
+                                            <div class="col-md-8">
+                                                <textarea id="add_ContactSummary"  class ="form-control " placeholder="联系摘要"></textarea>
+                                            </div>
+                                        </div>
+                                        <input class ="hide" hidden="hidden" value="${SalesId}" id="add_hide_SalesId" placeholder="销售员id">
+                                        <input class ="hide" hidden="hidden" value="${Id}" id="add_hide_CompanyId" placeholder="联系人id">
+                                        `);
+            SOGDateTime('add_ContactTime');
+            $.ajax({
+                type: "get",
+                url: APIS.GetCompanyContactById + '/' + Id,
+                dataType: "json",
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        var items = data.AppendData;
+                        $('#add_CompanyName').val(CompanyName)
+                        $('#add_ContactId').val(items.ContactName);
+                        $('#add_ContactPhone').val(items.ContactPhone);
+                        $('#add_ContactTime').val();
+                        $('#add_ContactSummary').val();
+                    }
+                }
+            });
+            ShowUI('Added_Modal');
+        })
+        $('#Added_default').on('click', function () {
+            HideUI('Added_Modal');
+        })
+        $('#Added_primary').on('click', function () {
+            if (required('Added_Modal')) { //验证
+                return false;
+            }
+            var ContactTime = $('#add_ContactTime').val();
+            var ContactSummary = $('#add_ContactSummary').val();
+            var ContactId = $('#add_hide_CompanyId').val();
+            var SalesId = $('#add_hide_SalesId').val();
+            $.ajax({
+                type: "POST",
+                url: APIS.AddComapnyRecord,
+                dataType: "json",
+                data: {
+                    "ContactTime": ContactTime,
+                    "ContactSummary": ContactSummary,
+                    "ContactId": ContactId,
+                    "SalesId": SalesId
+                },
+                success: function (result) {
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('Added_Modal');
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+
+        })
+        
+    </script>
+</body>
+
+</html>

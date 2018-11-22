@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "SOGSearchDropDownList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SOGSearchDropDownList</h2>
+
+<div class="div_SOGSearchDropDownList">
+    <select class="SOGSearchDropDownList" id="I_SOGsel">
+        <option value="1">1</option>
+        <option value="2">12</option>
+        <option value="3">123</option>
+        <option value="4">1234</option>
+        <option value="5">12345</option>
+    </select>
+</div>
+
+
+@section customStyle{
+    <style type="text/css">
+        .div_SOGSearchDropDownList {
+            width: 200px;
+            overflow: hidden;
+        }
+    </style>
+}
+
+@section customScript{
+    <script type="text/javascript">
+        //绑定
+        $('.SOGSearchDropDownList').select2();
+
+        //change
+        $('#I_SOGsel').change(function () {
+            console.log('change=', $('#I_SOGsel').val());
+        });
+
+        //回填值
+        $('#I_SOGsel').val(2).trigger("change");
+    </script>
+}

@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>ERP-中力管理员登录页面</title>
+	<meta charset="utf-8" />
+    
+</head>
+<body>
+    <div class="Erp_error" id="I_Erp_error"  style="display:none;">
+        <h1 style="text-align: center; margin: 50px;">
+            没有权限访问！请正确操作
+        </h1>
+    </div>
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../dist/js/loadovos.js"></script>
+    <script>
+        // 取url参数
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        var GetToken = getUrlParam('token');
+        showLoad();
+        $.ajax({
+            type: 'get',
+            url: 'http://192.168.23.251/api/Home/ErpLogin',
+            data:{
+                'token':GetToken
+            },
+            dataType: "json",
+            success: function (result) {
+                hideLoad();
+                var data = result;
+                if (data.ResultType == 200) {
+                    localStorage.setItem('dataArray', JSON.stringify(data.AppendData));
+                    window.location.href = 'index.html';
+                } else {
+                    $('#I_Erp_error').show();
+                }
+            }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                hideLoad();
+                $('#I_Erp_error').show();
+            }
+        });
+    </script>
+</body>
+</html>

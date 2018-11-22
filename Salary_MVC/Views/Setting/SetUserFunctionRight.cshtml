@@ -1,0 +1,236 @@
+﻿
+@{
+    ViewBag.Title = "个人权限管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section customStyle{
+    <style type="text/css">
+        .btn_right {
+            width: 70px;
+            height: 30px;
+            position: absolute;
+            top: 22px;
+            right: 30px;
+        }
+    </style>
+}
+
+<!-- 主标题 begin -->
+<div class="ov-tit ov-line rel clearfix">
+    <h1 class="ov-theme">个人权限管理</h1>
+    <span class="ov-theme" id="spn_name"></span><br /><br />
+    <a class="search_ul_a  btn_right" id="I_User_save">保存</a>
+    @*<div class="search_ul">
+            <input type="text" name="search_name" class="form-control" id="user_sel">
+            <a class="search_ul_a" id="I_User_save">保存</a>
+        </div>*@
+
+    <div class="role_main" id="">
+        <h2 class="role_tit">@*用户权限 | 管理*@</h2>
+        <div class="role_list" id="I_user_list">
+           
+        </div>
+    </div>
+    
+    @section customScript{
+        <script>
+
+            //获取全部权限列表
+            function GetPrivilegeList() {
+                $.ajax({
+                    type: "post",
+                    url: "/Setting/GetPrivilegeList",
+                    dataType: "json",
+                    success: function (result) {
+                        var data = result;
+                        if (data.ResultType == 200) {
+                            var items = data.AppendData;
+                            var role_ul_html = '';
+                            var role_li_html = '';
+                            var conct_html = '';
+                            for (var i = 0; i < items.length; i++) {
+                                var role_next = items[i].children;
+                                for (var j = 0; j < role_next.length; j++) {
+                                    if (j == 0) {
+                                        role_li_html += `<table class="table table-striped table-bordered  table-striped" id="table_${items[i].id}"><thead>
+                                                    <td class ="role_td">权限名称</td>
+                                                    <td class ="center role_width">分配</td>
+                                                    <td class ="role_td">权限名称</td>
+                                                    <td class ="center role_width">分配</td>
+                                                    <td class ="role_td">权限名称</td>
+                                                    <td class ="center role_width">分配</td>
+                                                    <td class ="role_td">权限名称</td>
+                                                    <td class ="center role_width">分配</td>
+                                                </tr>
+                                            </thead><tbody><tr>`
+                                    }
+                                    if ((j % 4) == 0) {
+                                        role_li_html += `</tr><tr>`
+                                    }
+                                    role_li_html += `<td>${role_next[j].text}</td><td class="center"><input type="checkbox" name="privilege" value="${role_next[j].id}"></td>`
+                                    if (j == (role_next.length - 1)) {
+                                        if ((role_next.length % 4) != 0) {
+                                            var td_li = role_next.length % 4;
+                                            var td_lis = 4 - (j + 1) % 4;
+                                            for (var f = 0; f < td_lis; f++) {
+                                                role_li_html += `<td></td><td class="center"></td>`
+                                            }
+                                        }
+                                        role_li_html += `</tr></tbody></table>`
+                                    }
+                                }
+                                role_ul_html += `<div class="role_li"><label><input type="checkbox" id="parent_${items[i].id}" name="parent" value="${items[i].id}">${items[i].text}</label>` + role_li_html + `</div>`
+                                conct_html += role_ul_html;
+                                role_ul_html = '';
+                                role_li_html = '';
+                            }
+                            $("#I_user_list").html(conct_html);
+
+                            GetUserPrivilege();
+
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    },
+                    error: function b(ms) {
+                        ErrorBox("请求失败，请按F5刷新！");
+                        return;
+                    }
+                });
+            }
+            GetPrivilegeList();
+
+            function getUrlParam(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+                if (r != null) return unescape(r[2]); return null; //返回参数值
+            };
+
+            //获取用户姓名
+            function GetUserName() {
+                var id = getUrlParam("id");
+                $.ajax({
+                    type: "post",
+                    url: "/Setting/GetUserName/" + id,
+                    dataType: "json",
+                    success: function (result) {
+                        var data = result;
+                        if (data.ResultType == 200) {
+                            var res = data.AppendData;
+                            for (var j = 0; j < res.length; j++) {
+                                $("#spn_name").text('（' + res[j] + '）');
+                            }
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    },
+                });
+
+            }
+            GetUserName();
+
+            //页面跳转后，获取某个用户的权限
+            function GetUserPrivilege() {
+                var sel_id = getUrlParam("id");
+
+                //先取消勾选
+                $("input[name='privilege']").each(function () {
+                    $(this).prop("checked", false);
+                });
+                //获取选中用户的权限
+                $.ajax({
+                    type: "post",
+                    url: "/Setting/GetUserPrivilege/" + sel_id,
+                    dataType: "json",
+                    success: function (result) {
+                        var data = result;
+                        if (data.ResultType == 200) {
+                            var res = data.AppendData;
+                            //var str = res.split(',');
+                            for (var j = 0; j < res.length; j++) {
+
+                                $("input[name='privilege'][value='" + res[j] + "']").prop("checked", true);
+                            }
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    },
+                    error: function b(ms) {
+                        ErrorBox("请求失败，请按F5刷新！");
+                        return;
+                    }
+                });
+            };
+
+
+            //保存
+            $("#I_User_save").click(function () {
+                var sel_id = getUrlParam("id");
+                if (sel_id == '') {
+                    ErrorBox('请选择用户');
+                    return false;
+                }
+                var privilegeIds = "";
+                $("input[name='privilege']:checked").each(function (i) {
+                    privilegeIds = privilegeIds + ',' + $(this).val();
+                });
+                privilegeIds = privilegeIds.substr(1, privilegeIds.length - 1);
+                showLoad();
+                $.ajax({
+                    type: "POST",
+                    url: "/Setting/UpdateUserPrivilege",
+                    dataType: "json",
+                    data: { "UserId": sel_id, "FunctionId": privilegeIds },
+                    success: function (rs) {
+                        hideLoad();
+                        var data = rs;
+                        if (data.ResultType == 200)//成功
+                        {
+                            SuccessBox(data.Message)
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1500)
+                        } else {
+                            ErrorBox(data.Message);
+                        }
+                    },
+                    error: function b(ms) {
+                        hideLoad();
+                        alert("请求失败，请按F5刷新！");
+                        return;
+                    }
+                });
+            });
+
+
+
+            $('body').on('click', 'input[name="parent"]', function () {
+                var sel_id = getUrlParam("id");
+                if (sel_id == '') {
+                    ErrorBox('请选择用户');
+                    return false;
+                }
+                var _this = this;
+                var f = $(_this).prop("checked");
+                var id = $(_this).val();
+                var table = "#table_" + id;
+                if (f == true) {
+                    $(table + " input[name='privilege']").each(function () {
+                        $(this).prop("checked", true);
+                    });
+                }
+                else {
+                    $(table + " input[name='privilege']").each(function () {
+                        $(this).prop("checked", false);
+                    });
+                }
+            })
+
+
+
+        </script>
+
+    }
+

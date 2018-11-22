@@ -1,0 +1,347 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "财务核算单位";
+}
+
+@section customStyle{
+
+
+}
+<!-- 主标题 begin -->
+<div class="ov-tit ov-line rel clearfix">
+    <h1 class="ov-theme">财务核算单位</h1>
+
+    <div class="search_ul">
+    </div>
+    <div class="icon_fun abs bot10">
+        <a class="add_right_btn add_Sale_code" id="open_Increase_Modal">新增</a>
+    </div>
+
+</div>
+<!-- 主标题 end -->
+<!-- 内容表格 begin -->
+<div class="ov-form table-responsive I_department_form">
+    <!-- 表格数据 -->
+    <table class="table table-striped table-bordered" id="I_department">
+        <thead>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<!-- 内容表格 end -->
+<!-- 新增弹层 -->
+<div class="ov-add modal fade I_modal" id="Increase_Modal">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_increase_title">新增</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_increase_from">
+                    <!-- 填充表单 -->
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" id="close_Increase_default" class="btn btn-default">取消</button>
+                <button type="button" id="Increase_primary" class="btn btn-primary ">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑弹出 -->
+<div class="ov-edit modal fade I_modal" id="Edit_Modal" tabindex="-1" role="dialog">
+    <div class="modalDialog modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove-sign modal_close_i"></i>
+                </button>
+                <h4 class="modal-title I_edit_title">修改</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal form-bordered I_edit_from">
+
+                </div>
+            </div>
+            <div class="modal-footer modal_btn">
+                <button type="button" id="close_Edit_default" class="btn btn-default">取消</button>
+                <button type="button" id="Edit_primary" class="btn btn-primary">确定</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section customScript{
+    <script>
+        layui.use('laydate', function () {
+
+            //初始数据
+            try {
+                GetAppendData()//获取初始表数据
+            } catch (err) {
+            }
+
+        });
+
+
+    </script>
+
+
+    <script>
+        // 表格数据
+        var page_first = 0; //第一次获取列表数据
+        var editID = ''; //编辑id
+        // 翻页
+
+        function GetAppendData() {
+            showLoad();
+            data_head = `<tr>
+                                                     <th class =" width-xs">序号</th>
+                                                    <th class ="">名称</th>
+                                                    <th class =" width-md">创建人</th>
+                                                    <th class =" width-datetime">创建时间</th>
+                                                    <th class =" width-md">状态</th>
+                                                    <th class ="width-xll">操作</th>
+                                            </tr>`;
+            $('#I_department thead').html(data_head);
+            //var I_search_status = $('#I_search_status').val();
+            //var I_search_name = $('#I_search_name').val();
+            $.ajax({
+                type: 'POST',
+                url: '../FinanceUnit/GetEntity',
+                data: {
+                    //'Status': I_search_status,
+                    //'Name': I_search_name
+                },
+                dataType: "json",
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        var data_box = data.AppendData;
+                        var data_thead = []; //表头的数组
+                        var data_head = '';//表头
+                        var data_main = '';//表内容
+                        var data_length = data_box.length; //内容条数
+                        for (var i = 0; i < data_length; i++) {
+                            if (page_first == 0) {
+                                page_first = 1;
+                                if (i == 0) {
+
+                                }
+                            }
+                            var element = data_box[i];
+                            data_main += `<tr data-id="${data_box[i].Id}">
+                                            <td>${i+1}</td>
+                                            <td>${data_box[i].Name}</td>
+                                            <td>${data_box[i].CreateUser}</td>
+                                            <td>${data_box[i].CreateDate}</td>
+                                            <td>${data_box[i].Status}</td>
+                                            <td>
+                                                <a class ="btn_channel btn_edit Reset_examine" data-id="${data_box[i].Id}" >修改</a>
+                                                <a class ="btn_channel btn_forbid Reset_examine" data-id="${data_box[i].Id}" data-name="${data_box[i].Name}"  >作废</a>
+                                                <a class ="btn_channel btn_delete Reset_examine" data-id="${data_box[i].Id}" data-name="${data_box[i].Name}"  >删除</a>
+                                            </td>
+
+                                        </tr>`
+                        }
+                        $('#I_department tbody').html(data_main);
+                        //$('.info-sum-employee span').text(data.AppendData.totalEmployee);
+                        //$('.info-sum-money span').text(data.AppendData.totalMoney);
+                        //$("#housermoneymaster_id").val(data.AppendData.master.Id);
+
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    ErrorBox('暂无数据内容');
+                    hideLoad();
+                }
+            })
+        }
+
+        // 打开新增弹窗
+        $('body').on('click', '#open_Increase_Modal', function () {
+            $('.I_increase_from').html(`
+                                        <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label">名称</label>
+                                            <div class ="col-md-8">
+                                                <input name="add_Money" type="text" value="" rule="/\\S/" id="add_Money" class ="form-control Idata" placeholder="名称">
+                                            </div>
+                                        </div>
+                                        `);
+            ShowUI('Increase_Modal');
+        });
+
+        // 关闭新增弹窗
+        $('body').on('click', '#close_Increase_default', function () {
+            HideUI('Increase_Modal');
+        });
+     
+        //新增确认按钮点击
+        $("body").on('click', '#Increase_primary', function () {
+            if (required('Increase_Modal')) { //验证
+                return false;
+            }
+            var Name = $('#add_Money').val();
+       
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: "../FinanceUnit/Add",
+                data: {
+                    'Name': Name,
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('Increase_Modal');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+        });
+
+        //打开编辑弹窗
+        $('body').on('click', '.btn_edit', function () {
+            var id = $(this).data("id");
+            if (!id)
+                return;
+            $.post("../FinanceUnit/GetEntityById", {"id":id}, function (data) {
+                $('.I_edit_from').html(`
+                                         <div class ="form-group">
+                                            <label id="" class ="col-md-3 control-label">名称</label>
+                                            <div class ="col-md-8">
+                                                <input type="hidden" value="${data.AppendData.Id}" id="edit_Id"  class ="form-control Idata" placeholder="">
+                                                <input name="add_Money" type="text" value="${data.AppendData.Name}" rule="/\\S/" id="edit_Money" class ="form-control Idata" placeholder="名称">
+                                            </div>
+                                        </div>
+                                        `);
+                ShowUI('Edit_Modal');
+                //console.log( $("#add_DepartmentName").val());
+            })
+
+        });
+
+        // 关闭编辑弹窗
+        $('body').on('click', '#close_Edit_default', function () {
+            HideUI('Edit_Modal');
+        });
+       
+        //编辑确认按钮点击
+        $("body").on('click', '#Edit_primary', function () {
+            if (required('Edit_Modal')) { //验证
+                return false;
+            }
+            //var EmployeeId = $('#add_EmployeeName').val();
+            var Id = $('#edit_Id').val();
+            var Name = $('#edit_Money').val();
+            showLoad();
+            $.ajax({
+                type: "post",
+                url: "../FinanceUnit/Edit",
+                data: {
+                    'Id': Id,
+                    'Name': Name,
+                },
+                dataType: "json",
+                success: function (result) {
+                    hideLoad();
+                    var data = result;
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        HideUI('Edit_Modal');
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            });
+        });
+
+
+        //删除按钮点击
+        $('body').on('click', '.btn_delete', function () {
+            //var _this = $(this);
+            //var del_data = _this.attr('data-id');
+            //var departmentIds = []; //需删除的id的集合
+            //var I_search_month = $('#I_search_month').val();
+            var name = $(this).data("name");
+            var id = $(this).data("id");
+            var r = confirm("确定要删除【" + name + "】吗？")
+            if (!r)
+                return;
+            //departmentIds.push(del_data);
+            //ajax 删除
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                url: "../FinanceUnit/DeleteById",
+                dataType: "json",
+                data: { 'id': id, },
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        })
+
+        //删除按钮点击
+        $('body').on('click', '.btn_forbid', function () {
+            //var _this = $(this);
+            //var del_data = _this.attr('data-id');
+            //var departmentIds = []; //需删除的id的集合
+            //var I_search_month = $('#I_search_month').val();
+            var name = $(this).data("name");
+            var id = $(this).data("id");
+            var r = confirm("确定要作废【" + name + "】吗？")
+            if (!r)
+                return;
+            //departmentIds.push(del_data);
+            //ajax 删除
+            showLoad();
+            $.ajax({
+                type: 'POST',
+                url: "../FinanceUnit/ForbidById",
+                dataType: "json",
+                data: { 'id': id, },
+                success: function (data) {
+                    hideLoad();
+                    if (data.ResultType == 200) {
+                        SuccessBox(data.Message);
+                        GetAppendData();
+                    } else {
+                        ErrorBox(data.Message);
+                    }
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideLoad();
+                    ErrorBox('当前网络较差，请刷新重试');
+                }
+            })
+        })
+    </script>
+}
